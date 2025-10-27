@@ -1,0 +1,13 @@
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\config\CorsConfig.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\controller\AuthController.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\controller\DealController.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\controller\HelloController.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\controller\ProfileController.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\dao\DealDao.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\dao\UserDao.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\DealwiseBackendApplication.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\HelloController.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\model\Deal.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\model\User.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\security\JwtService.java
+C:\Users\Tarun\Documents\dealwise\backend\src\main\java\com\dealwise\util\DBUtil.java

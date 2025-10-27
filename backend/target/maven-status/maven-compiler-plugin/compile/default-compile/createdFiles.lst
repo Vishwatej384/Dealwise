@@ -1,0 +1,12 @@
+com\dealwise\config\CorsConfig.class
+com\dealwise\security\JwtService.class
+com\dealwise\model\User.class
+com\dealwise\controller\ProfileController.class
+com\dealwise\dao\UserDao.class
+com\dealwise\HelloController.class
+com\dealwise\controller\AuthController.class
+com\dealwise\DealwiseBackendApplication.class
+com\dealwise\controller\DealController.class
+com\dealwise\dao\DealDao.class
+com\dealwise\util\DBUtil.class
+com\dealwise\model\Deal.class
