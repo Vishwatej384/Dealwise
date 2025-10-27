@@ -4,16 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DealWise - Smart Shopping Simplified</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-  <script defer src="script.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
 </head>
 
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="logo" />
+      <img src="assets/logo.svg" alt="DealWise Logo" />
       <h1>DealWise</h1>
     </div>
 
@@ -30,7 +32,7 @@
         <input type="text" placeholder="Search deals, gadgets, categories..." />
       </div>
       <div class="cart">
-        <img src="https://cdn-icons-png.flaticon.com/512/833/833276.png" alt="cart" />
+        <img src="assets/shopping.svg" alt="cart" />
         <span class="cart-count">2</span>
       </div>
       <div class="auth-buttons">
@@ -40,63 +42,43 @@
     </div>
   </nav>
 
-  <!-- Dynamic Content -->
+  <!-- Main -->
   <main id="content-area">
-    <!-- Default Hero Section -->
     <section class="hero">
       <div class="hero-content">
-        <h1>Discover Best Deals.<br />Save Smarter.</h1>
+        <h1>Discover <span>Best Deals</span>. Save Smarter.</h1>
         <p>Verified deals and authentic reviews — your go-to platform for affordable, trustworthy shopping.</p>
         <div class="hero-buttons">
-          <button class="btn primary" onclick="loadPage('categories')">Browse Deals</button>
-          <button class="btn secondary" onclick="loadPage('topdeals')">Get Started</button>
+          <button class="btn primary">Browse Deals</button>
+          <button class="btn secondary">Get Started</button>
         </div>
       </div>
       <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1515165562835-c4c8bdee70b4?auto=format&fit=crop&w=800&q=80" alt="Shopping Deals" />
+        <img src="images/headphones.jpg" alt="Shopping Deals" />
       </div>
     </section>
 
-    <!-- Deals Section -->
+    <!-- Top Deals -->
     <section class="deals-section">
       <h2>🔥 Top Deals</h2>
       <div class="deals-grid">
         <div class="deal-card">
-          <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=400&q=80" alt="Wireless Headphones" />
+          <img src="images/headphones.jpg" alt="Wireless Headphones" />
           <h3>Wireless Headphones</h3>
           <p>Now at ₹2,499 (30% off)</p>
           <button class="btn small">Add to Cart</button>
         </div>
         <div class="deal-card">
-          <img src="https://images.unsplash.com/photo-1580894908361-967195033215?auto=format&fit=crop&w=400&q=80" alt="Smartwatch" />
+          <img src="images/smartwatch.jpg" alt="Smartwatch" />
           <h3>Smartwatch Series 6</h3>
           <p>Now at ₹8,999 (25% off)</p>
           <button class="btn small">Add to Cart</button>
         </div>
         <div class="deal-card">
-          <img src="https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=400&q=80" alt="Gaming Keyboard" />
+          <img src="images/keyboard.jpg" alt="Keyboard" />
           <h3>RGB Gaming Keyboard</h3>
           <p>Now at ₹1,799 (40% off)</p>
           <button class="btn small">Add to Cart</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about">
-      <h2>Our Objectives</h2>
-      <div class="objectives">
-        <div>
-          <h3>Simplify Deal Discovery</h3>
-          <p>One-stop platform for all the best offers.</p>
-        </div>
-        <div>
-          <h3>Enhance Trust</h3>
-          <p>Verified deals and genuine user reviews.</p>
-        </div>
-        <div>
-          <h3>Maximize Savings</h3>
-          <p>Smart filters, price tracking, and saving tips.</p>
         </div>
       </div>
     </section>
@@ -104,20 +86,22 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-content">
-      <p>© 2025 DealWise. All Rights Reserved.</p>
-      <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a> | <a href="#">Licenses</a></p>
-    </div>
+    <p>© 2025 DealWise. All Rights Reserved.</p>
+    <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a> | <a href="#">Licenses</a></p>
   </footer>
 
   <!-- Login Modal -->
   <div id="loginModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Login</h2>
+      <div class="modal-header">
+        <h2>Welcome Back 👋</h2>
+        <p>Login to access personalized deals and more</p>
+      </div>
       <input type="text" placeholder="Email" />
       <input type="password" placeholder="Password" />
-      <button>Login</button>
+      <button class="btn primary">Login</button>
+      <p class="modal-footer-text">Don’t have an account? <a href="#" id="openSignup">Sign up here</a></p>
     </div>
   </div>
 
@@ -125,11 +109,14 @@
   <div id="signupModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Create Account</h2>
+      <div class="modal-header">
+        <h2>Create Account ✨</h2>
+        <p>Join DealWise and start saving today!</p>
+      </div>
       <input type="text" placeholder="Name" />
       <input type="email" placeholder="Email" />
       <input type="password" placeholder="Password" />
-      <button>Sign Up</button>
+      <button class="btn primary">Sign Up</button>
     </div>
   </div>
 </body>

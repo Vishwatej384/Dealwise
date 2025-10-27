@@ -424,3 +424,51 @@ footer a {
   font-size: 28px;
   cursor: pointer;
 }
+/* Animations and hover effects */
+.fade-in { animation: fadeIn 0.8s ease-in; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-pop:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.category-list button {
+  background: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.category-list button:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+.items-grid {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+.item-card {
+  background: #1e1e1e;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
