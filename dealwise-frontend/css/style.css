@@ -250,3 +250,105 @@ body {
   font-size: 0.9rem;
   border-top: 1px solid #222;
 }
+/* Navbar */
+.navbar {
+  background-color: #121212;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 40px;
+}
+
+.logo h1 {
+  color: #00e5ff;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: #bdbdbd;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: #00e5ff;
+  transform: scale(1.1);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-bar input {
+  background: #2a2a2a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  width: 200px;
+}
+
+.cart {
+  position: relative;
+}
+
+.cart img {
+  width: 28px;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #00e5ff;
+  color: #000;
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.auth-buttons button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.auth-buttons .login {
+  background: transparent;
+  color: #00e5ff;
+}
+
+.auth-buttons .signup {
+  background: #00e5ff;
+  color: #000;
+}
+
+.auth-buttons button:hover {
+  opacity: 0.8;
+}
