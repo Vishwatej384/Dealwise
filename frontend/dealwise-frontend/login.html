@@ -1,101 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — DealWise</title>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DealWise — Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#0d1117">
   <style>
-    body { font-family:'Poppins',sans-serif; background: #fafafa; }
-    .auth-wrap { max-width:920px; margin:64px auto; display:flex; gap:30px; align-items:center; padding:28px; }
-    .auth-left { flex:1; padding:28px; border-radius:10px; background: linear-gradient(180deg,#fff,#fbfbfb); box-shadow:0 10px 30px rgba(0,0,0,0.06); }
-    .auth-right { width:420px; padding:28px; border-radius:10px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.06); }
-    .auth-right h2 { margin-top:0; }
-    .auth-right input { width:100%; padding:10px 12px; margin:8px 0; border-radius:6px; border:1px solid #ddd; }
-    .btn-accent { background:#00e5ff; border:none; color:#001; padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer; }
-    .muted { color:#666; }
-    .logo { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
-    .center-small { text-align:center; }
-    .success { color:green; font-weight:600; margin-top:10px; }
+    :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
+    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; }
+    .panel{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 420px; gap:18px; align-items:center; }
+    .left{ padding:28px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    .right{ padding:22px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    h1{ margin:0 0 12px; }
+    .muted{ color:var(--muted); }
+    input{ width:100%; padding:12px; margin-top:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:#e6eef6; outline:none; }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
+    .small{ font-size:13px; color:var(--muted) }
+    .logo-circle{ width:64px; height:64px; border-radius:12px; background:linear-gradient(90deg,#00c8ff,#66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px; margin-bottom:12px; }
+    footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:13px; }
+    .float-bg{ position:fixed; right:-120px; top:-80px; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(0,200,255,0.12), transparent 30%), radial-gradient(circle at 70% 70%, rgba(255,193,7,0.06), transparent 30%); filter:blur(28px); pointer-events:none; }
+    .pop{ animation: popForm .6s cubic-bezier(.2,.85,.32,1) both; } @keyframes popForm{ from{ opacity:0; transform:translateY(18px) scale(.98)} to{opacity:1; transform:none}}
   </style>
 </head>
 <body>
-  <header style="padding:18px 28px;">
-    <a href="index.html" style="text-decoration:none; color:inherit;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <svg width="36" height="36" viewBox="0 0 24 24"><path fill="#00e5ff" d="M6 7V6a6 6 0 0 1 12 0v1h1a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1h1zm2 0h8V6a4 4 0 0 0-8 0v1z"/></svg>
-        <div>
-          <div style="font-weight:700; font-size:18px;">DealWise</div>
-          <div style="font-size:12px; color:#666;">Smart Deals • Verified</div>
-        </div>
-      </div>
-    </a>
-  </header>
+  <div class="float-bg"></div>
 
-  <main class="auth-wrap">
-    <div class="auth-left">
-      <h1 style="margin:4px 0 8px;">Welcome back</h1>
-      <p class="muted">Log in to access saved deals, track price alerts and continue where you left off.</p>
-      <ul style="margin-top:16px; color:#333;">
-        <li>✔ Save favorite deals</li>
-        <li>✔ Price drop alerts</li>
-        <li>✔ Faster checkout (demo)</li>
+  <div class="panel pop">
+    <div class="left">
+      <div class="logo-circle">DW</div>
+      <h1>Welcome back</h1>
+      <p class="muted">Sign in to access saved deals, price alerts and your cart.</p>
+      <ul class="muted">
+        <li>Secure demo authentication</li>
+        <li>Saved recommendations</li>
       </ul>
-      <div style="margin-top:20px; opacity:0.9;">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=60" style="width:100%; border-radius:8px;" alt="login promo">
-      </div>
+      <footer>New here? <a href="signup.html">Create an account</a></footer>
     </div>
 
-    <div class="auth-right">
-      <h2>Sign in</h2>
-      <div class="muted">Use your email to sign in</div>
-
-      <div style="margin-top:16px;">
-        <input id="email" type="email" placeholder="Email" />
-        <input id="password" type="password" placeholder="Password" />
-        <div style="margin-top:12px;">
-          <button id="submitLogin" class="btn-accent">Login</button>
+    <div class="right">
+      <h3 style="margin:0 0 8px">Login</h3>
+      <p class="muted small">Use your email and password to sign in (demo).</p>
+      <form id="loginForm" style="margin-top:12px">
+        <input id="loginEmail" placeholder="Email" required />
+        <input id="loginPass" type="password" placeholder="Password" required />
+        <div style="margin-top:12px; display:flex; gap:10px;">
+          <button class="btn-accent" type="submit">Sign In</button>
+          <button type="button" onclick="location.href='index.html'" class="btn-ghost" style="border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:8px;color:var(--muted)">Back</button>
         </div>
-        <div id="loginMessage" class="muted" style="margin-top:10px;"></div>
-
-        <p style="margin-top:12px; font-size:14px;">New here? <a href="signup.html">Create an account</a></p>
-      </div>
+      </form>
+      <p style="margin-top:12px" class="small muted">This demo doesn't call a backend yet — hooking up JWT auth will be next.</p>
     </div>
-  </main>
+  </div>
 
   <script>
-    const API_BASE = 'http://localhost:8080/api';
-    document.getElementById('submitLogin').addEventListener('click', async () => {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const msg = document.getElementById('loginMessage');
-      msg.textContent = '';
-      if (!email || !password) { msg.textContent = 'Enter email and password'; return; }
-      try {
-        const res = await fetch(API_BASE + '/auth/login', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ email, password })
-        });
-        if (!res.ok) {
-          const err = await res.json().catch(()=>({message:res.statusText}));
-          msg.textContent = err.message || 'Login failed';
-          return;
-        }
-        const data = await res.json();
-        // expect token in data.token (adjust if backend uses a different key)
-        if (data.token) {
-          localStorage.setItem('dealwise_token', data.token);
-        } else if (data.accessToken) {
-          localStorage.setItem('dealwise_token', data.accessToken);
-        }
-        msg.textContent = 'Login successful — redirecting...';
-        setTimeout(()=> location.href = 'index.html', 900);
-      } catch (e) {
-        msg.textContent = 'Network error';
-        console.error(e);
-      }
+    document.getElementById('loginForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      // demo behaviour: save "user" in localStorage
+      const email = document.getElementById('loginEmail').value;
+      localStorage.setItem('dealwise_user', JSON.stringify({ email, name: email.split('@')[0] || 'User' }));
+      // navigate to home and show toast (simple)
+      location.href='index.html';
+      setTimeout(()=> alert('Logged in (demo) — go to Home to see profile circle.'), 200);
     });
   </script>
 </body>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DealWise — Top Deals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d1117">
+  <style>
+    /* (kept the same core styles as index.html to preserve theme & animations) */
+    :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; --accent-2:#ffc107;
+      --glass: rgba(255,255,255,0.04); --glass-border: rgba(255,255,255,0.04); --radius:14px; }
+    html,body{ height:100%; margin:0; background:linear-gradient(180deg,#06080b 0%, #0d1117 100%); color:#e6eef6; font-family:"Poppins",sans-serif;}
+    header.navbar{ position:sticky; top:0; z-index:60; display:flex; align-items:center; justify-content:space-between; padding:12px 22px; gap:12px; backdrop-filter: blur(6px); background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-bottom:1px solid rgba(255,255,255,0.03);}
+    .brand{ display:flex; gap:12px; align-items:center; }
+    nav.nav-center{ display:flex; gap:12px; align-items:center; }
+    .nav-link{ color:var(--muted); padding:8px 12px; border-radius:8px; transition: all .22s ease; font-weight:600; font-size:14px; }
+    .nav-link:hover{ color:white; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transform:translateY(-2px); }
+    .nav-link.active{ color:var(--accent); box-shadow: 0 6px 18px rgba(0,200,255,0.06); }
+    .nav-right{ display:flex; align-items:center; gap:10px; }
+    .search-wrap input{ width:260px; padding:10px 12px; border-radius:10px; background:var(--glass); border:1px solid var(--glass-border); color:#e6eef6; outline:none; }
+    .icon-btn{ background:transparent; border:1px solid rgba(255,255,255,0.03); padding:8px 10px; border-radius:10px; cursor:pointer; color:var(--muted); transition: all .18s ease; font-weight:600; }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; box-shadow: 0 10px 30px rgba(0,200,255,0.08); }
+    main{ padding:28px; max-width:1200px; margin:0 auto; }
+    h1{ margin:0 0 6px; }
+    .deals-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; margin-top:12px; }
+    .deal-card{ background:var(--card); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.03); transition: transform .18s, box-shadow .18s; position:relative; overflow:hidden; }
+    .deal-card img{ width:100%; height:170px; object-fit:cover; border-radius:8px; display:block; }
+    .deal-actions{ display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:10px; }
+    .muted{ color:var(--muted); font-size:13px; }
+    footer.site-footer{ margin-top:42px; padding:24px; border-top:1px solid rgba(255,255,255,0.03); display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); }
+    #toast{ position:fixed; right:22px; bottom:24px; background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(12,16,20,0.6)); color:#e6f7ff; padding:12px 16px; border-radius:10px; opacity:0; transform:translateY(12px); transition: all .28s; z-index:9999; }
+    #toast.show{ opacity:1; transform:translateY(0); }
+    @media(max-width:1000px){ .deals-grid{ grid-template-columns:repeat(2,1fr);} .search-wrap input{width:160px;} }
+    @media(max-width:600px){ .deals-grid{ grid-template-columns:1fr;} header.navbar{ flex-direction:column; align-items:flex-start; } .search-wrap input{ width:100%; } }
+    .pop-in{ animation: popIn .45s cubic-bezier(.2,.85,.32,1) both; } @keyframes popIn{from{opacity:0; transform:translateY(10px) scale(.995)} to{opacity:1; transform:none}}
+  </style>
+</head>
+<body>
+  <header class="navbar pop-in">
+    <div class="brand">
+      <svg width="36" height="36"><rect width="36" height="36" rx="8" fill="#00c8ff" opacity="0.12"/></svg>
+      <div><div style="font-weight:700">DealWise</div><div style="font-size:12px;color:var(--muted)">Smart Deals • Verified</div></div>
+    </div>
+
+    <nav class="nav-center">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link active" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="search-wrap"><input id="searchInput" placeholder="Search deals..." /></div>
+      <button id="cartButton" class="icon-btn">🛍️ <span id="cartCount" class="cart-count" style="margin-left:8px;background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:2px 8px;border-radius:999px;font-weight:700">0</span></button>
+      <button id="loginBtn" class="icon-btn">Login</button>
+      <button id="signupBtn" class="btn-accent">Sign Up</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>🔥 Top Deals</h1>
+    <p class="muted">Hand-picked deals — click View to open the product page, Add to add to cart.</p>
+    <div id="dealsGrid" class="deals-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div style="display:flex;gap:12px;align-items:center">
+      <svg width="30" height="30"><rect width="30" height="30" rx="6" fill="#00c8ff" opacity="0.12"/></svg>
+      <div><div style="font-weight:700">DealWise</div><div style="color:var(--muted);font-size:13px">© 2025 DealWise</div></div>
+    </div>
+    <div style="color:var(--muted)"><a href="index.html">Home</a> • <a href="categories.html">Categories</a></div>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Shared small runtime (same logic as index but scoped)
+    const API_BASE = 'http://localhost:8080/api';
+    const SAMPLE_DEALS = [
+      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'https://images.unsplash.com/photo-1518444024107-77f3c4b8b4b6?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
+    ];
+
+    const CART_KEY = 'dealwise_cart';
+    function readCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)||'[]') }catch(e){return[]} }
+    function writeCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCartUI(); }
+    function updateCartUI(){ const el = document.getElementById('cartCount'); el.textContent = readCart().reduce((s,i)=> s + (i.qty||1), 0); const btn=document.getElementById('cartButton'); btn.classList.add('glow'); setTimeout(()=>btn.classList.remove('glow'),700); }
+
+    function showToast(msg, t=1300){ const tEl = document.getElementById('toast'); tEl.textContent=msg; tEl.classList.add('show'); clearTimeout(window._to); window._to=setTimeout(()=>tEl.classList.remove('show'),t); }
+
+    function addToCartId(id, btn){
+      const deal = SAMPLE_DEALS.find(d=>d.id===id); if(!deal) return showToast('Not found');
+      const cart = readCart(); const idx = cart.findIndex(x=>x.id===id);
+      if(idx>=0) cart[idx].qty=(cart[idx].qty||1)+1; else cart.push({ id:deal.id, title:deal.title, price:deal.price, qty:1});
+      writeCart(cart);
+      // micro +1 animation
+      const plus=document.createElement('span'); plus.textContent='+1'; plus.style.position='absolute'; plus.style.right='10px'; plus.style.top='10px'; plus.style.color='#00ffd6'; plus.style.fontWeight='800'; btn.parentElement.appendChild(plus);
+      plus.animate([{transform:'translateY(0)', opacity:1},{transform:'translateY(-26px)', opacity:0}], {duration:700, easing:'cubic-bezier(.2,.9,.2,1)'});
+      setTimeout(()=>plus.remove(),750);
+      showToast('✅ Added to cart');
+    }
+
+    function renderDeals(deals){
+      const grid = document.getElementById('dealsGrid'); grid.innerHTML='';
+      deals.forEach(d=>{
+        const card = document.createElement('div'); card.className='deal-card pop-in';
+        card.innerHTML = `<img src="${d.img}" alt="${d.title}"><h3>${d.title}</h3><p class="muted">${d.note}</p>
+          <div class="deal-actions"><div class="price">${d.price}</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-ghost" onclick="location.href='deals.html'">View</button>
+            <button class="btn-accent" onclick="addToCartId('${d.id}', this)">Add</button>
+          </div></div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // Attempt backend fetch else fallback
+    async function loadDeals(){
+      try{
+        const res = await fetch(API_BASE + '/deals'); if(res.ok){ const data = await res.json(); if(Array.isArray(data) && data.length){ renderDeals(data); return; } }
+      }catch(e){}
+      renderDeals(SAMPLE_DEALS);
+    }
+
+    // nav actions
+    document.getElementById('loginBtn')?.addEventListener('click', ()=> location.href='login.html');
+    document.getElementById('signupBtn')?.addEventListener('click', ()=> location.href='signup.html');
+    document.getElementById('cartButton')?.addEventListener('click', ()=> alert('Cart page not built yet (demo)'));
+
+    document.addEventListener('DOMContentLoaded', ()=>{ updateCartUI(); loadDeals(); });
+    window.addToCartId = addToCartId;
+  </script>
+</body>
+</html>

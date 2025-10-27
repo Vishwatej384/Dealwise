@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DealWise — Categories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d1117">
+  <style>
+    :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
+    html,body{ margin:0; height:100%; background:linear-gradient(180deg,#06080b,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; }
+    header.navbar{ position:sticky; top:0; display:flex; justify-content:space-between; align-items:center; padding:12px 22px; backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.03); }
+    nav.nav-center{ display:flex; gap:12px; }
+    .nav-link{ color:var(--muted); padding:8px 12px; border-radius:8px; }
+    .container{ max-width:1200px; margin:0 auto; padding:28px; }
+    .cat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
+    .cat-card{ background:var(--card); padding:12px; border-radius:12px; text-align:center; cursor:pointer; transition: transform .16s; border:1px solid rgba(255,255,255,0.03);}
+    .cat-card img{ width:100%; height:160px; object-fit:cover; border-radius:8px; }
+    .muted{ color:var(--muted); }
+    footer.site-footer{ margin-top:42px; padding:24px; border-top:1px solid rgba(255,255,255,0.03); color:var(--muted); display:flex; justify-content:space-between; align-items:center;}
+    #toast{ position:fixed; right:22px; bottom:24px; background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(12,16,20,0.6)); color:#e6f7ff; padding:12px 16px; border-radius:10px; opacity:0; transform:translateY(12px); transition: all .28s; z-index:9999; }
+    #toast.show{ opacity:1; transform:translateY(0); }
+    @media(max-width:900px){ .cat-grid{ grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:560px){ .cat-grid{ grid-template-columns:1fr; } header.navbar{ flex-direction:column; align-items:flex-start } }
+    .pop-in{ animation: popIn .45s cubic-bezier(.2,.85,.32,1) both; } @keyframes popIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  </style>
+</head>
+<body>
+  <header class="navbar pop-in">
+    <div style="display:flex;gap:12px;align-items:center"><svg width="36" height="36"><rect width="36" height="36" rx="8" fill="#00c8ff" opacity="0.12"/></svg><div style="font-weight:700">DealWise</div></div>
+    <nav class="nav-center">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link active" href="categories.html">Categories</a>
+      <a class="nav-link" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="search-wrap"><input placeholder="Search categories..." style="padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.03);color:#e6eef6"/></div>
+      <button onclick="location.href='login.html'" class="icon-btn" style="background:transparent;border-radius:8px;padding:8px 10px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)">Login</button>
+      <button onclick="location.href='signup.html'" class="btn-accent" style="background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:8px 12px;border-radius:8px;border:none;font-weight:700">Sign Up</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Categories</h1>
+    <p class="muted">Browse categories — click a category to view items in it.</p>
+
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+
+  <footer class="site-footer">
+    <div style="display:flex;gap:12px;align-items:center"><svg width="30" height="30"><rect width="30" height="30" rx="6" fill="#00c8ff" opacity="0.12"/></svg><div style="font-weight:700">DealWise</div></div>
+    <div style="color:var(--muted)"><a href="index.html">Home</a> • <a href="deals.html">Top Deals</a></div>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const CATS = [
+      {key:'electronics', title:'Electronics', img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80'},
+      {key:'fashion', title:'Fashion', img:'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1200&q=80'},
+      {key:'home', title:'Home & Kitchen', img:'https://images.unsplash.com/photo-1505691723518-36a0f3c6e1e4?auto=format&fit=crop&w=1200&q=80'},
+      {key:'fitness', title:'Fitness', img:'https://images.unsplash.com/photo-1517960413843-0aee8e2b76f6?auto=format&fit=crop&w=1200&q=80'},
+      {key:'gaming', title:'Gaming', img:'https://images.unsplash.com/photo-1587206662676-2c03f2b2b6b8?auto=format&fit=crop&w=1200&q=80'},
+      {key:'beauty', title:'Beauty', img:'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80'}
+    ];
+    const CART_KEY='dealwise_cart';
+    function readCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}catch(e){return[] } }
+    function writeCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); showToast('Added to cart') }
+    function showToast(msg='Done',t=1200){ const tEl=document.getElementById('toast'); tEl.textContent=msg; tEl.classList.add('show'); clearTimeout(window._to); window._to=setTimeout(()=>tEl.classList.remove('show'),t) }
+
+    function renderCats(){
+      const grid=document.getElementById('catGrid');
+      CATS.forEach(c=>{
+        const card=document.createElement('button');
+        card.className='cat-card pop-in'; card.onclick = ()=> {
+          // open categories.html with selection param — we'll just navigate to deals page filtered
+          localStorage.setItem('dealwise_last_category', c.key);
+          location.href='deals.html';
+        };
+        card.innerHTML = `<img src="${c.img}" alt="${c.title}"><div style="margin-top:8px;font-weight:700">${c.title}</div><div class="muted" style="font-size:13px;margin-top:6px">Popular</div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=> renderCats());
+  </script>
+</body>
+</html>

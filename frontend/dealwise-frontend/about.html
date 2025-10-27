@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DealWise — About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d1117">
+  <style>
+    :root{ --bg:#0d1117; --muted:#98a0aa; --accent:#00c8ff }
+    html,body{ margin:0; height:100%; background:linear-gradient(180deg,#06080b,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; }
+    header.navbar{ position:sticky; top:0; display:flex; justify-content:space-between; align-items:center; padding:12px 22px; border-bottom:1px solid rgba(255,255,255,0.03); }
+    main{ max-width:1100px; margin:0 auto; padding:28px; }
+    .lead{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
+    .muted{ color:var(--muted); }
+    footer.site-footer{ margin-top:42px; padding:24px; border-top:1px solid rgba(255,255,255,0.03); color:var(--muted); display:flex; justify-content:space-between; align-items:center;}
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div style="display:flex;gap:12px;align-items:center"><svg width="36" height="36"><rect width="36" height="36" rx="8" fill="#00c8ff" opacity="0.12"/></svg><div style="font-weight:700">DealWise</div></div>
+    <nav style="display:flex;gap:12px;align-items:center">
+      <a href="index.html" style="color:var(--muted)">Home</a>
+      <a href="categories.html" style="color:var(--muted)">Categories</a>
+      <a href="deals.html" style="color:var(--muted)">Top Deals</a>
+      <a href="contact.html" style="color:var(--muted)">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>About DealWise</h1>
+    <div class="lead">
+      <p class="muted">DealWise began as a student project to make smart shopping easier and more fun. We aggregate verified deals, provide price history tools and surface honest user reviews to help you buy confidently.</p>
+      <ul class="muted">
+        <li>Smart deal discovery across multiple sources</li>
+        <li>Price tracking & alerts</li>
+        <li>Trustworthy community reviews</li>
+      </ul>
+    </div>
+
+    <section style="margin-top:22px">
+      <h2>Mission</h2>
+      <p class="muted">Make shopping transparent and affordable for everyone through curated deals and helpful tools.</p>
+    </section>
+
+    <section style="margin-top:22px">
+      <h2>Team</h2>
+      <p class="muted">A small team of web & backend students building practical, polished tools to help shoppers.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div style="display:flex;gap:12px;align-items:center"><svg width="30" height="30"><rect width="30" height="30" rx="6" fill="#00c8ff" opacity="0.12"/></svg><div style="font-weight:700">DealWise</div></div>
+    <div style="color:var(--muted)">© 2025 DealWise</div>
+  </footer>
+</body>
+</html>
