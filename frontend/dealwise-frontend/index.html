@@ -1,81 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DealWise — Smart Shopping</title>
-
-  <!-- Fonts -->
+  <title>DealWise — Smart Deals (Dark Mode)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d1117">
 
-  <!-- Styles (make sure this path matches your project) -->
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- App JS (deferred) -->
-  <script defer src="js/main.js"></script>
   <style>
-    /* small helper for toast & cart button (non-invasive) */
-    .toast {
-      position: fixed;
-      right: 20px;
-      bottom: 28px;
-      background: #202020;
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity .28s ease, transform .28s ease;
-      z-index: 9999;
-      font-family: 'Poppins', sans-serif;
-      font-size: 14px;
+    :root{
+      --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; --accent-2:#ffc107;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:14px;
+      --glass-padding:14px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      font-family: "Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
     }
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    html,body{ height:100%; margin:0; background:linear-gradient(180deg,#06080b 0%, #0d1117 100%); color:#e6eef6; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    a{ color:var(--accent); text-decoration:none }
+    header.navbar{
+      position:sticky; top:0; z-index:60; display:flex; align-items:center; justify-content:space-between;
+      padding:12px 22px; gap:12px; backdrop-filter: blur(6px); background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    .cart-count {
-      display:inline-block;
-      min-width:18px;
-      padding:0 6px;
-      border-radius:12px;
-      background:#ff4d4f;
-      color:white;
-      font-weight:600;
-      text-align:center;
-      margin-left:6px;
-      font-size:13px;
-      vertical-align:middle;
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .bag-icon{ width:44px; height:44px; border-radius:8px; box-shadow: 0 6px 18px rgba(0,200,255,0.06); padding:6px; background: linear-gradient(180deg, rgba(0,200,255,0.06), rgba(0,200,255,0.02)); }
+    .brand-name{ font-weight:700; font-size:18px; letter-spacing:0.2px }
+    .brand-tag{ font-size:12px; color:var(--muted) }
+
+    nav.nav-center{ display:flex; gap:12px; align-items:center; }
+    .nav-link{ color:var(--muted); padding:8px 12px; border-radius:8px; transition: all .22s ease; font-weight:600; font-size:14px; }
+    .nav-link:hover{ color:white; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transform:translateY(-2px); }
+    .nav-link.active{ color:var(--accent); box-shadow: 0 6px 18px rgba(0,200,255,0.06); }
+
+    .nav-right{ display:flex; align-items:center; gap:10px; }
+    .search-wrap input{ width:320px; max-width:36vw; padding:10px 12px; border-radius:10px; background:var(--glass); border:1px solid var(--glass-border); color:#e6eef6; outline:none; }
+    .icon-btn{ background:transparent; border:1px solid rgba(255,255,255,0.03); padding:8px 10px; border-radius:10px; cursor:pointer; color:var(--muted); transition: all .18s ease; font-weight:600; }
+    .icon-btn:hover{ transform:translateY(-3px); color:white; border-color:rgba(255,255,255,0.06); box-shadow:0 12px 40px rgba(0,0,0,0.6); }
+
+    .cart-count{ display:inline-block; min-width:20px; padding:0 7px; border-radius:999px; background: linear-gradient(90deg,var(--accent),#66f0ff); color:#001; font-weight:700; margin-left:8px; font-size:13px; box-shadow:0 6px 20px rgba(0,200,255,0.06), inset 0 -2px 6px rgba(255,255,255,0.06); }
+
+    main{ padding:28px 28px 120px; max-width:1200px; margin:0 auto; }
+
+    /* HERO */
+    .hero{ display:grid; grid-template-columns: 1fr 420px; gap:24px; align-items:center; margin-top:18px; }
+    .hero-left{ padding:28px; background: linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.01)); border-radius:18px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.02); transform-origin:center; }
+    .hero-title{ font-size:40px; line-height:1.02; margin:0 0 12px; color:#ffffff; letter-spacing:-0.6px; }
+    .hero-title span{ color:var(--accent); text-shadow: 0 6px 36px rgba(0,200,255,0.08); }
+    .hero-sub{ color:var(--muted); margin:12px 0 18px; max-width:56ch; }
+    .hero-ctas{ display:flex; gap:12px; }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; box-shadow: 0 10px 30px rgba(0,200,255,0.08); transform:translateZ(0); }
+    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); padding:10px 12px; color:var(--muted); border-radius:10px; cursor:pointer; font-weight:700; }
+    .hero-right{ display:flex; flex-direction:column; gap:14px; align-items:flex-end; }
+    .hero-card{ width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.02); box-shadow: 0 20px 50px rgba(2,6,23,0.6); transform:translateZ(0); }
+    .hero-card img{ display:block; width:100%; height:260px; object-fit:cover; }
+
+    /* SECTIONS */
+    section.container{ margin-top:28px; background:transparent; }
+    .section-title{ font-size:22px; margin:6px 0 12px; color:#fff; display:flex; align-items:center; gap:8px; }
+    .deals-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .deal-card{ background:var(--card); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.03); transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s; overflow:hidden; }
+    .deal-card img{ width:100%; height:150px; object-fit:cover; border-radius:8px; display:block; }
+    .deal-card h3{ margin:10px 0 6px; font-size:16px; }
+    .deal-card .muted{ color:var(--muted); font-size:13px; margin:0; }
+    .deal-actions{ display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:10px; }
+    .deal-actions .price{ font-weight:700; color:#fff; }
+    .deal-card:hover{ transform: translateY(-8px) scale(1.01); box-shadow:0 20px 50px rgba(0,0,0,0.6); }
+
+    .cat-grid{ display:grid; grid-template-columns: repeat(6,1fr); gap:12px; margin-top:12px; }
+    .cat-card{ background:var(--card); border-radius:10px; padding:8px; text-align:center; cursor:pointer; transition: transform .14s ease; border:1px solid rgba(255,255,255,0.02); }
+    .cat-card img{ width:100%; height:100px; border-radius:8px; object-fit:cover; display:block; }
+    .cat-card:hover{ transform:translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.6); }
+
+    /* ABOUT / FOOTER */
+    .about-grid{ display:flex; gap:18px; align-items:center; margin-top:12px; }
+    .about-image img{ width:420px; border-radius:12px; }
+
+    footer.site-footer{ margin-top:42px; padding:24px; border-top:1px solid rgba(255,255,255,0.03); display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); }
+
+    /* Toast */
+    #toast{ position:fixed; right:22px; bottom:24px; background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(12,16,20,0.6)); color:#e6f7ff; padding:12px 16px; border-radius:10px; box-shadow:0 18px 50px rgba(0,0,0,0.6); transform:translateY(12px) scale(.98); opacity:0; transition: all .28s cubic-bezier(.2,.9,.2,1); font-weight:600; z-index:9999;}
+    #toast.show{ opacity:1; transform:translateY(0) scale(1); }
+
+    /* small responsive */
+    @media (max-width:1000px){
+      .hero{ grid-template-columns: 1fr; }
+      .deals-grid{ grid-template-columns: repeat(2,1fr); }
+      .cat-grid{ grid-template-columns: repeat(3,1fr); }
+      .search-wrap input{ width:220px; }
     }
-    .hero-card img { max-width:100%; height: auto; display:block; border-radius:6px; }
-    .add-btn { cursor:pointer; }
+    @media (max-width:600px){
+      .deals-grid{ grid-template-columns: 1fr; }
+      .cat-grid{ grid-template-columns: repeat(2,1fr); }
+      header.navbar{ flex-direction:column; align-items:flex-start; gap:8px; padding:12px; }
+      .search-wrap input{ width:100%; max-width:100%; }
+    }
+
+    /* fun lively micro-animations */
+    .pop-in { animation: popIn .55s cubic-bezier(.2,.85,.32,1) both; }
+    @keyframes popIn { from { opacity:0; transform: translateY(12px) scale(.98) } to { opacity:1; transform: translateY(0) scale(1) } }
+
+    .glow-pulse { box-shadow:0 0 0 rgba(0,0,0,0); animation: pulse 2.6s infinite; }
+    @keyframes pulse { 0%{ box-shadow:0 0 0 rgba(0,200,255,0.08)} 50%{ box-shadow:0 12px 40px rgba(0,200,255,0.08)} 100%{ box-shadow:0 0 0 rgba(0,200,255,0.02)} }
+
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-left">
-      <!-- stylish bag SVG icon + brand -->
-      <div class="brand">
-        <svg class="bag-icon" viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-          <path fill="#00e5ff" d="M6 7V6a6 6 0 0 1 12 0v1h1a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1h1zm2 0h8V6a4 4 0 0 0-8 0v1z"/>
-          <path fill="#001" fill-opacity="0.06" d="M4 8h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
-        </svg>
-        <div class="brand-text">
-          <div class="brand-name">DealWise</div>
-          <div class="brand-tag">Smart Deals • Verified</div>
-        </div>
+  <header class="navbar pop-in">
+    <div class="brand">
+      <svg class="bag-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="24" height="24" rx="6" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0" stop-color="#00c8ff" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#66f0ff" stop-opacity="0.12"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div class="brand-name">DealWise</div>
+        <div class="brand-tag">Smart Deals • Verified</div>
       </div>
     </div>
 
     <nav class="nav-center">
-      <a href="#home" class="nav-link active">Home</a>
-      <a href="#categories" class="nav-link">Categories</a>
-      <a href="#top-deals" class="nav-link">Top Deals</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="contact.html">Contact</a>
     </nav>
 
     <div class="nav-right">
@@ -83,213 +139,326 @@
         <input id="searchInput" placeholder="Search deals, gadgets, categories..." />
       </div>
 
-      <button class="icon-btn cart-btn" title="Cart (demo)" id="cartButton">
-        🛒 <span id="cartCount" class="cart-count">0</span>
+      <button id="cartButton" class="icon-btn">
+        🛍️ <span id="cartCount" class="cart-count">0</span>
       </button>
 
-      <button id="loginBtn" class="btn-ghost">Login</button>
+      <button id="loginBtn" class="icon-btn">Login</button>
       <button id="signupBtn" class="btn-accent">Sign Up</button>
     </div>
   </header>
 
-  <!-- HERO -->
-  <main id="home">
-    <section class="hero reveal">
-      <div class="hero-inner">
-        <div class="hero-left">
-          <h1 class="hero-title">Discover Best Deals.<br><span>Save Smarter.</span></h1>
-          <p class="hero-sub">DealWise consolidates verified deals, honest reviews and price tracking so you always buy with confidence.</p>
-          <div class="hero-ctas">
-            <button onclick="scrollToId('top-deals')" class="btn-accent">Browse Deals</button>
-            <button onclick="scrollToId('categories')" class="btn-ghost">Shop by Category</button>
-          </div>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left pop-in" style="animation-delay:.05s;">
+        <h1 class="hero-title">Discover the best deals — <span>save smarter</span></h1>
+        <p class="hero-sub">DealWise collects verified offers, honest reviews and price-tracking tools — all in one neon-powered, dark-mode interface built for fast shopping.</p>
+        <div class="hero-ctas">
+          <button class="btn-accent" onclick="navigateTo('deals.html')">Browse Deals</button>
+          <button class="btn-ghost" onclick="navigateTo('categories.html')">Shop by Category</button>
         </div>
-
-        <div class="hero-right">
-          <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=800&q=80" alt="Top Deal - Headphones">
-            <div class="hero-card-info">
-              <strong>Wireless Headphones</strong>
-              <span class="muted">Now ₹2,499 • 30% off</span>
-            </div>
+        <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:12px; background:var(--accent); box-shadow:0 8px 30px rgba(0,200,255,0.06)"></div>
+            <div style="color:var(--muted); font-weight:700;">Verified sellers</div>
           </div>
-          <div class="hero-badge">Trusted deals • real users</div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:12px; background:var(--accent-2); box-shadow:0 8px 30px rgba(255,193,7,0.06)"></div>
+            <div style="color:var(--muted); font-weight:700;">Price alerts</div>
+          </div>
         </div>
       </div>
+
+      <aside class="hero-right pop-in glow-pulse" style="animation-delay:.12s;">
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80" alt="Headphones">
+          <div style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700">Wireless Headphones</div>
+              <div style="color:var(--muted); font-size:13px;">Now ₹2,499 • 30% off</div>
+            </div>
+            <div>
+              <button class="btn-accent" onclick="addToCartByData('d1')">Add</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px; color:var(--muted); font-size:13px; text-align:right;">Trusted deals • real users</div>
+      </aside>
     </section>
 
     <!-- WHY CHOOSE -->
-    <section class="why container reveal">
+    <section class="container why">
       <h2 class="section-title">Why Choose DealWise</h2>
-      <div class="why-grid">
-        <div class="why-card">
-          <div class="why-icon">🔍</div>
-          <h3>Smart Discovery</h3>
-          <p>Find curated, highest-value offers across multiple platforms.</p>
+      <div style="display:flex; gap:12px;">
+        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+          <div style="font-size:22px">🔎</div>
+          <div style="font-weight:700; margin-top:8px">Smart Discovery</div>
+          <div style="color:var(--muted)">Find curated, high-value offers across platforms.</div>
         </div>
-        <div class="why-card">
-          <div class="why-icon">🛡️</div>
-          <h3>Verified Trust</h3>
-          <p>We verify sellers and surface honest user reviews.</p>
+        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+          <div style="font-size:22px">🛡️</div>
+          <div style="font-weight:700; margin-top:8px">Verified Trust</div>
+          <div style="color:var(--muted)">We verify listings and surface real reviews.</div>
         </div>
-        <div class="why-card">
-          <div class="why-icon">💸</div>
-          <h3>Price Alerts</h3>
-          <p>Track price history and get notified when prices drop.</p>
+        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+          <div style="font-size:22px">🔔</div>
+          <div style="font-weight:700; margin-top:8px">Price Alerts</div>
+          <div style="color:var(--muted)">Track prices and get notified when they drop.</div>
         </div>
       </div>
     </section>
 
     <!-- CATEGORIES -->
-    <section id="categories" class="container categories reveal">
+    <section id="categories" class="container">
       <h2 class="section-title">Shop by Category</h2>
       <div class="cat-grid">
-        <button class="cat-card" onclick="showCategory('electronics')">
-          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80" alt="Electronics">
-          <div>Electronics</div>
-        </button>
-        <button class="cat-card" onclick="showCategory('fashion')">
-          <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80" alt="Fashion">
-          <div>Fashion</div>
-        </button>
-        <button class="cat-card" onclick="showCategory('home')">
-          <img src="https://images.unsplash.com/photo-1505691723518-36a0f3c6e1e4?auto=format&fit=crop&w=600&q=80" alt="Home">
-          <div>Home & Kitchen</div>
-        </button>
-        <button class="cat-card" onclick="showCategory('fitness')">
-          <img src="https://images.unsplash.com/photo-1517960413843-0aee8e2b76f6?auto=format&fit=crop&w=600&q=80" alt="Fitness">
-          <div>Fitness</div>
-        </button>
-        <button class="cat-card" onclick="showCategory('gaming')">
-          <img src="https://images.unsplash.com/photo-1587206662676-2c03f2b2b6b8?auto=format&fit=crop&w=600&q=80" alt="Gaming">
-          <div>Gaming</div>
-        </button>
-        <button class="cat-card" onclick="showCategory('beauty')">
-          <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80" alt="Beauty">
-          <div>Beauty</div>
-        </button>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80" alt="Electronics">
+          <div style="margin-top:8px; font-weight:700">Electronics</div>
+        </div>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=800&q=80" alt="Fashion">
+          <div style="margin-top:8px; font-weight:700">Fashion</div>
+        </div>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1505691723518-36a0f3c6e1e4?auto=format&fit=crop&w=800&q=80" alt="Home">
+          <div style="margin-top:8px; font-weight:700">Home & Kitchen</div>
+        </div>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1517960413843-0aee8e2b76f6?auto=format&fit=crop&w=800&q=80" alt="Fitness">
+          <div style="margin-top:8px; font-weight:700">Fitness</div>
+        </div>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1587206662676-2c03f2b2b6b8?auto=format&fit=crop&w=800&q=80" alt="Gaming">
+          <div style="margin-top:8px; font-weight:700">Gaming</div>
+        </div>
+        <div class="cat-card" onclick="navigateTo('categories.html')">
+          <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80" alt="Beauty">
+          <div style="margin-top:8px; font-weight:700">Beauty</div>
+        </div>
       </div>
     </section>
 
     <!-- TOP DEALS -->
-    <section id="top-deals" class="container deals reveal">
+    <section id="top-deals" class="container">
       <h2 class="section-title">🔥 Top Deals</h2>
-      <div class="deals-grid" id="dealsGrid">
-        <!-- cards inserted by JS (initial set below as fallback) -->
-      </div>
-    </section>
-
-    <!-- CATEGORY ITEMS (dynamic) -->
-    <section id="category-items" class="container reveal" style="display:none;">
-      <h2 class="section-title" id="category-items-title">Category</h2>
-      <div id="categoryItemsGrid" class="deals-grid"></div>
-      <div style="text-align:center; margin-top:18px;">
-        <button class="btn-ghost" onclick="hideCategoryItems()">Back to Categories</button>
-      </div>
+      <div id="dealsGrid" class="deals-grid" aria-live="polite"></div>
     </section>
 
     <!-- ABOUT -->
-    <section id="about" class="container about reveal">
+    <section id="about" class="container about">
       <h2 class="section-title">About DealWise</h2>
-      <div class="about-grid">
-        <div>
-          <p><strong>DealWise</strong> curates verified offers and user feedback so you can shop confidently — saving time and money.</p>
-          <ul class="about-list">
-            <li>🔎 Multi-source deal consolidation</li>
-            <li>🧾 Honest reviews & ratings</li>
-            <li>🔔 Price history & alerts</li>
-            <li>🔒 Secure demo checkout (backend coming)</li>
+      <div class="about-grid" style="gap:18px; align-items:center;">
+        <div style="flex:1">
+          <p style="color:var(--muted); max-width:56ch">DealWise curates verified offers and user feedback so you can shop confidently — saving time and money. We combine smart discovery, price tracking and community trust.</p>
+          <ul style="color:var(--muted)">
+            <li>Multi-source deal consolidation</li>
+            <li>Honest reviews & ratings</li>
+            <li>Price history & alerts</li>
           </ul>
         </div>
         <div class="about-image">
-          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="About DealWise">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80" alt="About" style="width:320px; border-radius:10px;">
         </div>
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="container contact reveal">
+    <!-- CONTACT PREVIEW -->
+    <section id="contact" class="container contact">
       <h2 class="section-title">Get in touch</h2>
-      <p class="muted">Questions, feedback or collaboration ideas? Drop a message.</p>
-      <form id="contactForm" class="contact-form">
-        <input name="name" placeholder="Your name" required />
-        <input name="email" placeholder="Your email" required />
-        <textarea name="message" rows="4" placeholder="Message" required></textarea>
-        <div class="form-actions">
-          <button type="submit" class="btn-accent">Send Message</button>
-        </div>
-      </form>
+      <p style="color:var(--muted)">Questions, feedback or collaboration ideas? Head to Contact page to send a message.</p>
+      <div style="margin-top:12px;">
+        <button class="btn-ghost" onclick="navigateTo('contact.html')">Open Contact Page</button>
+      </div>
     </section>
+
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-left">
-        <div class="brand-footer">
-          <svg class="bag-icon" viewBox="0 0 24 24" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#00e5ff" d="M6 7V6a6 6 0 0 1 12 0v1h1a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1h1zm2 0h8V6a4 4 0 0 0-8 0v1z"/>
-          </svg>
-          <div>
-            <div class="brand-name">DealWise</div>
-            <div class="muted">© 2025 DealWise</div>
-          </div>
+    <div>
+      <div style="display:flex; gap:10px; align-items:center">
+        <div style="display:flex; gap:10px; align-items:center">
+          <svg width="30" height="30" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#00c8ff" opacity="0.12"/></svg>
+          <div style="font-weight:700">DealWise</div>
         </div>
+        <div style="color:var(--muted); margin-left:12px">© 2025 DealWise</div>
       </div>
+    </div>
 
-      <div class="footer-center">
-        <nav class="footer-links">
-          <a href="#top-deals">Top Deals</a>
-          <a href="#categories">Categories</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </div>
-
-      <div class="footer-right">
-        <div class="socials">
-          <a href="#" title="Instagram">📸</a>
-          <a href="#" title="Twitter/X">🐦</a>
-          <a href="#" title="LinkedIn">💼</a>
-          <a href="#" title="YouTube">▶️</a>
-        </div>
-        <div class="footer-licenses">
-          <a href="#">Privacy</a> • <a href="#">Terms</a> • <a href="#">Licenses</a>
-        </div>
-      </div>
+    <div style="display:flex; gap:12px; align-items:center">
+      <nav style="display:flex; gap:10px">
+        <a href="deals.html">Top Deals</a>
+        <a href="categories.html">Categories</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
   </footer>
 
-  <!-- LOGIN MODAL (kept for fallback) -->
-  <div id="loginModal" class="modal" aria-hidden="true" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" aria-label="Close">×</button>
-      <h3>Welcome back</h3>
-      <p class="muted">Sign in to access your saved deals and cart.</p>
-      <input id="loginEmail" placeholder="Email" />
-      <input id="loginPassword" type="password" placeholder="Password" />
-      <div style="margin-top:12px;">
-        <button id="doLogin" class="btn-accent">Login</button>
-      </div>
-      <p class="muted small">Don't have an account? <a href="#" id="openSignup">Create one</a></p>
-    </div>
-  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
 
-  <!-- SIGNUP MODAL (kept for fallback) -->
-  <div id="signupModal" class="modal" aria-hidden="true" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" aria-label="Close">×</button>
-      <h3>Create Account</h3>
-      <p class="muted">Join DealWise to save deals and get alerts.</p>
-      <input id="signupName" placeholder="Full name" />
-      <input id="signupEmail" placeholder="Email" />
-      <input id="signupPassword" type="password" placeholder="Password" />
-      <div style="margin-top:12px;"><button id="doSignup" class="btn-accent">Sign Up</button></div>
-    </div>
-  </div>
+  <script>
+    /**********************************************
+     * DealWise index.js (inline) - Dark + lively
+     **********************************************/
 
-  <!-- toast -->
-  <div id="toast" class="toast" aria-live="polite"></div>
+    // ---------- CONFIG ----------
+    // If your backend runs elsewhere, change API_BASE
+    const API_BASE = 'http://localhost:8080/api';
 
+    // ---------- SAMPLE DATA (can be replaced by backend) ----------
+    const SAMPLE_DEALS = [
+      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'https://images.unsplash.com/photo-1518444024107-77f3c4b8b4b6?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
+    ];
+
+    // ---------- CART (localStorage) ----------
+    const CART_KEY = 'dealwise_cart';
+    function readCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ return []; } }
+    function writeCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCartUI(); }
+    function updateCartUI(){
+      const count = readCart().reduce((s,i)=> s + (i.qty||1), 0);
+      const el = document.getElementById('cartCount');
+      if(el) el.textContent = count;
+      // tiny glow when updated
+      const btn = document.getElementById('cartButton');
+      if(btn){ btn.classList.add('glow-pulse'); setTimeout(()=> btn.classList.remove('glow-pulse'), 900); }
+    }
+
+    function showToast(msg, time=1400){
+      const t = document.getElementById('toast');
+      if(!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._toastTO);
+      window._toastTO = setTimeout(()=> t.classList.remove('show'), time);
+    }
+
+    // Called by hero card add button
+    function addToCartByData(id){
+      const deal = SAMPLE_DEALS.find(d=>d.id===id);
+      if(!deal) return showToast('Item not available');
+      const cart = readCart();
+      const idx = cart.findIndex(it => it.id === id);
+      if(idx >= 0) cart[idx].qty = (cart[idx].qty||1) + 1;
+      else cart.push({ id: deal.id, title: deal.title, price: deal.price, qty: 1, img: deal.img });
+      writeCart(cart);
+      showToast('✅ Added to cart');
+    }
+
+    // will be used for dynamic "Add" buttons
+    function addToCartFromButton(btn){
+      const id = btn.getAttribute('data-id');
+      const deal = SAMPLE_DEALS.find(d=>d.id===id);
+      if(!deal) return showToast('Item not available');
+      const cart = readCart();
+      const idx = cart.findIndex(it => it.id === id);
+      if(idx >= 0) cart[idx].qty = (cart[idx].qty||1) + 1;
+      else cart.push({ id: deal.id, title: deal.title, price: deal.price, qty: 1, img: deal.img });
+      writeCart(cart);
+
+      // small animated +1 near the button
+      const plus = document.createElement('span');
+      plus.textContent = '+1';
+      plus.style.position='absolute';
+      plus.style.color='#00ffea';
+      plus.style.fontWeight='800';
+      plus.style.fontSize='13px';
+      plus.style.transform='translateY(0)';
+      plus.style.opacity='1';
+      btn.style.position='relative';
+      btn.appendChild(plus);
+      plus.animate([{ transform:'translateY(0px)', opacity:1 }, { transform:'translateY(-28px)', opacity:0 }], { duration:700, easing:'cubic-bezier(.2,.9,.2,1)' });
+      setTimeout(()=> plus.remove(), 800);
+
+      showToast('✅ Added to cart');
+    }
+
+    // ---------- Render deals to grid ----------
+    function renderDealsList(deals){
+      const grid = document.getElementById('dealsGrid');
+      if(!grid) return;
+      grid.innerHTML = '';
+      deals.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'deal-card pop-in';
+        card.innerHTML = `
+          <img src="${d.img}" alt="${d.title}">
+          <h3>${d.title}</h3>
+          <p class="muted">${d.note}</p>
+          <div class="deal-actions">
+            <div class="price">${d.price}</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-ghost" data-id="${d.id}" aria-label="view-${d.id}" onclick="navigateTo('deals.html')">View</button>
+              <button class="btn-accent" data-id="${d.id}" aria-label="add-${d.id}">Add</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // attach handlers for add buttons
+      grid.querySelectorAll('.btn-accent[data-id]').forEach(b=>{
+        b.addEventListener('click', (ev)=> {
+          addToCartFromButton(b);
+        });
+      });
+    }
+
+    // ---------- Navigation helpers (page transitions) ----------
+    function navigateTo(href){
+      // small fade out animation then navigate
+      document.documentElement.style.transition = 'opacity .28s ease, transform .28s ease';
+      document.documentElement.style.opacity = '0.0';
+      setTimeout(()=> location.href = href, 260);
+    }
+
+    // ---------- Try fetching deals from backend, else fallback ----------
+    async function loadDeals(){
+      const grid = document.getElementById('dealsGrid');
+      if(!grid) return;
+      grid.innerHTML = '<div style="padding:18px; color:var(--muted)">Loading deals...</div>';
+      try {
+        const res = await fetch(API_BASE + '/deals');
+        if(res.ok){
+          const data = await res.json();
+          if(Array.isArray(data) && data.length){
+            renderDealsList(data);
+            return;
+          }
+        }
+      } catch(e){
+        // ignore network error and fallback to sample
+        // console.warn('deals fetch failed', e);
+      }
+      // fallback:
+      renderDealsList(SAMPLE_DEALS);
+    }
+
+    // ---------- Modals / login signup → redirect to full pages ----------
+    document.getElementById('loginBtn')?.addEventListener('click', ()=> navigateTo('login.html'));
+    document.getElementById('signupBtn')?.addEventListener('click', ()=> navigateTo('signup.html'));
+    document.getElementById('cartButton')?.addEventListener('click', ()=> navigateTo('cart.html'));
+
+    // ---------- Page Init ----------
+    document.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=> { document.documentElement.style.opacity='1'; }, 80);
+      updateCartUI();
+      loadDeals();
+
+      // small health check console
+      fetch(API_BASE + '/hello').then(r=>r.text()).then(t=> console.log('backend:', t)).catch(()=>{ /* backend may be down — it's fine */});
+    });
+
+    // expose addToCartByData globally (used in inline onclick)
+    window.addToCartByData = addToCartByData;
+    window.addToCartFromButton = addToCartFromButton;
+    window.navigateTo = navigateTo;
+  </script>
 </body>
 </html>
