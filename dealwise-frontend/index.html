@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DealWise — Smart Deals</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar container">
+    <div style="display:flex; align-items:center; gap:8px">
+      <div class="logo"><img src="assets/logo.svg" alt="logo">DealWise</div>
+    </div>
+
+    <div class="search card">
+      <i class="fa fa-search" style="opacity:0.6; padding-right:8px"></i>
+      <input placeholder="Search deals, gadgets, categories..." aria-label="Search deals">
+    </div>
+
+    <div class="nav-icons">
+      <div class="icon-btn" onclick="location.href='cart.html'">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="badge cart-badge"></span>
+      </div>
+
+      <div class="icon-btn" title="Profile">
+        <div class="profile-circle">G</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1 style="font-size:44px; margin:0 0 8px">Discover best deals. Save smarter.</h1>
+        <p style="color:var(--muted); max-width:600px">DealWise consolidates verified deals and authentic reviews so your shopping decisions are safe and inexpensive.</p>
+
+        <div style="display:flex; gap:12px; margin-top:18px">
+          <a class="btn" href="deals.html" style="width:auto">Browse Deals</a>
+          <a class="btn" href="signup.html" style="background:transparent; color:var(--accent); border:1px solid #ddd; width:auto">Get Started</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="card" style="width:380px; text-align:left">
+          <h3 style="margin-top:0">Top Deals</h3>
+          <!-- Sample deal cards -->
+          <div style="display:flex; gap:12px; margin-top:12px">
+            <img src="assets/placeholder.jpg" alt="" style="width:80px; height:80px; object-fit:cover; border-radius:10px">
+            <div style="flex:1">
+              <div style="display:flex; justify-content:space-between; align-items:center">
+                <strong>Wireless Headphones</strong>
+                <span style="color:var(--muted)">4.6★</span>
+              </div>
+              <p style="margin:6px 0; color:var(--muted)">Now at ₹2,499 (30% off)</p>
+              <div style="display:flex; gap:8px">
+                <button class="btn" style="padding:8px 12px; font-size:14px" onclick="alert('Add to cart demo')">Add to cart</button>
+                <a href="deals.html" style="align-self:center; color:var(--muted); text-decoration:underline">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:36px">
+      <div class="card" style="padding:22px">
+        <h3 style="margin-top:0">Our objectives</h3>
+        <div style="display:flex; gap:18px; margin-top:12px; flex-wrap:wrap">
+          <div style="flex:1; min-width:220px">
+            <h4 style="margin:6px 0">Simplify Deal Discovery</h4>
+            <p class="helper">One-stop platform for all the best offers.</p>
+          </div>
+          <div style="flex:1; min-width:220px">
+            <h4 style="margin:6px 0">Enhance Trust</h4>
+            <p class="helper">Verified deals and genuine user reviews.</p>
+          </div>
+          <div style="flex:1; min-width:220px">
+            <h4 style="margin:6px 0">Maximize Savings</h4>
+            <p class="helper">Smart filters, price history and savings tips.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
