@@ -250,5 +250,194 @@
     </div>
   </div>
 
+  <!-- keep your existing JS (main.js) loading earlier; below is only the small backend-connection helper -->
+  <script>
+    // ---------- CONFIG ----------
+    const API_BASE = "http://localhost:8080/api"; // backend base URL
+
+    // Utility: set up modal open/close (if your main.js doesn't handle it)
+    (function attachModalHandlers() {
+      // open/close behaviour (non-intrusive — will not change styles)
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+      const loginModal = document.getElementById('loginModal');
+      const signupModal = document.getElementById('signupModal');
+      const openSignupLink = document.getElementById('openSignup');
+
+      function open(modal) {
+        if (!modal) return;
+        modal.style.display = "block";
+        modal.setAttribute('aria-hidden', 'false');
+      }
+      function close(modal) {
+        if (!modal) return;
+        modal.style.display = "none";
+        modal.setAttribute('aria-hidden', 'true');
+      }
+
+      // show modals
+      if (loginBtn) loginBtn.addEventListener('click', () => open(loginModal));
+      if (signupBtn) signupBtn.addEventListener('click', () => open(signupModal));
+      if (openSignupLink) openSignupLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        close(loginModal);
+        open(signupModal);
+      });
+
+      // close buttons (if any)
+      document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const modal = btn.closest('.modal');
+          close(modal);
+        });
+      });
+
+      // click outside to close
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) close(modal);
+        });
+      });
+    })();
+
+    // ---------- AUTH: LOGIN ----------
+    document.getElementById("doLogin")?.addEventListener("click", async () => {
+      const emailEl = document.getElementById("loginEmail");
+      const passEl = document.getElementById("loginPassword");
+      const email = emailEl?.value?.trim();
+      const password = passEl?.value?.trim();
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(()=>null);
+          throw new Error(err?.error || "Login failed");
+        }
+
+        const data = await res.json();
+        // store token & name in localStorage (frontend will use to show profile)
+        if (data.token) {
+          localStorage.setItem("dealwise_token", data.token);
+          if (data.name) localStorage.setItem("dealwise_name", data.name);
+          alert("Login successful!");
+          // hide login modal
+          const loginModal = document.getElementById('loginModal');
+          if (loginModal) { loginModal.style.display = "none"; loginModal.setAttribute('aria-hidden','true'); }
+          // optional: call a function to update UI to show profile (not included to avoid changing design)
+        } else {
+          alert("Login succeeded but token missing in response.");
+        }
+      } catch (err) {
+        alert("Login error: " + err.message);
+      }
+    });
+
+    // ---------- AUTH: SIGNUP ----------
+    document.getElementById("doSignup")?.addEventListener("click", async () => {
+      const name = document.getElementById("signupName")?.value?.trim();
+      const email = document.getElementById("signupEmail")?.value?.trim();
+      const password = document.getElementById("signupPassword")?.value?.trim();
+
+      if (!name || !email || !password) {
+        alert("Please fill all the signup fields.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/signup`, { // server endpoint name: /auth/signup expected
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(()=>null);
+          throw new Error(err?.error || "Signup failed");
+        }
+
+        const data = await res.json();
+        if (data.success || res.status === 201 || res.ok) {
+          alert("Signup successful! Please login.");
+          // hide signup modal and open login
+          const signupModal = document.getElementById('signupModal');
+          const loginModal = document.getElementById('loginModal');
+          if (signupModal) { signupModal.style.display = "none"; signupModal.setAttribute('aria-hidden','true'); }
+          if (loginModal) { loginModal.style.display = "block"; loginModal.setAttribute('aria-hidden','false'); }
+        } else {
+          alert("Signup response: " + JSON.stringify(data));
+        }
+      } catch (err) {
+        alert("Signup error: " + err.message);
+      }
+    });
+
+    // ---------- OPTIONAL: Contact form submission (non-destructive) ----------
+    document.getElementById("contactForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      // keep behaviour local — send to backend only if you implement contact endpoint
+      const form = e.target;
+      const formData = Object.fromEntries(new FormData(form).entries());
+      // If you have an API endpoint to accept contact messages, post it here:
+      // await fetch(`${API_BASE}/contact`, { method: "POST", headers:{'Content-Type':'application/json'}, body: JSON.stringify(formData) })
+      alert("Thanks — message captured locally (not sent).");
+      form.reset();
+    });
+
+    // ---------- HEALTH CHECK (console) ----------
+    (function backendHealthCheck(){
+      fetch("http://localhost:8080/hello")
+        .then(r => r.text())
+        .then(t => console.log("Backend says:", t))
+        .catch(() => console.warn("Backend not reachable at http://localhost:8080/hello"));
+    })();
+
+    // ---------- HELPER: scroll helper used in markup (keeps existing behavior) ----------
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ---------- HELPER: category handlers placeholder (keeps existing behavior) ----------
+    function showCategory(cat) {
+      // If you implement /api/deals?category=... you can fetch matching items and render into #categoryItemsGrid
+      // For now the UI will show the category section and placeholder.
+      document.getElementById('category-items-title').textContent = cat[0].toUpperCase() + cat.slice(1);
+      document.getElementById('categoryItemsGrid').innerHTML = '<div class="muted" style="padding:20px;">Loading items for ' + cat + '...</div>';
+      document.getElementById('category-items').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('category-items').offsetTop - 80, behavior: 'smooth' });
+
+      // Example fetch for real data (backend must implement endpoint):
+      // fetch(`${API_BASE}/deals?category=${encodeURIComponent(cat)}`).then(r=>r.json()).then(renderDeals);
+    }
+    function hideCategoryItems() {
+      document.getElementById('category-items').style.display = 'none';
+    }
+
+    // ---------- placeholder for rendering deals (keeps UI untouched) ----------
+    function renderDeals(deals, containerId = 'dealsGrid') {
+      const cont = document.getElementById(containerId);
+      if (!cont) return;
+      cont.innerHTML = deals.map(d => `
+        <div class="deal-card">
+          <img src="${d.imageUrl || ''}" alt="${d.title || ''}" />
+          <h3>${d.title || ''}</h3>
+          <p>${d.price || ''} ${d.discount ? ' • ' + d.discount : ''}</p>
+          <button class="btn small">Add to Cart</button>
+        </div>
+      `).join('');
+    }
+
+  </script>
 </body>
 </html>
