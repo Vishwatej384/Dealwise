@@ -23,7 +23,7 @@ function renderTopDeals() {
       <p class="muted">${d.note}</p>
       <div class="deal-actions">
         <div class="price">${d.price}</div>
-        <button class="add-btn" onclick="addToCart('${d.id}')">Add to Cart</button>
+        <button class="add-btn" onclick="addToCart('${d.id}', this)">Add to Cart</button>
       </div>
     </div>
   `).join('');
@@ -32,14 +32,26 @@ function renderTopDeals() {
 // ---------- Cart (demo using localStorage) ----------
 function getCart(){ try { return JSON.parse(localStorage.getItem('dealwise_cart')||'[]') } catch(e){ return [] } }
 function setCart(c){ localStorage.setItem('dealwise_cart', JSON.stringify(c)); updateCartCount(); }
-function addToCart(id){
+
+// ✅ UPDATED FUNCTION — replaces alert with “Added to cart” text + count animation
+function addToCart(id, btn){
   const deal = SAMPLE_DEALS.find(x => x.id === id);
-  if(!deal) return alert('Item not found');
+  if(!deal) return;
+
   const cart = getCart();
   cart.push({ id: deal.id, title: deal.title, price: deal.price });
   setCart(cart);
-  alert(`${deal.title} added to cart (demo)`);
+
+  // show success message near button
+  const msg = document.createElement('span');
+  msg.textContent = '✅ Added to Cart';
+  msg.style.marginLeft = '10px';
+  msg.style.color = 'green';
+  msg.style.fontSize = '0.9em';
+  btn.parentElement.appendChild(msg);
+  setTimeout(()=> msg.remove(), 1500);
 }
+
 function updateCartCount(){
   const count = getCart().length;
   const el = qs('.cart-count');
@@ -57,15 +69,9 @@ const CATEGORY_ITEMS = {
 };
 
 function showCategory(key){
-  // hide / show
-  const catSection = el('category-items');
-  const container = qs('#category-items') || el('category-items');
-  // create if not present
-  const section = el('category-items');
-  // set title
   const title = qs('#category-items-title');
   if(title) title.textContent = key.charAt(0).toUpperCase()+key.slice(1) + " Deals";
-  // fill items
+
   const grid = qs('#categoryItemsGrid');
   if(grid){
     grid.innerHTML = (CATEGORY_ITEMS[key] || []).map(name => {
@@ -77,7 +83,7 @@ function showCategory(key){
           <p class="muted">Popular in this category</p>
           <div class="deal-actions">
             <div class="price">${dummy.price}</div>
-            <button class="add-btn" onclick="addToCart('${dummy.id}')">Add to Cart</button>
+            <button class="add-btn" onclick="addToCart('${dummy.id}', this)">Add to Cart</button>
           </div>
         </div>
       `;
@@ -97,33 +103,16 @@ function scrollToId(id){
   if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-// ---------- Modal open/close ----------
+// ---------- Modal / Login / Signup ----------
 function setupModals(){
   const loginBtn = el('loginBtn'), signupBtn = el('signupBtn');
-  const loginModal = el('loginModal'), signupModal = el('signupModal');
-  const openSignup = el('openSignup');
 
-  loginBtn && loginBtn.addEventListener('click', ()=> { loginModal.setAttribute('aria-hidden','false'); });
-  signupBtn && signupBtn.addEventListener('click', ()=> { signupModal.setAttribute('aria-hidden','false'); });
-  openSignup && openSignup.addEventListener('click', (e)=> { e.preventDefault(); loginModal.setAttribute('aria-hidden','true'); signupModal.setAttribute('aria-hidden','false'); });
-
-  qsa('.modal-close').forEach(b => b.addEventListener('click', ()=>{
-    qsa('.modal').forEach(m => m.setAttribute('aria-hidden','true'));
-  }));
-  window.addEventListener('click', (ev)=>{
-    qsa('.modal').forEach(m => {
-      if(ev.target === m) m.setAttribute('aria-hidden','true');
-    });
+  // ✅ Instead of modal, redirect to separate pages
+  loginBtn && loginBtn.addEventListener('click', ()=> {
+    window.location.href = 'login.html';
   });
-
-  // signup/login demo actions
-  el('doSignup') && el('doSignup').addEventListener('click', ()=> {
-    alert('Signed up (demo). You can implement backend auth later.');
-    el('signupModal').setAttribute('aria-hidden','true');
-  });
-  el('doLogin') && el('doLogin').addEventListener('click', ()=> {
-    alert('Logged in (demo).');
-    el('loginModal').setAttribute('aria-hidden','true');
+  signupBtn && signupBtn.addEventListener('click', ()=> {
+    window.location.href = 'signup.html';
   });
 }
 
@@ -138,7 +127,7 @@ function setupReveal(){
   qsa('.reveal').forEach(el=> obs.observe(el));
 }
 
-// ---------- Navigation link active state on scroll ----------
+// ---------- Navigation link active state ----------
 function setupNavActiveOnScroll(){
   const links = qsa('.nav-link');
   const sections = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);

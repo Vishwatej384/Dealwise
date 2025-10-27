@@ -1,33 +1,89 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"><title>Sign up • DealWise</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up — DealWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { font-family:'Poppins',sans-serif; background: #fafafa; }
+    .auth-wrap { max-width:920px; margin:64px auto; display:flex; gap:30px; align-items:center; padding:28px; }
+    .auth-left { flex:1; padding:28px; border-radius:10px; background: linear-gradient(180deg,#fff,#fbfbfb); box-shadow:0 10px 30px rgba(0,0,0,0.06); }
+    .auth-right { width:420px; padding:28px; border-radius:10px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.06); }
+    .auth-right h2 { margin-top:0; }
+    .auth-right input { width:100%; padding:10px 12px; margin:8px 0; border-radius:6px; border:1px solid #ddd; }
+    .btn-accent { background:#00e5ff; border:none; color:#001; padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer; }
+    .muted { color:#666; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="auth-page card">
-      <div class="auth-left"></div>
-      <div class="auth-right">
-        <div class="auth-box">
-          <h2>Create account</h2>
-          <p>Join DealWise — get verified deals and honest reviews.</p>
-          <form id="signup-form">
-            <input class="input" name="username" placeholder="Username" required>
-            <input class="input" type="email" name="email" placeholder="Email" required>
-            <input class="input" type="password" name="password" placeholder="Password" required>
-            <button class="btn" type="submit">Sign up</button>
-          </form>
-
-          <div class="helper">Already registered? <a href="login.html">Log in</a></div>
+  <header style="padding:18px 28px;">
+    <a href="index.html" style="text-decoration:none; color:inherit;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg width="36" height="36" viewBox="0 0 24 24"><path fill="#00e5ff" d="M6 7V6a6 6 0 0 1 12 0v1h1a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1h1zm2 0h8V6a4 4 0 0 0-8 0v1z"/></svg>
+        <div>
+          <div style="font-weight:700; font-size:18px;">DealWise</div>
+          <div style="font-size:12px; color:#666;">Smart Deals • Verified</div>
         </div>
       </div>
-    </div>
-  </div>
+    </a>
+  </header>
 
-  <script src="js/main.js"></script>
+  <main class="auth-wrap">
+    <div class="auth-left">
+      <h1 style="margin:4px 0 8px;">Create an account</h1>
+      <p class="muted">Join DealWise to save deals, set price alerts and enjoy a better shopping experience.</p>
+      <div style="margin-top:20px; opacity:0.9;">
+        <img src="https://images.unsplash.com/photo-1536305030016-8c8f78f2e6b5?auto=format&fit=crop&w=900&q=60" style="width:100%; border-radius:8px;" alt="signup promo">
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <h2>Sign up</h2>
+      <div class="muted">Create an account to start saving</div>
+
+      <div style="margin-top:16px;">
+        <input id="name" type="text" placeholder="Full name" />
+        <input id="email" type="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+        <div style="margin-top:12px;">
+          <button id="submitSignup" class="btn-accent">Create account</button>
+        </div>
+        <div id="signupMessage" class="muted" style="margin-top:10px;"></div>
+
+        <p style="margin-top:12px; font-size:14px;">Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = 'http://localhost:8080/api';
+    document.getElementById('submitSignup').addEventListener('click', async () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const msg = document.getElementById('signupMessage');
+      msg.textContent = '';
+      if (!name || !email || !password) { msg.textContent = 'All fields are required'; return; }
+      try {
+        const res = await fetch(API_BASE + '/auth/register', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ name, email, password })
+        });
+        const body = await res.json().catch(()=>({}));
+        if (!res.ok) {
+          msg.textContent = (body && body.message) ? body.message : 'Signup failed';
+          return;
+        }
+        msg.textContent = 'Account created — redirecting to login...';
+        setTimeout(()=> location.href = 'login.html', 1200);
+      } catch (e) {
+        console.error(e);
+        msg.textContent = 'Network error';
+      }
+    });
+  </script>
 </body>
 </html>
