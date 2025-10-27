@@ -1,110 +1,180 @@
-// Handle modal functionality
-const loginModal = document.getElementById("loginModal");
-const signupModal = document.getElementById("signupModal");
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
-const closes = document.querySelectorAll(".close");
+// ---------- Data (sample deals with Unsplash images) ----------
+const SAMPLE_DEALS = [
+  { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1000&q=80' },
+  { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1000&q=80' },
+  { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=1000&q=80' },
+  { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'https://images.unsplash.com/photo-1518444024107-77f3c4b8b4b6?auto=format&fit=crop&w=1000&q=80' },
+  { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80' },
+  { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
+];
 
-loginBtn.onclick = () => loginModal.style.display = "flex";
-signupBtn.onclick = () => signupModal.style.display = "flex";
-closes.forEach(c => c.onclick = () => {
-  loginModal.style.display = "none";
-  signupModal.style.display = "none";
-});
-window.onclick = e => {
-  if (e.target === loginModal) loginModal.style.display = "none";
-  if (e.target === signupModal) signupModal.style.display = "none";
+// ---------- Helpers ----------
+const el = id => document.getElementById(id);
+const qs = sel => document.querySelector(sel);
+const qsa = sel => document.querySelectorAll(sel);
+
+// ---------- Fill Top Deals Grid ----------
+function renderTopDeals() {
+  const grid = qs('#dealsGrid');
+  grid.innerHTML = SAMPLE_DEALS.map(d => `
+    <div class="deal-card" data-id="${d.id}">
+      <img src="${d.img}" alt="${d.title}">
+      <h3>${d.title}</h3>
+      <p class="muted">${d.note}</p>
+      <div class="deal-actions">
+        <div class="price">${d.price}</div>
+        <button class="add-btn" onclick="addToCart('${d.id}')">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ---------- Cart (demo using localStorage) ----------
+function getCart(){ try { return JSON.parse(localStorage.getItem('dealwise_cart')||'[]') } catch(e){ return [] } }
+function setCart(c){ localStorage.setItem('dealwise_cart', JSON.stringify(c)); updateCartCount(); }
+function addToCart(id){
+  const deal = SAMPLE_DEALS.find(x => x.id === id);
+  if(!deal) return alert('Item not found');
+  const cart = getCart();
+  cart.push({ id: deal.id, title: deal.title, price: deal.price });
+  setCart(cart);
+  alert(`${deal.title} added to cart (demo)`);
+}
+function updateCartCount(){
+  const count = getCart().length;
+  const el = qs('.cart-count');
+  if(el) el.textContent = count;
+}
+
+// ---------- Category view ----------
+const CATEGORY_ITEMS = {
+  electronics: ['Wireless Headphones','Smartwatch Series 6','Bluetooth Speaker','4K Smart TV'],
+  fashion: ['Sneakers','Jackets','Watches'],
+  home: ['Blender','Air Purifier','Lamp'],
+  fitness: ['Yoga Mat','Dumbbells','Smart Scale'],
+  gaming: ['Gaming Keyboard','Gaming Mouse','Headset'],
+  beauty: ['Skincare Set','Fragrance']
 };
 
-// Dynamic page loading
-function loadPage(page) {
-  const content = document.getElementById("content-area");
-  let html = "";
-
-  switch (page) {
-    case "categories":
-      html = `
-      <section class="categories fade-in">
-        <h2>🛒 Explore Categories</h2>
-        <div class="category-list">
-          <button onclick="showItems('Electronics')">Electronics</button>
-          <button onclick="showItems('Fashion')">Fashion</button>
-          <button onclick="showItems('Home')">Home & Kitchen</button>
-          <button onclick="showItems('Fitness')">Fitness</button>
-        </div>
-        <div id="items-area" class="items-grid"></div>
-      </section>`;
-      break;
-
-    case "topdeals":
-      html = `
-      <section class="top-deals fade-in">
-        <h2>🔥 Top Deals Right Now</h2>
-        <div class="deals-grid">
-          <div class="deal-card hover-pop">
-            <img src="images/smartwatch.jpg" alt="Smartwatch">
-            <h3>Smartwatch Series 6</h3>
-            <p>Now at ₹8,999 (25% off)</p>
-          </div>
-          <div class="deal-card hover-pop">
-            <img src="images/keyboard.jpg" alt="Keyboard">
-            <h3>RGB Mechanical Keyboard</h3>
-            <p>Now at ₹1,799 (40% off)</p>
-          </div>
-          <div class="deal-card hover-pop">
-            <img src="images/headphones.jpg" alt="Headphones">
-            <h3>Noise Cancelling Headphones</h3>
-            <p>Now at ₹2,499 (30% off)</p>
+function showCategory(key){
+  // hide / show
+  const catSection = el('category-items');
+  const container = qs('#category-items') || el('category-items');
+  // create if not present
+  const section = el('category-items');
+  // set title
+  const title = qs('#category-items-title');
+  if(title) title.textContent = key.charAt(0).toUpperCase()+key.slice(1) + " Deals";
+  // fill items
+  const grid = qs('#categoryItemsGrid');
+  if(grid){
+    grid.innerHTML = (CATEGORY_ITEMS[key] || []).map(name => {
+      const dummy = SAMPLE_DEALS[Math.floor(Math.random()*SAMPLE_DEALS.length)];
+      return `
+        <div class="deal-card">
+          <img src="${dummy.img}" alt="${name}">
+          <h3>${name}</h3>
+          <p class="muted">Popular in this category</p>
+          <div class="deal-actions">
+            <div class="price">${dummy.price}</div>
+            <button class="add-btn" onclick="addToCart('${dummy.id}')">Add to Cart</button>
           </div>
         </div>
-      </section>`;
-      break;
-
-    case "about":
-      html = `
-      <section class="about fade-in">
-        <h2>About DealWise</h2>
-        <p>DealWise helps you discover verified discounts, track price drops, and compare deals across platforms in real-time. We aim to make online shopping smarter and safer for everyone.</p>
-        <ul>
-          <li>✅ Verified Deals & Reviews</li>
-          <li>💸 Price Tracking Alerts</li>
-          <li>📈 Smart Recommendation Engine</li>
-        </ul>
-      </section>`;
-      break;
-
-    case "contact":
-      html = `
-      <section class="contact fade-in">
-        <h2>Contact Us</h2>
-        <p>Have suggestions or feedback? Reach out to us!</p>
-        <form>
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea placeholder="Your Message" required></textarea>
-          <button type="submit" class="btn primary">Send Message</button>
-        </form>
-      </section>`;
-      break;
-
-    default:
-      html = document.querySelector(".hero").outerHTML;
+      `;
+    }).join('');
+    qs('#category-items').style.display='block';
+    window.scrollTo({ top: qs('#category-items').offsetTop-50, behavior:'smooth' });
   }
-
-  content.innerHTML = html;
 }
 
-// Show category items
-function showItems(category) {
-  const items = {
-    "Electronics": ["Smartwatch", "Bluetooth Speaker", "Gaming Mouse"],
-    "Fashion": ["Sneakers", "Hoodies", "Sunglasses"],
-    "Home": ["Air Purifier", "Smart Lamp", "Blender"],
-    "Fitness": ["Yoga Mat", "Smart Scale", "Resistance Bands"]
-  };
-
-  const itemsArea = document.getElementById("items-area");
-  itemsArea.innerHTML = items[category]
-    .map(item => `<div class="item-card hover-pop">${item}</div>`)
-    .join("");
+function hideCategoryItems(){
+  qs('#category-items').style.display='none';
 }
+
+// ---------- Scroll to ID helper ----------
+function scrollToId(id){
+  const target = document.getElementById(id);
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ---------- Modal open/close ----------
+function setupModals(){
+  const loginBtn = el('loginBtn'), signupBtn = el('signupBtn');
+  const loginModal = el('loginModal'), signupModal = el('signupModal');
+  const openSignup = el('openSignup');
+
+  loginBtn && loginBtn.addEventListener('click', ()=> { loginModal.setAttribute('aria-hidden','false'); });
+  signupBtn && signupBtn.addEventListener('click', ()=> { signupModal.setAttribute('aria-hidden','false'); });
+  openSignup && openSignup.addEventListener('click', (e)=> { e.preventDefault(); loginModal.setAttribute('aria-hidden','true'); signupModal.setAttribute('aria-hidden','false'); });
+
+  qsa('.modal-close').forEach(b => b.addEventListener('click', ()=>{
+    qsa('.modal').forEach(m => m.setAttribute('aria-hidden','true'));
+  }));
+  window.addEventListener('click', (ev)=>{
+    qsa('.modal').forEach(m => {
+      if(ev.target === m) m.setAttribute('aria-hidden','true');
+    });
+  });
+
+  // signup/login demo actions
+  el('doSignup') && el('doSignup').addEventListener('click', ()=> {
+    alert('Signed up (demo). You can implement backend auth later.');
+    el('signupModal').setAttribute('aria-hidden','true');
+  });
+  el('doLogin') && el('doLogin').addEventListener('click', ()=> {
+    alert('Logged in (demo).');
+    el('loginModal').setAttribute('aria-hidden','true');
+  });
+}
+
+// ---------- Intersection Observer for reveal ----------
+function setupReveal(){
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting) ent.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+
+  qsa('.reveal').forEach(el=> obs.observe(el));
+}
+
+// ---------- Navigation link active state on scroll ----------
+function setupNavActiveOnScroll(){
+  const links = qsa('.nav-link');
+  const sections = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+  window.addEventListener('scroll', ()=>{
+    const scrollY = window.scrollY + 120;
+    for(let i=sections.length-1;i>=0;i--){
+      const s = sections[i];
+      if(s && s.offsetTop <= scrollY){
+        qsa('.nav-link').forEach(a=>a.classList.remove('active'));
+        const selector = `.nav-link[href="#${s.id}"]`;
+        const link = document.querySelector(selector);
+        if(link) link.classList.add('active');
+        break;
+      }
+    }
+  });
+}
+
+// ---------- Contact form demo ----------
+function setupContact(){
+  const form = el('contactForm');
+  if(!form) return;
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    alert('Message sent (demo). Thank you — we will reply soon.');
+    form.reset();
+  });
+}
+
+// ---------- Init ----------
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderTopDeals();
+  updateCartCount();
+  setupModals();
+  setupReveal();
+  setupNavActiveOnScroll();
+  setupContact();
+});
