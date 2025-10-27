@@ -68,3 +68,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
     window.location.href = 'login.html';
   });
 });
+console.log("DealWise Loaded");

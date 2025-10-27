@@ -1,91 +1,93 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>DealWise — Smart Deals</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealWise - Smart Shopping Simplified</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar container">
-    <div style="display:flex; align-items:center; gap:8px">
-      <div class="logo"><img src="assets/logo.svg" alt="logo">DealWise</div>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">🛍️ DealWise</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search deals, gadgets, categories...">
     </div>
-
-    <div class="search card">
-      <i class="fa fa-search" style="opacity:0.6; padding-right:8px"></i>
-      <input placeholder="Search deals, gadgets, categories..." aria-label="Search deals">
-    </div>
-
-    <div class="nav-icons">
-      <div class="icon-btn" onclick="location.href='cart.html'">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="badge cart-badge"></span>
-      </div>
-
-      <div class="icon-btn" title="Profile">
-        <div class="profile-circle">G</div>
-      </div>
+    <div class="nav-icons" id="nav-icons">
+      <!-- Default (not logged in) -->
+      <button class="login-btn" id="login-btn">Login</button>
+      <button class="signup-btn" id="signup-btn">Sign Up</button>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-left">
-        <h1 style="font-size:44px; margin:0 0 8px">Discover best deals. Save smarter.</h1>
-        <p style="color:var(--muted); max-width:600px">DealWise consolidates verified deals and authentic reviews so your shopping decisions are safe and inexpensive.</p>
-
-        <div style="display:flex; gap:12px; margin-top:18px">
-          <a class="btn" href="deals.html" style="width:auto">Browse Deals</a>
-          <a class="btn" href="signup.html" style="background:transparent; color:var(--accent); border:1px solid #ddd; width:auto">Get Started</a>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Discover Best Deals.<br>Save Smarter.</h1>
+      <p>Verified deals and authentic reviews — your go-to platform for affordable, trustworthy shopping.</p>
+      <div class="hero-buttons">
+        <button class="btn primary">Browse Deals</button>
+        <button class="btn secondary">Get Started</button>
       </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1515165562835-c4c8bdee70b4?auto=format&fit=crop&w=800&q=80" alt="Shopping Deals">
+    </div>
+  </section>
 
-      <div class="hero-right">
-        <div class="card" style="width:380px; text-align:left">
-          <h3 style="margin-top:0">Top Deals</h3>
-          <!-- Sample deal cards -->
-          <div style="display:flex; gap:12px; margin-top:12px">
-            <img src="assets/placeholder.jpg" alt="" style="width:80px; height:80px; object-fit:cover; border-radius:10px">
-            <div style="flex:1">
-              <div style="display:flex; justify-content:space-between; align-items:center">
-                <strong>Wireless Headphones</strong>
-                <span style="color:var(--muted)">4.6★</span>
-              </div>
-              <p style="margin:6px 0; color:var(--muted)">Now at ₹2,499 (30% off)</p>
-              <div style="display:flex; gap:8px">
-                <button class="btn" style="padding:8px 12px; font-size:14px" onclick="alert('Add to cart demo')">Add to cart</button>
-                <a href="deals.html" style="align-self:center; color:var(--muted); text-decoration:underline">View</a>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Deals Section -->
+  <section class="deals-section">
+    <h2>🔥 Top Deals</h2>
+    <div class="deals-grid">
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=400&q=80" alt="Wireless Headphones">
+        <h3>Wireless Headphones</h3>
+        <p>Now at ₹2,499 (30% off)</p>
+        <button class="btn small">Add to Cart</button>
       </div>
-    </section>
-
-    <section style="margin-top:36px">
-      <div class="card" style="padding:22px">
-        <h3 style="margin-top:0">Our objectives</h3>
-        <div style="display:flex; gap:18px; margin-top:12px; flex-wrap:wrap">
-          <div style="flex:1; min-width:220px">
-            <h4 style="margin:6px 0">Simplify Deal Discovery</h4>
-            <p class="helper">One-stop platform for all the best offers.</p>
-          </div>
-          <div style="flex:1; min-width:220px">
-            <h4 style="margin:6px 0">Enhance Trust</h4>
-            <p class="helper">Verified deals and genuine user reviews.</p>
-          </div>
-          <div style="flex:1; min-width:220px">
-            <h4 style="margin:6px 0">Maximize Savings</h4>
-            <p class="helper">Smart filters, price history and savings tips.</p>
-          </div>
-        </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1580894908361-967195033215?auto=format&fit=crop&w=400&q=80" alt="Smartwatch">
+        <h3>Smartwatch Series 6</h3>
+        <p>Now at ₹8,999 (25% off)</p>
+        <button class="btn small">Add to Cart</button>
       </div>
-    </section>
-  </main>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=400&q=80" alt="Gaming Keyboard">
+        <h3>RGB Gaming Keyboard</h3>
+        <p>Now at ₹1,799 (40% off)</p>
+        <button class="btn small">Add to Cart</button>
+      </div>
+    </div>
+  </section>
 
-  <script src="js/main.js"></script>
+  <!-- About Section -->
+  <section class="about">
+    <h2>Our Objectives</h2>
+    <div class="objectives">
+      <div>
+        <h3>Simplify Deal Discovery</h3>
+        <p>One-stop platform for all the best offers.</p>
+      </div>
+      <div>
+        <h3>Enhance Trust</h3>
+        <p>Verified deals and genuine user reviews.</p>
+      </div>
+      <div>
+        <h3>Maximize Savings</h3>
+        <p>Smart filters, price tracking, and saving tips.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2025 DealWise. All Rights Reserved.</p>
+      <p>Privacy Policy | Terms & Conditions | Licenses</p>
+    </div>
+  </footer>
 </body>
 </html>
+<link rel="stylesheet" href="css/style.css">
