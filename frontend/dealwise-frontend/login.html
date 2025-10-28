@@ -5,91 +5,100 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DealWise — Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <meta name="theme-color" content="#0d1117">
   <style>
-    :root{ --bg:#0d1117; --muted:#98a0aa; --accent:#00c8ff; }
-    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; }
-    .card{ width:90%; max-width:900px; display:grid; grid-template-columns:1fr 380px; gap:24px; padding:32px; border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)); border:1px solid rgba(255,255,255,0.04); box-shadow:0 0 40px rgba(0,0,0,0.3); }
-    .muted{ color:var(--muted); font-size:15px; }
-    input{ width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); background:rgba(255,255,255,0.03); color:#e6eef6; font-size:15px; }
-    input:focus{ outline:none; border-color:var(--accent); background:rgba(255,255,255,0.06); }
-    .btn-accent{ background:linear-gradient(90deg,var(--accent),#66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; font-size:15px; transition:0.2s; }
-    .btn-accent:hover{ transform:translateY(-1px); }
-    .logo{ display:flex; align-items:center; gap:12px; }
-    .logo svg{ width:46px; height:46px; border-radius:10px; }
-    a{ color:var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    @media (max-width:768px){
-      html,body{ align-items:flex-start; justify-content:center; padding-top:40px; }
-      .card{ grid-template-columns:1fr; width:92%; }
-    }
+    :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
+    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+    .panel{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 420px; gap:18px; align-items:center; margin-top:40px; margin-bottom:40px; }
+    .left,.right{ padding:28px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    h1{ margin:0 0 12px; }
+    .muted{ color:var(--muted); }
+    input{ width:100%; padding:12px; margin-top:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:#e6eef6; outline:none; }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; transition:0.3s; }
+    .btn-accent:hover{ transform:translateY(-1px); box-shadow:0 0 10px rgba(0,200,255,0.4); }
+    .small{ font-size:13px; color:var(--muted) }
+    .logo-circle{ width:64px; height:64px; border-radius:12px; background:linear-gradient(90deg,#00c8ff,#66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px; margin-bottom:12px; }
+    .float-bg{ position:fixed; right:-120px; top:-80px; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(0,200,255,0.12), transparent 30%), radial-gradient(circle at 70% 70%, rgba(255,193,7,0.06), transparent 30%); filter:blur(28px); pointer-events:none; }
+    .pop{ animation: popForm .6s cubic-bezier(.2,.85,.32,1) both; }
+    @keyframes popForm{ from{ opacity:0; transform:translateY(18px) scale(.98)} to{opacity:1; transform:none}}
+    footer{ width:100%; background:#0b0f15; text-align:center; padding:28px 10px; border-top:1px solid rgba(255,255,255,0.06); }
+    footer p{ margin:8px 0; color:#98a0aa; font-size:14px; }
+    .socials{ display:flex; justify-content:center; gap:22px; margin-top:12px; }
+    .socials a{ color:#98a0aa; text-decoration:none; font-size:20px; transition:0.3s; }
+    .socials a:hover{ color:var(--accent); transform:translateY(-2px); }
+    .contact-btn{ margin-top:14px; background:linear-gradient(90deg,var(--accent),#66f0ff); color:#001; border:none; border-radius:20px; padding:10px 20px; font-weight:600; cursor:pointer; transition:0.3s; }
+    .contact-btn:hover{ transform:translateY(-2px); box-shadow:0 0 10px rgba(0,200,255,0.4); }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div>
-      <div class="logo">
-        <svg width="46" height="46"><rect width="46" height="46" rx="10" fill="#00c8ff" opacity="0.12"/></svg>
-        <div style="font-weight:700;font-size:22px;">DealWise</div>
-      </div>
-      <h2 style="margin-top:16px;font-size:26px;">Welcome back</h2>
-      <p class="muted">Log in to access your personalized deals, wishlist, and price alerts.</p>
-      <ul class="muted" style="margin-top:8px;">
-        <li>Save & sync deals</li>
-        <li>Track price changes</li>
-        <li>Get recommendations</li>
+  <div class="float-bg"></div>
+
+  <div class="panel pop">
+    <div class="left">
+      <div class="logo-circle">DW</div>
+      <h1>Welcome back</h1>
+      <p class="muted">Sign in to access saved deals, price alerts and your cart.</p>
+      <ul class="muted">
+        <li>Secure authentication</li>
+        <li>Saved recommendations</li>
       </ul>
-      <p class="muted" style="margin-top:18px;">Don't have an account? <a href="signup.html">Sign up</a></p>
+      <footer>New here? <a href="signup.html" style="color:var(--accent); text-decoration:none;">Create an account</a></footer>
     </div>
 
-    <div>
-      <form id="loginForm">
-        <input id="email" placeholder="Email" required type="email" />
-        <input id="pass" placeholder="Password" type="password" required />
-        <div style="margin-top:16px;display:flex;gap:8px;">
-          <button class="btn-accent" type="submit">Login</button>
-          <button type="button" onclick="window.history.back()" style="background:none;color:var(--muted);border:none;cursor:pointer;">Back</button>
+    <div class="right">
+      <h3 style="margin:0 0 8px">Login</h3>
+      <p class="muted small">Use your email and password to sign in.</p>
+      <form id="loginForm" style="margin-top:12px">
+        <input id="loginEmail" placeholder="Email" required />
+        <input id="loginPass" type="password" placeholder="Password" required />
+        <div style="margin-top:12px; display:flex; gap:10px;">
+          <button class="btn-accent" type="submit">Sign In</button>
+          <button type="button" onclick="location.href='index.html'" class="btn-ghost" style="border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:8px;color:var(--muted)">Back</button>
         </div>
       </form>
+      <p style="margin-top:12px" class="small muted" id="loginMessage"></p>
     </div>
   </div>
+
+  <footer>
+    <p class="text-[#00bcd4] mb-3 font-semibold">Contact us: support@dealwise.com | +91 98765 43210</p>
+    <div class="socials">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+    <button class="contact-btn">Contact Support</button>
+    <p class="mt-4 text-gray-500 text-sm">© 2025 DealWise. All Rights Reserved.</p>
+  </footer>
 
   <script>
     document.getElementById('loginForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('pass').value.trim();
-
-      if (!email || !password) {
-        alert("⚠️ Please enter both email and password.");
-        return;
-      }
-
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPass').value;
+      const msg = document.getElementById('loginMessage');
+      msg.textContent = "Signing in...";
+      
       try {
-        const response = await fetch("http://localhost:8080/api/auth/login", {
+        const res = await fetch("http://localhost:8080/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
         });
-
-        const data = await response.json();
-
+        const data = await res.json();
         if (data.token) {
-          // ✅ Login successful
-          localStorage.setItem("dealwise_user", JSON.stringify({
-            name: data.name,
-            email,
-            token: data.token
-          }));
-          alert("✅ Logged in successfully!");
-          window.location.href = "index.html"; // redirect to homepage
+          localStorage.setItem('dealwise_user', JSON.stringify({ name: data.name, email, token: data.token }));
+          msg.style.color = "#00c8ff";
+          msg.textContent = "Login successful! Redirecting...";
+          setTimeout(()=> location.href="index.html", 1000);
         } else {
-          alert("❌ Login failed: " + (data.error || "Invalid credentials"));
+          msg.style.color = "tomato";
+          msg.textContent = data.error || "Invalid credentials";
         }
-
       } catch (err) {
-        console.error(err);
-        alert("❌ Error connecting to backend. Please ensure the server is running.");
+        msg.style.color = "tomato";
+        msg.textContent = "Server connection failed. Please try again.";
       }
     });
   </script>
