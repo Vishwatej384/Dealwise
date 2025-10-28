@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DealWise — My Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
+    body{ background:var(--bg); color:#e6eef6; font-family:"Poppins",sans-serif; margin:0; display:flex; flex-direction:column; align-items:center; }
+    .container{ margin-top:80px; background:var(--card); padding:32px; border-radius:18px; width:90%; max-width:520px; box-shadow:0 8px 30px rgba(0,0,0,0.3); }
+    h2{ margin:0 0 20px; text-align:center; color:var(--accent); }
+    label{ display:block; margin:10px 0 5px; color:var(--muted); }
+    input,select{ width:100%; padding:10px; border:none; border-radius:8px; background:rgba(255,255,255,0.05); color:#fff; }
+    button{ margin-top:20px; width:100%; padding:12px; border:none; border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),#66f0ff); color:#001; font-weight:700; cursor:pointer; transition:0.3s; }
+    button:hover{ transform:translateY(-1px); box-shadow:0 0 10px rgba(0,200,255,0.4); }
+    .avatar{ width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#66f0ff);
+      display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:#001; margin:0 auto 20px; }
+    .back-btn{ margin-top:20px; text-align:center; color:var(--muted); cursor:pointer; }
+    .back-btn:hover{ color:var(--accent); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div id="avatar" class="avatar"></div>
+    <h2>My Profile</h2>
+
+    <form id="profileForm">
+      <label>Name</label>
+      <input id="name" type="text" required />
+
+      <label>Email</label>
+      <input id="email" type="email" disabled />
+
+      <label>Country</label>
+      <select id="country">
+        <option>India</option>
+        <option>United States</option>
+        <option>United Kingdom</option>
+        <option>Germany</option>
+        <option>Canada</option>
+      </select>
+
+      <label>New Password</label>
+      <input id="password" type="password" placeholder="Leave blank to keep same" />
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <div class="back-btn" onclick="window.location.href='index.html'">← Back to Home</div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      const user = JSON.parse(localStorage.getItem("dealwise_user"));
+      if (!user) return location.href = "login.html";
+
+      const initials = user.name.split(" ").map(n=>n[0]).join("").toUpperCase();
+      document.getElementById("avatar").textContent = initials;
+      document.getElementById("name").value = user.name;
+      document.getElementById("email").value = user.email;
+
+      document.getElementById("profileForm").addEventListener("submit", e=>{
+        e.preventDefault();
+        alert("✅ Profile updated successfully!");
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -659,7 +659,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
+  const navRight = document.querySelector(".nav-right");
 
+  if (!navRight) return;
+
+  if (userData && userData.name) {
+    const initials = userData.name
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .toUpperCase();
+
+    navRight.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="cart.html" style="color:var(--accent);font-weight:600;text-decoration:none;">
+          <i class="fas fa-shopping-cart"></i> Cart
+        </a>
+        <a href="profile.html" style="color:#e6eef6;text-decoration:none;font-weight:600;">
+          My Profile
+        </a>
+        <div style="
+          width:38px;height:38px;border-radius:50%;
+          background:linear-gradient(135deg,var(--accent),#66f0ff);
+          color:#001;display:flex;align-items:center;justify-content:center;
+          font-weight:700;box-shadow:0 6px 18px rgba(0,200,255,0.1);
+        ">
+          ${initials}
+        </div>
+        <button id="logoutBtn" style="
+          background:none;border:none;color:var(--muted);
+          font-weight:600;cursor:pointer;
+        ">Logout</button>
+      </div>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("dealwise_user");
+      localStorage.removeItem("token");
+      location.reload();
+    });
+  }
+});
+</script>
 
 </body>
 </html>
