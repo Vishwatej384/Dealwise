@@ -459,6 +459,20 @@
     window.addToCartByData = addToCartByData;
     window.addToCartFromButton = addToCartFromButton;
     window.navigateTo = navigateTo;
+
+      // --- Update cart count dynamically ---
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartCount(); // already in your code, but ensures refresh works
+
+  // redirect to cart page when clicking cart icon
+  const cartBtn = document.querySelector('.cart-icon') || document.getElementById('cartButton');
+  if(cartBtn){
+    cartBtn.addEventListener('click', () => {
+      window.location.href = 'cart.html';
+    });
+  }
+});
+
   </script>
 </body>
 </html>
