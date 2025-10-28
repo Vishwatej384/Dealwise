@@ -508,5 +508,158 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
+  
+  // try multiple selectors in case of different class names
+  const navRight = document.querySelector(".nav-right") ||
+                   document.querySelector(".navbar-buttons") ||
+                   document.querySelector(".auth-buttons");
+
+  if (!navRight) return; // no navbar section found
+
+  if (userData && userData.token) {
+    navRight.innerHTML = `
+      <span style="color:#00c8ff;font-weight:600;margin-right:10px;">
+        Hi, ${userData.name || "User"}
+      </span>
+      <button id="logoutBtn" style="background:#ff4757;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">
+        Logout
+      </button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("dealwise_user");
+      localStorage.removeItem("token");
+      location.reload();
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
+  
+  // Select your right-side navbar buttons container
+  const navRight = document.querySelector(".nav-right") ||
+                   document.querySelector(".navbar-buttons") ||
+                   document.querySelector(".auth-buttons");
+
+  if (!navRight) return;
+
+  if (userData && userData.name) {
+    // Get initials from name
+    const initials = userData.name.split(" ").map(n => n[0]).join("").toUpperCase();
+
+    // Replace login/signup with profile badge
+    navRight.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="profileCircle" 
+          style="
+            width:38px;height:38px;
+            border-radius:50%;
+            background:linear-gradient(135deg,#00c8ff,#007bff);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#fff;
+            font-weight:600;
+            font-size:15px;
+            cursor:pointer;
+            box-shadow:0 0 10px rgba(0,200,255,0.5);
+          ">
+          ${initials}
+        </div>
+        <button id="logoutBtn"
+          style="
+            background:#ff4757;
+            border:none;
+            color:white;
+            padding:6px 12px;
+            border-radius:6px;
+            font-weight:500;
+            cursor:pointer;
+          ">
+          Logout
+        </button>
+      </div>
+    `;
+
+    // Logout event
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("dealwise_user");
+      localStorage.removeItem("token");
+      location.reload();
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
+  const navRight = document.querySelector(".nav-right");
+
+  if (userData && userData.token) {
+    // Remove only login/signup buttons
+    if (loginBtn) loginBtn.remove();
+    if (signupBtn) signupBtn.remove();
+
+    // Create user initials (like HP for Harsh Patel)
+    const initials = (userData.name || "User")
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .toUpperCase();
+
+    const userCircle = document.createElement("div");
+    userCircle.textContent = initials;
+    userCircle.style.background = "linear-gradient(90deg,#00c8ff,#66f0ff)";
+    userCircle.style.color = "#001";
+    userCircle.style.fontWeight = "700";
+    userCircle.style.fontSize = "14px";
+    userCircle.style.borderRadius = "50%";
+    userCircle.style.width = "36px";
+    userCircle.style.height = "36px";
+    userCircle.style.display = "flex";
+    userCircle.style.alignItems = "center";
+    userCircle.style.justifyContent = "center";
+    userCircle.style.marginRight = "8px";
+    userCircle.style.boxShadow = "0 0 10px rgba(0,200,255,0.3)";
+
+    // Logout button
+    const logoutBtn = document.createElement("button");
+    logoutBtn.textContent = "Logout";
+    logoutBtn.style.background = "#ff4757";
+    logoutBtn.style.color = "white";
+    logoutBtn.style.border = "none";
+    logoutBtn.style.padding = "6px 10px";
+    logoutBtn.style.borderRadius = "6px";
+    logoutBtn.style.cursor = "pointer";
+    logoutBtn.style.fontWeight = "600";
+
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("dealwise_user");
+      localStorage.removeItem("token");
+      location.reload();
+    });
+
+    // Container for initials + logout
+    const userBox = document.createElement("div");
+    userBox.style.display = "flex";
+    userBox.style.alignItems = "center";
+    userBox.style.gap = "10px";
+    userBox.appendChild(userCircle);
+    userBox.appendChild(logoutBtn);
+
+    // Append to nav-right (keeps cart/search intact)
+    navRight.appendChild(userBox);
+  }
+});
+</script>
+
+
 </body>
 </html>
