@@ -7,32 +7,55 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Fetch profile details
+  // Load user data from localStorage first (faster)
+  const nameField = document.getElementById("name");
+  const emailField = document.getElementById("email");
+  const phoneField = document.getElementById("phone");
+  const bioField = document.getElementById("bio");
+  const countrySelect = document.getElementById("country");
+
+  if (nameField) nameField.value = user.name || "";
+  if (emailField) emailField.value = user.email || "";
+  if (phoneField) phoneField.value = user.phone || "";
+  if (bioField) bioField.value = user.bio || "";
+  if (countrySelect) countrySelect.value = user.country || "India";
+
+  // Try to fetch updated profile details from backend (optional)
   try {
     const res = await fetch("http://localhost:8080/api/profile", {
       headers: { Authorization: `Bearer ${user.token}` }
     });
-    const data = await res.json();
-    document.getElementById("name").value = data.name || "";
-    document.getElementById("email").value = data.email || "";
+    if (res.ok) {
+      const data = await res.json();
+      if (nameField) nameField.value = data.name || user.name || "";
+      if (emailField) emailField.value = data.email || user.email || "";
+      if (phoneField) phoneField.value = data.phone || user.phone || "";
+      if (bioField) bioField.value = data.bio || user.bio || "";
+      if (countrySelect) countrySelect.value = data.country || user.country || "India";
+    }
   } catch {
-    status.textContent = "Failed to load profile info.";
-    status.style.color = "tomato";
+    // Backend not available, use localStorage data
+    console.log("Using localStorage data for profile");
   }
 
   // Update profile
   document.getElementById("profileForm").addEventListener("submit", async e => {
     e.preventDefault();
-    status.textContent = "Saving changes...";
-
+    
     const payload = {
       name: document.getElementById("name").value,
       email: document.getElementById("email").value,
-      password: document.getElementById("password").value,
+      phone: document.getElementById("phone").value,
+      bio: document.getElementById("bio").value,
       country: document.getElementById("country").value,
-      gender: document.getElementById("gender").value
+      password: document.getElementById("password").value
     };
 
+    // Update localStorage immediately
+    const updatedUser = { ...user, ...payload };
+    localStorage.setItem("dealwise_user", JSON.stringify(updatedUser));
+
+    // Try to update backend (optional)
     try {
       const res = await fetch("http://localhost:8080/api/profile/update", {
         method: "POST",
@@ -40,18 +63,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-      if (data.success) {
-        status.style.color = "#00c8ff";
-        status.textContent = "Profile updated successfully!";
-        localStorage.setItem("dealwise_user", JSON.stringify({ ...user, name: payload.name, email: payload.email }));
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          showSuccessMessage("Profile updated successfully!");
+        } else {
+          showSuccessMessage("Profile saved locally!");
+        }
       } else {
-        status.style.color = "tomato";
-        status.textContent = "Update failed.";
+        showSuccessMessage("Profile saved locally!");
       }
     } catch {
-      status.style.color = "tomato";
-      status.textContent = "Error connecting to server.";
+      showSuccessMessage("Profile saved locally!");
     }
   });
+
+  function showSuccessMessage(message) {
+    // Create a temporary success message
+    const successDiv = document.createElement('div');
+    successDiv.textContent = message;
+    successDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(90deg, #00c8ff, #66f0ff);
+      color: #001;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,200,255,0.3);
+      animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(successDiv);
+    setTimeout(() => {
+      successDiv.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => successDiv.remove(), 300);
+    }, 2000);
+  }
 });

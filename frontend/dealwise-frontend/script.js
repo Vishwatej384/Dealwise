@@ -1,15 +1,24 @@
-// Page elements
-const contentArea = document.getElementById("content-area");
+// ===== GLOBAL THEME HANDLER =====
+document.addEventListener("DOMContentLoaded", () => {
+  const html = document.documentElement;
+  const savedTheme = localStorage.getItem("dealwise_theme") || "dark";
+  html.dataset.theme = savedTheme;
+
+  const themeSwitch = document.getElementById("themeSwitch");
+  if (themeSwitch) {
+    themeSwitch.checked = savedTheme === "dark";
+    themeSwitch.addEventListener("change", () => {
+      const newTheme = themeSwitch.checked ? "dark" : "light";
+      html.dataset.theme = newTheme;
+      localStorage.setItem("dealwise_theme", newTheme);
+    });
+  }
+});
+
+// ------------------ NAVIGATION ------------------
 const navLinks = document.querySelectorAll(".nav-link");
+const contentArea = document.getElementById("content-area");
 
-// Modal elements
-const loginModal = document.getElementById("loginModal");
-const signupModal = document.getElementById("signupModal");
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
-const closeBtns = document.querySelectorAll(".close");
-
-// ------------------ Navigation ------------------
 navLinks.forEach(link => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
@@ -20,26 +29,32 @@ navLinks.forEach(link => {
   });
 });
 
-// ------------------ Modal Logic ------------------
-loginBtn.onclick = () => loginModal.style.display = "block";
-signupBtn.onclick = () => signupModal.style.display = "block";
+// ------------------ MODAL LOGIC ------------------
+const loginModal = document.getElementById("loginModal");
+const signupModal = document.getElementById("signupModal");
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const closeBtns = document.querySelectorAll(".close");
+
+if (loginBtn) loginBtn.onclick = () => loginModal.style.display = "block";
+if (signupBtn) signupBtn.onclick = () => signupModal.style.display = "block";
 closeBtns.forEach(btn => btn.onclick = () => {
-  loginModal.style.display = "none";
-  signupModal.style.display = "none";
+  if (loginModal) loginModal.style.display = "none";
+  if (signupModal) signupModal.style.display = "none";
 });
 window.onclick = (e) => {
   if (e.target === loginModal) loginModal.style.display = "none";
   if (e.target === signupModal) signupModal.style.display = "none";
 };
 
-// ------------------ Dynamic Content ------------------
+// ------------------ DYNAMIC CONTENT ------------------
 function loadPage(page) {
   switch (page) {
     case "home":
       contentArea.innerHTML = `
         <h1>Discover Best Deals. Save Smarter.</h1>
         <p>Verified deals and authentic reviews — your go-to platform for affordable, trustworthy shopping.</p>
-        <img src="images/headphone.jpg" width="300" style="border-radius:15px;margin-top:20px;">
+        <img src="images/headphones.jpg" width="300" style="border-radius:15px;margin-top:20px;">
       `;
       break;
 
@@ -60,7 +75,7 @@ function loadPage(page) {
       contentArea.innerHTML = `
         <h2>🔥 Top Deals</h2>
         <div class="deals-grid">
-          <div class="deal"><img src="images/headphone.jpg"><h3>Wireless Headphones</h3><p>₹2,499 (30% off)</p></div>
+          <div class="deal"><img src="images/headphones.jpg"><h3>Wireless Headphones</h3><p>₹2,499 (30% off)</p></div>
           <div class="deal"><img src="images/smartwatch.jpg"><h3>Smartwatch Series 6</h3><p>₹8,999 (25% off)</p></div>
           <div class="deal"><img src="images/keyboard.jpg"><h3>RGB Gaming Keyboard</h3><p>₹1,799 (40% off)</p></div>
         </div>
@@ -90,7 +105,10 @@ function loadPage(page) {
   }
 }
 
-// ------------------ Category Logic ------------------
+// Default load
+if (contentArea) loadPage("home");
+
+// ------------------ CATEGORY LOGIC ------------------
 function showCategory(name) {
   const categoryItems = document.getElementById("categoryItems");
   const items = {
@@ -103,10 +121,7 @@ function showCategory(name) {
   categoryItems.innerHTML = `<h3>${name} Deals</h3><ul>${list}</ul>`;
 }
 
-// Default page
-loadPage("home");
-
-// ===== PROFILE PAGE SCRIPT =====
+// ------------------ PROFILE PAGE LOGIC ------------------
 document.addEventListener("DOMContentLoaded", () => {
   const upload = document.getElementById("upload");
   const preview = document.getElementById("preview");
@@ -114,24 +129,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeSwitch = document.getElementById("themeSwitch");
   const html = document.documentElement;
 
-  if (upload) {
-    upload.addEventListener("change", e => {
-      const file = e.target.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-        placeholder.style.display = "none";
-      }
-    });
-  }
-
-  // Dark/Light toggle with memory
+  // --- Theme persistence ---
+  const savedTheme = localStorage.getItem("dealwise_theme") || "dark";
+  html.dataset.theme = savedTheme;
+  if (themeSwitch) themeSwitch.checked = savedTheme === "dark";
   if (themeSwitch) {
-    const savedTheme = localStorage.getItem("dealwise_theme");
-    if (savedTheme === "light") {
-      html.dataset.theme = "light";
-      themeSwitch.checked = false;
-    }
     themeSwitch.addEventListener("change", () => {
       const mode = themeSwitch.checked ? "dark" : "light";
       html.dataset.theme = mode;
@@ -139,23 +141,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Simulated user load (you can link real data later)
-  const nameField = document.getElementById("name");
-  const emailField = document.getElementById("email");
-  if (nameField && emailField) {
-    const user = JSON.parse(localStorage.getItem("dealwise_user"));
-    if (user) {
-      nameField.value = user.name || "";
-      emailField.value = user.email || "";
-    }
+  // --- Profile picture preview ---
+  if (upload) {
+    upload.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+        if (placeholder) placeholder.style.display = "none";
+      }
+    });
   }
 
+  // --- Load user data from localStorage ---
+  const nameField = document.getElementById("name");
+  const emailField = document.getElementById("email");
+  const phoneField = document.getElementById("phone");
+  const bioField = document.getElementById("bio");
+  const countrySelect = document.getElementById("country");
+
+  const user = JSON.parse(localStorage.getItem("dealwise_user"));
+  if (user) {
+    if (nameField) nameField.value = user.name || "";
+    if (emailField) emailField.value = user.email || "";
+    if (phoneField) phoneField.value = user.phone || "";
+    if (bioField) bioField.value = user.bio || "";
+    if (countrySelect) countrySelect.value = user.country || "India";
+  }
+
+  // --- Save updated details ---
   const form = document.getElementById("profileForm");
   if (form) {
     form.addEventListener("submit", e => {
       e.preventDefault();
+      const updatedUser = {
+        ...user,
+        name: nameField?.value || "",
+        email: emailField?.value || "",
+        phone: phoneField?.value || "",
+        bio: bioField?.value || "",
+        country: countrySelect?.value || "India",
+      };
+      localStorage.setItem("dealwise_user", JSON.stringify(updatedUser));
       alert("✅ Profile updated successfully!");
+      window.location.href = "index.html"; // redirect to homepage
     });
   }
 });
-

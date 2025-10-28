@@ -1,6 +1,29 @@
 /* ---------------------------
    Reset & base
 --------------------------- */
+:root {
+  --bg: #0b0f15;
+  --card: #141a22;
+  --text: #eaeaea;
+  --accent: #00bfff;
+  --muted: #9aa0a6;
+}
+
+[data-theme="light"] {
+  --bg: #f9f9f9;
+  --card: #ffffff;
+  --text: #111;
+  --accent: #0077ff;
+  --muted: #555;
+}
+
+/* Apply theme variables globally */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.5s ease, color 0.3s ease;
+}
+
 :root{
   --bg-1:#0b0d0f;
   --bg-2:#0f1316;
@@ -550,4 +573,202 @@ input {
 @keyframes popForm {
   from { opacity: 0; transform: translateY(18px) scale(.98); }
   to { opacity: 1; transform: none; }
+}
+
+/* ===================================================
+   ENHANCED MODERN ANIMATIONS & MICRO-INTERACTIONS
+=================================================== */
+
+/* Enhanced animations and modern effects */
+.pop-in { animation: popIn .55s cubic-bezier(.2,.85,.32,1) both; }
+@keyframes popIn { from { opacity:0; transform: translateY(12px) scale(.98) } to { opacity:1; transform: translateY(0) scale(1) } }
+
+.glow-pulse { box-shadow:0 0 0 rgba(0,0,0,0); animation: pulse 2.6s infinite; }
+@keyframes pulse { 0%{ box-shadow:0 0 0 rgba(0,200,255,0.08)} 50%{ box-shadow:0 12px 40px rgba(0,200,255,0.08)} 100%{ box-shadow:0 0 0 rgba(0,200,255,0.02)} }
+
+/* Modern micro-interactions */
+.micro-bounce { animation: microBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+@keyframes microBounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
+
+.slide-up { animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.fade-in-scale { animation: fadeInScale 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+@keyframes fadeInScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+/* Staggered animations */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* Enhanced hover effects with smooth transitions */
+.deal-card, .cat-card, .hero-card {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, box-shadow;
+}
+
+.deal-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(0,229,255,0.15);
+}
+
+.cat-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(0,229,255,0.1);
+}
+
+/* Enhanced button animations */
+.btn-accent {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btn-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-accent:hover::before {
+  left: 100%;
+}
+
+.btn-accent:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(0,200,255,0.3);
+}
+
+/* Floating elements with enhanced motion */
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(1deg); }
+  50% { transform: translateY(-12px) rotate(0deg); }
+  75% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+/* Gradient text with enhanced animation */
+.gradient-text {
+  background: linear-gradient(45deg, var(--accent), #66f0ff, var(--accent-2), #ffc107);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+/* Enhanced card shadows with depth */
+.deal-card, .cat-card, .hero-card {
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.deal-card::after, .cat-card::after, .hero-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.deal-card:hover::after, .cat-card:hover::after, .hero-card:hover::after {
+  opacity: 1;
+}
+
+/* Enhanced scrollbar with modern styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), #66f0ff);
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #66f0ff, var(--accent));
+}
+
+/* Loading animations */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0,200,255,0.2);
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Success/Error toast animations */
+.toast-slide-in {
+  animation: toastSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast-slide-out {
+  animation: toastSlideOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes toastSlideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Enhanced focus states */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,200,255,0.1);
+  transform: scale(1.02);
+}
+
+/* Smooth page transitions */
+.page-transition {
+  animation: pageTransition 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes pageTransition {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -98,12 +98,103 @@
       .search-wrap input{ width:100%; max-width:100%; }
     }
 
-    /* fun lively micro-animations */
+    /* Enhanced animations and modern effects */
     .pop-in { animation: popIn .55s cubic-bezier(.2,.85,.32,1) both; }
     @keyframes popIn { from { opacity:0; transform: translateY(12px) scale(.98) } to { opacity:1; transform: translateY(0) scale(1) } }
 
     .glow-pulse { box-shadow:0 0 0 rgba(0,0,0,0); animation: pulse 2.6s infinite; }
     @keyframes pulse { 0%{ box-shadow:0 0 0 rgba(0,200,255,0.08)} 50%{ box-shadow:0 12px 40px rgba(0,200,255,0.08)} 100%{ box-shadow:0 0 0 rgba(0,200,255,0.02)} }
+
+    /* Modern hover effects */
+    .deal-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .deal-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .deal-card:hover::before {
+      left: 100%;
+    }
+
+    /* Enhanced button animations */
+    .btn-accent {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-accent::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.3s;
+    }
+    
+    .btn-accent:hover::before {
+      left: 100%;
+    }
+
+    /* Floating elements */
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Gradient text effect */
+    .gradient-text {
+      background: linear-gradient(45deg, var(--accent), #66f0ff, var(--accent-2));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Enhanced card shadows */
+    .deal-card, .cat-card, .hero-card {
+      backdrop-filter: blur(10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Modern scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #66f0ff;
+    }
 
   </style>
 </head>
@@ -151,12 +242,12 @@
   <main>
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-left pop-in" style="animation-delay:.05s;">
-        <h1 class="hero-title">Discover the best deals — <span>save smarter</span></h1>
+      <div class="hero-left slide-up stagger-1">
+        <h1 class="hero-title">Discover the best deals — <span class="gradient-text">save smarter</span></h1>
         <p class="hero-sub">DealWise collects verified offers, honest reviews and price-tracking tools — all in one neon-powered, dark-mode interface built for fast shopping.</p>
         <div class="hero-ctas">
-          <button class="btn-accent" onclick="navigateTo('deals.html')">Browse Deals</button>
-          <button class="btn-ghost" onclick="navigateTo('categories.html')">Shop by Category</button>
+          <button class="btn-accent micro-bounce" onclick="navigateTo('deals.html')">Browse Deals</button>
+          <button class="btn-ghost micro-bounce" onclick="navigateTo('categories.html')">Shop by Category</button>
         </div>
         <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
           <div style="display:flex; gap:8px; align-items:center;">
@@ -170,9 +261,9 @@
         </div>
       </div>
 
-      <aside class="hero-right pop-in glow-pulse" style="animation-delay:.12s;">
+      <aside class="hero-right slide-up stagger-2 glow-pulse floating">
         <div class="hero-card">
-          <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80" alt="Headphones">
+          <img src="images/headphones.jpg" alt="Headphones" onerror="this.src='assets/placeholder.svg'">
           <div style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
             <div>
               <div style="font-weight:700">Wireless Headphones</div>
@@ -183,25 +274,25 @@
             </div>
           </div>
         </div>
-        <div style="margin-top:12px; color:var(--muted); font-size:13px; text-align:right;">Trusted deals • real users</div>
+        <div style="margin-top:12px; color:var(--muted); font-size:13px; text-align:right;">✨ Trusted deals • real users</div>
       </aside>
     </section>
 
     <!-- WHY CHOOSE -->
     <section class="container why">
-      <h2 class="section-title">Why Choose DealWise</h2>
+      <h2 class="section-title gradient-text slide-up stagger-1">Why Choose DealWise</h2>
       <div style="display:flex; gap:12px;">
-        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+        <div class="why-card slide-up stagger-2" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
           <div style="font-size:22px">🔎</div>
           <div style="font-weight:700; margin-top:8px">Smart Discovery</div>
           <div style="color:var(--muted)">Find curated, high-value offers across platforms.</div>
         </div>
-        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+        <div class="why-card slide-up stagger-3" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
           <div style="font-size:22px">🛡️</div>
           <div style="font-weight:700; margin-top:8px">Verified Trust</div>
           <div style="color:var(--muted)">We verify listings and surface real reviews.</div>
         </div>
-        <div class="why-card" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
+        <div class="why-card slide-up stagger-4" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
           <div style="font-size:22px">🔔</div>
           <div style="font-weight:700; margin-top:8px">Price Alerts</div>
           <div style="color:var(--muted)">Track prices and get notified when they drop.</div>
@@ -211,30 +302,30 @@
 
     <!-- CATEGORIES -->
     <section id="categories" class="container">
-      <h2 class="section-title">Shop by Category</h2>
+      <h2 class="section-title gradient-text slide-up stagger-1">Shop by Category</h2>
       <div class="cat-grid">
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80" alt="Electronics">
+        <div class="cat-card slide-up stagger-1" onclick="navigateTo('categories.html')">
+          <img src="images/keyboard.jpg" alt="Electronics" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Electronics</div>
         </div>
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=800&q=80" alt="Fashion">
+        <div class="cat-card slide-up stagger-2" onclick="navigateTo('categories.html')">
+          <img src="images/smartwatch.jpg" alt="Fashion" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Fashion</div>
         </div>
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1505691723518-36a0f3c6e1e4?auto=format&fit=crop&w=800&q=80" alt="Home">
+        <div class="cat-card slide-up stagger-3" onclick="navigateTo('categories.html')">
+          <img src="images/headphones.jpg" alt="Home" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Home & Kitchen</div>
         </div>
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1517960413843-0aee8e2b76f6?auto=format&fit=crop&w=800&q=80" alt="Fitness">
+        <div class="cat-card slide-up stagger-4" onclick="navigateTo('categories.html')">
+          <img src="images/keyboard.jpg" alt="Fitness" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Fitness</div>
         </div>
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1587206662676-2c03f2b2b6b8?auto=format&fit=crop&w=800&q=80" alt="Gaming">
+        <div class="cat-card slide-up stagger-5" onclick="navigateTo('categories.html')">
+          <img src="images/smartwatch.jpg" alt="Gaming" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Gaming</div>
         </div>
-        <div class="cat-card" onclick="navigateTo('categories.html')">
-          <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80" alt="Beauty">
+        <div class="cat-card slide-up stagger-6" onclick="navigateTo('categories.html')">
+          <img src="images/headphones.jpg" alt="Beauty" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Beauty</div>
         </div>
       </div>
@@ -242,7 +333,7 @@
 
     <!-- TOP DEALS -->
     <section id="top-deals" class="container">
-      <h2 class="section-title">🔥 Top Deals</h2>
+      <h2 class="section-title gradient-text slide-up stagger-1">🔥 Top Deals</h2>
       <div id="dealsGrid" class="deals-grid" aria-live="polite"></div>
     </section>
 
@@ -259,7 +350,7 @@
           </ul>
         </div>
         <div class="about-image">
-          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80" alt="About" style="width:320px; border-radius:10px;">
+          <img src="images/shopping.svg" alt="About" style="width:320px; border-radius:10px;" onerror="this.src='assets/placeholder.svg'">
         </div>
       </div>
     </section>
@@ -309,12 +400,12 @@
 
     // ---------- SAMPLE DATA (can be replaced by backend) ----------
     const SAMPLE_DEALS = [
-      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'https://images.unsplash.com/photo-1518444024107-77f3c4b8b4b6?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
+      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'images/headphones.jpg' },
+      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'images/smartwatch.jpg' },
+      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'images/keyboard.jpg' },
+      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'images/headphones.jpg' },
+      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'images/keyboard.jpg' },
+      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'images/smartwatch.jpg' }
     ];
 
     // ---------- CART (localStorage) ----------
@@ -330,10 +421,10 @@
       if(btn){ btn.classList.add('glow-pulse'); setTimeout(()=> btn.classList.remove('glow-pulse'), 900); }
     }
 
-    function showToast(msg, time=1400){
+    function showToast(msg, time=2000){
       const t = document.getElementById('toast');
       if(!t) return;
-      t.textContent = msg;
+      t.innerHTML = `<div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 18px;">✅</span>${msg}</div>`;
       t.classList.add('show');
       clearTimeout(window._toastTO);
       window._toastTO = setTimeout(()=> t.classList.remove('show'), time);
@@ -362,19 +453,29 @@
       else cart.push({ id: deal.id, title: deal.title, price: deal.price, qty: 1, img: deal.img });
       writeCart(cart);
 
-      // small animated +1 near the button
+      // Enhanced animated +1 near the button
       const plus = document.createElement('span');
-      plus.textContent = '+1';
+      plus.innerHTML = '<span style="color: #00ffea; font-weight: 800; font-size: 16px;">+1</span>';
       plus.style.position='absolute';
-      plus.style.color='#00ffea';
-      plus.style.fontWeight='800';
-      plus.style.fontSize='13px';
-      plus.style.transform='translateY(0)';
+      plus.style.top='-10px';
+      plus.style.right='-10px';
+      plus.style.transform='translateY(0) scale(1)';
       plus.style.opacity='1';
+      plus.style.pointerEvents='none';
+      plus.style.zIndex='1000';
       btn.style.position='relative';
       btn.appendChild(plus);
-      plus.animate([{ transform:'translateY(0px)', opacity:1 }, { transform:'translateY(-28px)', opacity:0 }], { duration:700, easing:'cubic-bezier(.2,.9,.2,1)' });
-      setTimeout(()=> plus.remove(), 800);
+      
+      // Enhanced animation with scale and rotation
+      plus.animate([
+        { transform:'translateY(0px) scale(1) rotate(0deg)', opacity:1 },
+        { transform:'translateY(-30px) scale(1.2) rotate(5deg)', opacity:0.8 },
+        { transform:'translateY(-40px) scale(0.8) rotate(-5deg)', opacity:0 }
+      ], { 
+        duration: 1000, 
+        easing: 'cubic-bezier(.2,.9,.2,1)' 
+      });
+      setTimeout(()=> plus.remove(), 1100);
 
       showToast('✅ Added to cart');
     }
@@ -384,11 +485,11 @@
       const grid = document.getElementById('dealsGrid');
       if(!grid) return;
       grid.innerHTML = '';
-      deals.forEach(d => {
+      deals.forEach((d, index) => {
         const card = document.createElement('div');
-        card.className = 'deal-card pop-in';
+        card.className = `deal-card slide-up stagger-${Math.min(index + 1, 6)}`;
         card.innerHTML = `
-          <img src="${d.img}" alt="${d.title}">
+          <img src="${d.img}" alt="${d.title}" onerror="this.src='assets/placeholder.svg'">
           <h3>${d.title}</h3>
           <p class="muted">${d.note}</p>
           <div class="deal-actions">
@@ -422,22 +523,46 @@
     async function loadDeals(){
       const grid = document.getElementById('dealsGrid');
       if(!grid) return;
-      grid.innerHTML = '<div style="padding:18px; color:var(--muted)">Loading deals...</div>';
+      
+      // Modern loading animation
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; padding: 40px;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="width: 40px; height: 40px; border: 3px solid rgba(0,200,255,0.2); border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div style="color: var(--muted); font-weight: 600;">Loading amazing deals...</div>
+          </div>
+        </div>
+      `;
+      
+      // Add spin animation
+      const style = document.createElement('style');
+      style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+      
       try {
         const res = await fetch(API_BASE + '/deals');
         if(res.ok){
           const data = await res.json();
           if(Array.isArray(data) && data.length){
-            renderDealsList(data);
+            // Transform backend data to frontend format
+            const transformedDeals = data.map(deal => ({
+              id: `d${deal.id}`,
+              title: deal.title,
+              price: deal.price,
+              note: deal.discount || 'Great deal',
+              img: deal.imageUrl || 'images/headphones.jpg'
+            }));
+            renderDealsList(transformedDeals);
             return;
           }
         }
       } catch(e){
-        // ignore network error and fallback to sample
-        // console.warn('deals fetch failed', e);
+        console.log('Backend not available, using sample data:', e);
       }
       // fallback:
-      renderDealsList(SAMPLE_DEALS);
+      setTimeout(() => {
+        renderDealsList(SAMPLE_DEALS);
+      }, 800); // Small delay for better UX
     }
 
     // ---------- Modals / login signup → redirect to full pages ----------

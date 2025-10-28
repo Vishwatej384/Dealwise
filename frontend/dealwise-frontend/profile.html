@@ -24,6 +24,42 @@
       --muted: #666;
     }
 
+    /* Light theme specific styles */
+    [data-theme="light"] body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    [data-theme="light"] .profile-container {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    [data-theme="light"] form input, 
+    [data-theme="light"] form select, 
+    [data-theme="light"] form textarea {
+      background: #f8f9fa;
+      color: var(--text);
+      border: 1px solid #e9ecef;
+    }
+
+    [data-theme="light"] form input:focus, 
+    [data-theme="light"] form select:focus, 
+    [data-theme="light"] form textarea:focus {
+      background: #ffffff;
+      border-color: var(--accent);
+    }
+
+    [data-theme="light"] .slider {
+      background-color: #ccc;
+    }
+
+    [data-theme="light"] input:checked + .slider {
+      background-color: var(--accent);
+      box-shadow: 0 0 12px rgba(0, 119, 255, 0.4);
+    }
+
     body {
       font-family: "Poppins", sans-serif;
       background: var(--bg);
@@ -187,6 +223,17 @@
       transform: translateY(-2px);
       box-shadow: 0 0 15px rgba(0,191,255,0.4);
     }
+
+    /* Success message animations */
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -243,5 +290,156 @@
       <button type="submit">Save Changes</button>
     </form>
   </div>
+
+  <script>
+    // Profile management with backend integration
+    const API_BASE = 'http://localhost:8080/api';
+    
+    // Load user profile on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login first');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`${API_BASE}/profile`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const profile = await response.json();
+          if (profile.success) {
+            document.getElementById('name').value = profile.name || '';
+            document.getElementById('email').value = profile.email || '';
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    });
+    
+    // Handle form submission
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login first');
+        return;
+      }
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value
+      };
+      
+      try {
+        const response = await fetch(`${API_BASE}/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Update localStorage with new user data
+          const userData = JSON.parse(localStorage.getItem('dealwise_user') || '{}');
+          userData.name = formData.name;
+          userData.email = formData.email;
+          localStorage.setItem('dealwise_user', JSON.stringify(userData));
+          
+          // Show success message
+          showSuccessMessage('Profile updated successfully!');
+        } else {
+          showErrorMessage(result.message || 'Failed to update profile');
+        }
+      } catch (error) {
+        showErrorMessage('Network error. Please try again.');
+      }
+    });
+    
+    // Theme toggle functionality
+    document.getElementById('themeSwitch').addEventListener('change', (e) => {
+      const isDark = e.target.checked;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeSwitch').checked = savedTheme === 'dark';
+    
+    // Profile picture upload
+    document.getElementById('upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.getElementById('preview');
+          const placeholder = document.getElementById('profilePlaceholder');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    function showSuccessMessage(message) {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(90deg, #00c8ff, #66f0ff);
+        color: #001;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+    
+    function showErrorMessage(message) {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4757;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
