@@ -105,3 +105,57 @@ function showCategory(name) {
 
 // Default page
 loadPage("home");
+
+// ===== PROFILE PAGE SCRIPT =====
+document.addEventListener("DOMContentLoaded", () => {
+  const upload = document.getElementById("upload");
+  const preview = document.getElementById("preview");
+  const placeholder = document.getElementById("profilePlaceholder");
+  const themeSwitch = document.getElementById("themeSwitch");
+  const html = document.documentElement;
+
+  if (upload) {
+    upload.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+        placeholder.style.display = "none";
+      }
+    });
+  }
+
+  // Dark/Light toggle with memory
+  if (themeSwitch) {
+    const savedTheme = localStorage.getItem("dealwise_theme");
+    if (savedTheme === "light") {
+      html.dataset.theme = "light";
+      themeSwitch.checked = false;
+    }
+    themeSwitch.addEventListener("change", () => {
+      const mode = themeSwitch.checked ? "dark" : "light";
+      html.dataset.theme = mode;
+      localStorage.setItem("dealwise_theme", mode);
+    });
+  }
+
+  // Simulated user load (you can link real data later)
+  const nameField = document.getElementById("name");
+  const emailField = document.getElementById("email");
+  if (nameField && emailField) {
+    const user = JSON.parse(localStorage.getItem("dealwise_user"));
+    if (user) {
+      nameField.value = user.name || "";
+      emailField.value = user.email || "";
+    }
+  }
+
+  const form = document.getElementById("profileForm");
+  if (form) {
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      alert("✅ Profile updated successfully!");
+    });
+  }
+});
+
