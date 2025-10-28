@@ -88,9 +88,21 @@
         });
         const data = await res.json();
         if (data.token) {
-          localStorage.setItem('dealwise_user', JSON.stringify({ name: data.name, email, token: data.token }));
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('dealwise_user', JSON.stringify({ name: data.name, email }));
           msg.style.color = "#00c8ff";
           msg.textContent = "Login successful! Redirecting...";
+
+          // ✅ Fetch profile data using token
+          fetch("http://localhost:8080/api/profile", {
+            headers: {
+              Authorization: "Bearer " + data.token
+            }
+          })
+          .then(r => r.json())
+          .then(profile => console.log("Profile data:", profile))
+          .catch(err => console.error("Profile fetch failed:", err));
+
           setTimeout(()=> location.href="index.html", 1000);
         } else {
           msg.style.color = "tomato";

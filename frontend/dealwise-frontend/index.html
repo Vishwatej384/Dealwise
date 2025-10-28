@@ -483,5 +483,30 @@ if (token) {
   document.getElementById('authStatus').textContent = 'Not logged in';
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
+  const navRight = document.querySelector(".nav-right"); // adjust if class name differs
+
+  if (userData && userData.token) {
+    // ✅ Replace login/signup buttons with username + logout
+    navRight.innerHTML = `
+      <span style="color:#00c8ff;font-weight:600;margin-right:10px;">
+        Hi, ${userData.name || "User"}
+      </span>
+      <button id="logoutBtn" style="background:#ff4757;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">
+        Logout
+      </button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("dealwise_user");
+      localStorage.removeItem("token");
+      location.reload(); // refresh to reset navbar
+    });
+  }
+});
+</script>
+
 </body>
 </html>
