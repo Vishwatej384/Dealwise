@@ -1,39 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DealWise — Sign Up</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#0d1117">
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root{ --bg:#0d1117; --muted:#98a0aa; --accent:#00c8ff; }
+    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; flex-direction:column; min-height:100vh; }
+    main{ flex:1; display:flex; align-items:center; justify-content:center; }
+    .card{ width:780px; max-width:95%; display:grid; grid-template-columns:1fr 380px; gap:16px; padding:18px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    .muted{ color:var(--muted) }
+    input{ width:100%; padding:10px; margin-top:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:rgba(255,255,255,0.02); color:#e6eef6; }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
+    .logo{ display:flex; align-items:center; gap:12px; }
+    .logo svg{ width:46px; height:46px; border-radius:10px; }
+  </style>
 </head>
-<body class="auth-page">
-
-  <div class="float-bg"></div>
-
-  <main class="auth-container">
-    <div class="panel pop">
-      <!-- Left Side -->
-      <div class="left">
-        <div class="logo-circle">DW</div>
-        <h1>Create an account</h1>
-        <p class="muted">Join DealWise to save deals, create alerts, and access your wishlist.</p>
+<body>
+  <main>
+    <div class="card">
+      <div>
+        <div class="logo"><svg width="46" height="46"><rect width="46" height="46" rx="10" fill="#00c8ff" opacity="0.12"/></svg><div style="font-weight:700">DealWise</div></div>
+        <h2 style="margin-top:12px">Create an account</h2>
+        <p class="muted">Join DealWise to save deals, create alerts and access your wishlist.</p>
         <ul class="muted">
           <li>Save deals across devices</li>
           <li>Get price alerts & notifications</li>
         </ul>
-        <footer>Already have an account? <a href="login.html">Login</a></footer>
+        <p class="muted" style="margin-top:10px">Already have an account? <a href="login.html">Login</a></p>
       </div>
 
-      <!-- Right Side -->
-      <div class="right">
-        <h3 style="margin:0 0 8px">Sign Up</h3>
+      <div>
+        <h3>Sign Up</h3>
         <p class="muted small">Fill in your details to create your DealWise account (demo).</p>
         <form id="signupForm" style="margin-top:12px">
           <input id="name" placeholder="Full name" required />
           <input id="email" placeholder="Email" required />
-          <input id="pass" type="password" placeholder="Password" required />
+          <input id="pass" placeholder="Password" type="password" required />
           <div style="margin-top:12px; display:flex; gap:10px;">
             <button class="btn-accent" type="submit">Create Account</button>
             <button type="button" onclick="location.href='index.html'" class="btn-ghost" style="border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:8px;color:var(--muted)">Back</button>
@@ -44,26 +48,33 @@
     </div>
   </main>
 
-  <footer class="main-footer">
-    <p>Contact us: support@dealwise.com | +91 98765 43210</p>
-    <div>
-      <a href="#">Instagram</a>
-      <a href="#">Twitter</a>
-      <a href="#">LinkedIn</a>
-    </div>
-    <p>© 2025 DealWise. All Rights Reserved.</p>
-  </footer>
-
   <script>
-    document.getElementById('signupForm').addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      localStorage.setItem('dealwise_user', JSON.stringify({ name, email }));
-      location.href='index.html';
-      setTimeout(()=> alert('Account created (demo) — you are logged in.'), 120);
-    });
-  </script>
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      if (response.ok) {
+        alert('Account created successfully!');
+        window.location.href = 'login.html';
+      } else {
+        const error = await response.json();
+        alert('Signup failed: ' + (error.detail || JSON.stringify(error)));
+      }
+    } catch (err) {
+      alert('Error connecting to server.');
+      console.error(err);
+    }
+  });
+  </script>
 </body>
 </html>
