@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,29 +28,41 @@ public class AuthController {
     private String jwtSecret;
 
     @PostMapping("/signup")
-    public Map<String,Object> signup(@RequestBody Map<String,String> body) throws SQLException {
+    public Map<String, Object> signup(@RequestBody Map<String, String> body) throws SQLException {
         String name = body.get("name");
         String email = body.get("email");
         String password = body.get("password");
-        Map<String,Object> res = new HashMap<>();
-        if (name == null || email == null || password == null) {
+        Map<String, Object> res = new HashMap<>();
+
+        // Validation check
+        if (name == null || email == null || password == null ||
+            name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             res.put("success", false);
-            res.put("message", "Missing fields");
+            res.put("message", "All fields are required.");
             return res;
         }
 
+        // Hash password
         String hashed = passwordEncoder.encode(password);
         boolean ok = userDao.createUser(name, email, hashed);
-        res.put("success", ok);
-        if (!ok) res.put("message", "Could not create user (maybe duplicate email).");
+
+        if (ok) {
+            res.put("success", true);
+            res.put("message", "User registered successfully!");
+        } else {
+            res.put("success", false);
+            res.put("message", "Signup failed. Email may already exist.");
+        }
+
         return res;
     }
 
     @PostMapping("/login")
-    public Map<String,Object> login(@RequestBody Map<String,String> body) throws SQLException {
+    public Map<String, Object> login(@RequestBody Map<String, String> body) throws SQLException {
         String email = body.get("email");
         String password = body.get("password");
-        Map<String,Object> res = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
+
         try (ResultSet rs = userDao.findByEmail(email)) {
             if (rs.next()) {
                 String hash = rs.getString("password_hash");
@@ -65,16 +76,20 @@ public class AuthController {
                             .claim("name", rs.getString("name"))
                             .claim("email", rs.getString("email"))
                             .setIssuedAt(new Date())
-                            .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7))
+                            .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)) // 7 days
                             .signWith(key)
                             .compact();
+
+                    res.put("success", true);
                     res.put("token", token);
                     res.put("name", rs.getString("name"));
                     return res;
                 }
             }
         }
-        res.put("error", "Invalid credentials");
+
+        res.put("success", false);
+        res.put("message", "Invalid credentials. Please check your email or password.");
         return res;
     }
 }
