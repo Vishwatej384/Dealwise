@@ -13,9 +13,11 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://127.0.0.1:5500",
                         "http://localhost:5500",
-                        "http://localhost:3000" // if React or other frontend uses this
+                        "http://localhost:3000",
+                        "http://127.0.0.1:3000",
+                        "file://" // Allow file:// protocol for local HTML files
                 )
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
