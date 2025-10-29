@@ -69,28 +69,50 @@
   <script src="js/shared.js"></script>
   <script>
     const CATS = [
-      {key:'electronics', title:'Electronics', img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80'},
-      {key:'fashion', title:'Fashion', img:'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1200&q=80'},
-      {key:'home', title:'Home & Kitchen', img:'https://images.unsplash.com/photo-1505691723518-36a0f3c6e1e4?auto=format&fit=crop&w=1200&q=80'},
-      {key:'fitness', title:'Fitness', img:'https://images.unsplash.com/photo-1517960413843-0aee8e2b76f6?auto=format&fit=crop&w=1200&q=80'},
-      {key:'gaming', title:'Gaming', img:'https://images.unsplash.com/photo-1587206662676-2c03f2b2b6b8?auto=format&fit=crop&w=1200&q=80'},
-      {key:'beauty', title:'Beauty', img:'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80'}
+      {key:'electronics', title:'Electronics', img:'assets/logo.svg'},
+      {key:'fashion', title:'Fashion', img:'assets/logo.svg'},
+      {key:'home', title:'Home & Kitchen', img:'assets/logo.svg'},
+      {key:'fitness', title:'Fitness', img:'assets/logo.svg'},
+      {key:'gaming', title:'Gaming', img:'assets/logo.svg'},
+      {key:'beauty', title:'Beauty', img:'assets/logo.svg'}
     ];
-    const CART_KEY='dealwise_cart';
-    function readCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}catch(e){return[] } }
-    function writeCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); showToast('Added to cart') }
-    function showToast(msg='Done',t=1200){ const tEl=document.getElementById('toast'); tEl.textContent=msg; tEl.classList.add('show'); clearTimeout(window._to); window._to=setTimeout(()=>tEl.classList.remove('show'),t) }
+
+    // Provided catalog items per category (no images used, we show site logo)
+    function getCatalog(){
+      return {
+        electronics: [
+          'Samsung Galaxy S23 Ultra','Apple iPhone 15','Sony WH-1000XM5 Headphones','Dell XPS 13 Laptop','Apple MacBook Air M3','JBL Flip 6 Bluetooth Speaker','Logitech MX Master 3S Mouse','HP Envy 15 Laptop','Samsung 4K Smart TV 55"','Apple iPad Air (2024)','OnePlus Buds Pro 2','Canon EOS M50 Mark II Camera','Anker PowerCore 20000mAh Power Bank','Google Nest Mini (2nd Gen)','Xiaomi Smart Watch 7'
+        ],
+        fashion: [
+          'Levi’s Slim Fit Jeans','Nike Air Force 1 Sneakers','Zara Cotton Overshirt','H&M Graphic Tee','Puma Sports Jacket','Allen Solly Formal Shirt','Adidas Track Pants','Fossil Leather Watch','Ray-Ban Aviator Sunglasses','Gucci Handbag','Crocs Classic Clog','Tommy Hilfiger Polo Shirt','Louis Philippe Blazer','Uniqlo Linen Pants','Converse Chuck Taylor Shoes'
+        ],
+        home: [
+          'Philips Air Fryer XL','Prestige Mixer Grinder','Ikea Table Lamp','Pigeon Stainless Steel Cookware Set','Milton Thermosteel Bottle','Cello Plastic Storage Box Set','AmazonBasics Bedside Table','Tefal Non-stick Frying Pan','Bajaj Electric Kettle','Dyson V12 Cordless Vacuum','Usha Ceiling Fan','Borosil Glass Lunchbox','Sleepwell Memory Foam Pillow','Hawkins Pressure Cooker','Havells Room Heater'
+        ],
+        fitness: [
+          'Decathlon Yoga Mat','Fitbit Charge 6','Nike Running Shoes ZoomX','Adidas Gym Duffel Bag','Bowflex Adjustable Dumbbells','Puma Sweat-Wicking T-shirt','Reebok Resistance Bands','PowerMax Home Treadmill','MuscleBlaze Whey Protein','HRX Training Gloves','Decathlon Exercise Bike','Skipping Rope Pro','Under Armour Shorts','MyFitness Peanut Butter','Adidas Fitness Tracker Bottle'
+        ],
+        gaming: [
+          'PlayStation 5','Xbox Series X','Nintendo Switch OLED','Razer BlackWidow V4 Keyboard','Logitech G502 HERO Mouse','Corsair RGB Gaming Headset','Asus ROG Strix Gaming Laptop','MSI Curved 144Hz Monitor','Elgato Capture Card','Steam Deck','HyperX Cloud II Headset','Redragon Mechanical Keyboard','PS5 DualSense Controller','Xbox Game Pass 6-month Card','Cooler Master Gaming Chair'
+        ],
+        beauty: [
+          'L’Oréal Paris Serum','Maybelline Fit Me Foundation','Lakmé Eyeconic Kajal','The Ordinary Niacinamide Serum','Neutrogena Hydro Boost Moisturizer','Garnier Micellar Water','Dove Exfoliating Body Polish','Mamaearth Vitamin C Face Wash','Nykaa Lipstick Matte','Philips Hair Straightener','Nivea Body Lotion','L’Oréal Men Expert Face Wash','Vaseline Lip Therapy','Forest Essentials Hair Oil','Plum Green Tea Toner'
+        ]
+      };
+    }
 
     function renderCats(){
       const grid=document.getElementById('catGrid');
       CATS.forEach(c=>{
         const card=document.createElement('button');
-        card.className='cat-card pop-in'; card.onclick = ()=> {
-          // open categories.html with selection param — we'll just navigate to deals page filtered
+        card.className='cat-card pop-in';
+        card.onclick = ()=> {
           localStorage.setItem('dealwise_last_category', c.key);
+          // also store full catalog for deals page
+          localStorage.setItem('dealwise_catalog', JSON.stringify(getCatalog()));
           location.href='deals.html';
         };
-        card.innerHTML = `<img src="${c.img}" alt="${c.title}"><div style="margin-top:8px;font-weight:700">${c.title}</div><div class="muted" style="font-size:13px;margin-top:6px">Popular</div>`;
+        card.innerHTML = `<img src="${c.img}" alt="${c.title}" onerror="this.src='assets/placeholder.svg'"><div style="margin-top:8px;font-weight:700">${c.title}</div><div class="muted" style="font-size:13px;margin-top:6px">Browse</div>`;
         grid.appendChild(card);
       });
     }

@@ -519,7 +519,7 @@
           <div class="deal-actions">
             <div class="price">${d.price}</div>
             <div style="display:flex;gap:8px;">
-              <button class="btn-ghost" data-id="${d.id}" aria-label="view-${d.id}" onclick="navigateTo('deals.html')">View</button>
+              <button class="btn-ghost" data-id="${d.id}" aria-label="view-${d.id}" onclick="navigateTo(`product-detail.html?id=${d.id}`)">View</button>
               <button class="btn-accent" data-id="${d.id}" aria-label="add-${d.id}">Add</button>
             </div>
           </div>
@@ -620,6 +620,15 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = 'cart.html';
     });
   }
+});
+
+// Robust fallback: delegate Add buttons site-wide in case nodes are recreated
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-accent[data-id]');
+  if (!btn) return;
+  try {
+    addToCartFromButton(btn);
+  } catch {}
 });
 
   </script>

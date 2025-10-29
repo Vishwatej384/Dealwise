@@ -37,7 +37,7 @@
 <body>
   <header>
     <div class="brand">
-      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66fLED#); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">
+      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">
         DW
       </div>
       <a href="index.html" style="color: var(--text); text-decoration: none; font-weight: 700;">DealWise</a>
@@ -103,23 +103,72 @@
       }
     };
     
-    const product = PRODUCTS[productId] || PRODUCTS['d1'];
+    // Prefer item passed from the list (deals page)
+    let product = null;
+    try{
+      const fromList = JSON.parse(localStorage.getItem('dealwise_view_item')||'null');
+      if(fromList){
+        product = {
+          title: fromList.title,
+          price: fromList.price,
+          discount: fromList.note||'Great deal',
+          img: 'assets/logo.svg'
+        };
+      }
+    }catch(e){}
+    if(!product){ product = PRODUCTS[productId] || PRODUCTS['d1']; }
     
-    document.getElementById('productImage').src = product.img;
+    document.getElementById('productImage').src = 'assets/logo.svg';
     document.getElementById('productTitle').textContent = product.title;
     document.getElementById('productPrice').textContent = product.price;
     document.getElementById('productDiscount').textContent = product.discount;
-    document.getElementById('productDescription').textContent = product.description;
+    // Auto-generate a rich description based on title keywords
+    function buildDescription(title){
+      const t = title.toLowerCase();
+      if(t.includes('iphone') || t.includes('galaxy')) return 'Premium smartphone with fast processor, brilliant display, and all‑day battery life. Ideal for photography, gaming, and productivity.';
+      if(t.includes('laptop') || t.includes('macbook') || t.includes('xps')) return 'Lightweight performance laptop with stunning display, long battery life and silent cooling — built for creators and professionals.';
+      if(t.includes('headphone') || t.includes('buds')) return 'High‑fidelity wireless audio with active noise cancellation and crystal‑clear calling. Comfortable fit for long listening sessions.';
+      if(t.includes('camera')) return 'Mirrorless camera that captures crisp photos and smooth 4K video. Fast autofocus and compact form factor for creators on the go.';
+      if(t.includes('watch')) return 'Smartwatch with health tracking, sleep insights, GPS and notification support. Durable build and multi‑day battery.';
+      return 'Top‑rated product selected from our trusted catalog. Great value, reliable performance and fast delivery.';
+    }
+    document.getElementById('productDescription').textContent = product.description || buildDescription(product.title);
     
+    const featureBank = {
+      phone: ['120Hz OLED display','OIS camera system','Fast charging USB‑C','5G + Wi‑Fi 6E','IP68 water resistance'],
+      laptop: ['13"/14" high‑res screen','Backlit keyboard','Thunderbolt / USB‑C','All‑day battery','Ultra‑light chassis'],
+      audio: ['Active Noise Cancellation','Custom drivers','Multipoint Bluetooth','Low‑latency mode','Comfort ear cushions'],
+      default: ['1‑year warranty','7‑day replacement','Secure packaging','COD/UPI/Card','Dedicated support']
+    };
+    function pickFeatures(title){
+      const t = title.toLowerCase();
+      if(t.includes('iphone') || t.includes('galaxy') || t.includes('phone')) return featureBank.phone;
+      if(t.includes('laptop') || t.includes('macbook') || t.includes('xps')) return featureBank.laptop;
+      if(t.includes('headphone') || t.includes('buds') || t.includes('speaker')) return featureBank.audio;
+      return featureBank.default;
+    }
     const featuresList = document.getElementById('productFeatures');
-    product.features.forEach(feature => {
+    pickFeatures(product.title).forEach(feature => {
       const li = document.createElement('li');
       li.textContent = feature;
       featuresList.appendChild(li);
     });
     
+    const specBank = {
+      phone: ['Chipset: latest‑gen','Display: 6.7" 120Hz','Battery: 5000mAh','Primary Camera: 50MP','OS: Android / iOS'],
+      laptop: ['CPU: latest‑gen','RAM: 16GB','Storage: 512GB SSD','Display: 13‑14" IPS/OLED','Weight: ~1.2kg'],
+      audio: ['Bluetooth: 5.2+','Drivers: 40mm','Battery: up to 30h','Charging: USB‑C','Extras: ANC, Transparency'],
+      default: ['Brand Warranty','Model: 2025','Color: Black','Country of Origin: India','In the Box: Unit + manuals']
+    };
+    function pickSpecs(title){
+      const t = title.toLowerCase();
+      if(t.includes('iphone') || t.includes('galaxy') || t.includes('phone')) return specBank.phone;
+      if(t.includes('laptop') || t.includes('macbook') || t.includes('xps')) return specBank.laptop;
+      if(t.includes('headphone') || t.includes('buds') || t.includes('speaker')) return specBank.audio;
+      return specBank.default;
+    }
     const specsList = document.getElementById('productSpecs');
-    product.specs.forEach(spec => {
+    pickSpecs(product.title).forEach(spec => {
       const li = document.createElement('li');
       li.textContent = spec;
       specsList.appendChild(li);
@@ -128,13 +177,13 @@
     function addToCart() {
       if (window.dealwiseCart) {
         window.dealwiseCart.addToCart({
-          id: productId,
-          title: patent.title,
+          id: productId || product.title,
+          title: product.title,
           price: product.price,
-          img: product.img,
+          img: 'assets/logo.svg',
           discount: product.discount
         });
-        alert('Product added to cart!');
+        if (window.DealWiseUtils) { DealWiseUtils.showToast('✅ Added to cart!', 'success'); }
       }
     }
   </script>

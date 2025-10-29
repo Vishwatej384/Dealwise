@@ -91,9 +91,11 @@
       { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'images/smartwatch.jpg' },
       { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'images/keyboard.jpg' },
       { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'images/headphones.jpg' },
-      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
+      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'images/keyboard.jpg' },
+      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'images/smartwatch.jpg' }
     ];
+    // current deals cache for add-to-cart lookups
+    window.currentDeals = [...SAMPLE_DEALS];
 
     const CART_KEY = 'dealwise_cart';
     function readCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)||'[]') }catch(e){return[]} }
@@ -103,28 +105,27 @@
     function showToast(msg, t=1300){ const tEl = document.getElementById('toast'); tEl.textContent=msg; tEl.classList.add('show'); clearTimeout(window._to); window._to=setTimeout(()=>tEl.classList.remove('show'),t); }
 
     function addToCartId(id, btn){
-      const deal = SAMPLE_DEALS.find(d=>d.id===id); 
-      if(!deal) {
-        alert('Item not found');
-        return;
-      }
-      
+      const list = (window.currentDeals && window.currentDeals.length) ? window.currentDeals : SAMPLE_DEALS;
+      const deal = list.find(d=>String(d.id)===String(id)); 
+      if(!deal) { return; }
       if (window.dealwiseCart) {
-        window.dealwiseCart.addToCart({
-          id: deal.id,
-          title: deal.title,
-          price: deal.price,
-          note: deal.note,
-          img: deal.img
-        });
+        window.dealwiseCart.addToCart({ id: deal.id, title: deal.title, price: deal.price, note: deal.note, img: deal.img });
       }
     }
 
     function renderDeals(deals){
       const grid = document.getElementById('dealsGrid'); grid.innerHTML='';
-      deals.forEach(d=>{
+      const normalised = deals.map(d=> ({
+        id: d.id || d.dealId || d.code || d,
+        title: d.title || d.name || 'Deal',
+        price: d.price || '₹0',
+        note: d.note || d.discount || 'Great deal'
+      }));
+      window.currentDeals = normalised;
+      normalised.forEach(d=>{
         const card = document.createElement('div'); card.className='deal-card pop-in';
-        card.innerHTML = `<img src="${d.img}" alt="${d.title}" onerror="this.src='assets/placeholder.svg'"><h3>${d.title}</h3><p class="muted">${d.note}</p>
+        // Always render DW logo to avoid external image issues
+        card.innerHTML = `<img src="assets/logo.svg" alt="${d.title}" onerror="this.src='assets/placeholder.svg'"><h3>${d.title}</h3><p class=\"muted\">${d.note}</p>
           <div class="deal-actions"><div class="price">${d.price}</div>
           <div style="display:flex;gap:8px">
             <button class="btn-ghost" onclick="viewProduct('${d.id}')">View</button>
@@ -136,21 +137,65 @@
 
     // Attempt backend fetch else fallback
     async function loadDeals(){
+      // If user clicked a category, use provided catalog (persisted by categories page)
+      const lastCat = localStorage.getItem('dealwise_last_category');
+      const catalogJSON = localStorage.getItem('dealwise_catalog');
+      if (lastCat && catalogJSON) {
+        const catalog = JSON.parse(catalogJSON);
+        const items = (catalog[lastCat] || []).map((name, idx) => ({
+          id: `${lastCat}-${idx+1}`,
+          title: name,
+          price: `₹${(1200 + (idx*37)).toLocaleString()}`,
+          note: 'Special price',
+          img: 'assets/logo.svg'
+        }));
+        renderDeals(items);
+        return;
+      }
       try{
-        const res = await fetch(API_BASE + '/deals'); if(res.ok){ const data = await res.json(); if(Array.isArray(data) && data.length){ renderDeals(data); return; } }
+        const res = await fetch(API_BASE + '/deals');
+        if(res.ok){
+          const data = await res.json();
+          if(Array.isArray(data) && data.length){
+            const mapped = data.map(d=> ({ id: 'd'+(d.id||d.dealId||''), title: d.title, price: d.price, note: d.discount||'Great deal', img: d.imageUrl || 'assets/placeholder.svg' }));
+            renderDeals(mapped);
+            return;
+          }
+        }
+      }catch(e){}
+      // Default Top Deals: pick a few from each category (if available from catalog), else fallback
+      try{
+        const catalog = JSON.parse(localStorage.getItem('dealwise_catalog')||'{}');
+        const order = ['electronics','fashion','home','fitness','gaming','beauty'];
+        const mixed = [];
+        order.forEach(key => {
+          const list = catalog[key] || [];
+          list.slice(0,4).forEach((name, i) => mixed.push({ id:`${key}-${i+1}`, title:name, price:`₹${(1500 + (i*41)).toLocaleString()}`, note:'Editor\'s pick', img:'assets/logo.svg' }));
+        });
+        if (mixed.length) { renderDeals(mixed); return; }
       }catch(e){}
       renderDeals(SAMPLE_DEALS);
     }
 
+    // (Generator removed – using user-provided catalog instead)
+
     // nav actions
     document.getElementById('loginBtn')?.addEventListener('click', ()=> location.href='login.html');
     document.getElementById('signupBtn')?.addEventListener('click', ()=> location.href='signup.html');
-    document.getElementById('cartButton')?.addEventListener('click', ()=> alert('Cart page not built yet (demo)'));
+    document.getElementById('cartButton')?.addEventListener('click', ()=> location.href='cart.html');
 
-    document.addEventListener('DOMContentLoaded', ()=>{ updateCartUI(); loadDeals(); });
+    document.addEventListener('DOMContentLoaded', ()=>{ 
+      // use global cart system for count
+      if (window.dealwiseCart) { window.dealwiseCart.updateCartCount(); }
+      loadDeals(); 
+    });
     window.addToCartId = addToCartId;
     
     function viewProduct(id) {
+      try{
+        const item = (window.currentDeals||[]).find(x=>String(x.id)===String(id));
+        if(item){ localStorage.setItem('dealwise_view_item', JSON.stringify(item)); }
+      }catch(e){}
       window.location.href = `product-detail.html?id=${id}`;
     }
     window.viewProduct = viewProduct;
