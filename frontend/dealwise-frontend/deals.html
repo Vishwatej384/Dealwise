@@ -127,7 +127,7 @@
         card.innerHTML = `<img src="${d.img}" alt="${d.title}" onerror="this.src='assets/placeholder.svg'"><h3>${d.title}</h3><p class="muted">${d.note}</p>
           <div class="deal-actions"><div class="price">${d.price}</div>
           <div style="display:flex;gap:8px">
-            <button class="btn-ghost" onclick="location.href='deals.html'">View</button>
+            <button class="btn-ghost" onclick="viewProduct('${d.id}')">View</button>
             <button class="btn-accent" onclick="addToCartId('${d.id}', this)">Add</button>
           </div></div>`;
         grid.appendChild(card);
@@ -149,6 +149,11 @@
 
     document.addEventListener('DOMContentLoaded', ()=>{ updateCartUI(); loadDeals(); });
     window.addToCartId = addToCartId;
+    
+    function viewProduct(id) {
+      window.location.href = `product-detail.html?id=${id}`;
+    }
+    window.viewProduct = viewProduct;
   </script>
 
   <footer class="mt-20 bg-[#111827] py-8 text-center">

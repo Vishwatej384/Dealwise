@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail — DealWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="js/global.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/shared.js"></script>
+  <style>
+    :root { --bg: #0d1117; --card: #0f1720; --text: #e6eef6; --accent: #00c8ff; --muted: #98a0aa; }
+    body { margin: 0; padding: 20px; background: linear-gradient(180deg, #06080b 0%, #0d1117 100%); color: var(--text); font-family: "Poppins", sans-serif; }
+    
+    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 22px; margin-bottom: 20px; }
+    .brand { display: flex; gap: 12px; align-items: center; }
+    
+    .product-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    
+    .product-image { background: var(--card); padding: 20px; border-radius: 16px; }
+    .product-image img { width: 100%; border-radius: 12px; }
+    
+    .product-info h1 { font-size: 28px; margin-bottom: 16px; color: var(--accent); }
+    .product-info .price { font-size: 32px; font-weight: 700; color: var(--accent); margin: 16px 0; }
+    .product-info .discount { color: #ff4757; font-size: 18px; margin-bottom: 20px; }
+    
+    .product-description { background: var(--card); padding: 24px; border-radius: 12px; margin-top: 20px; }
+    .product-description h3 { color: var(--accent); margin-bottom: 12px; }
+    .product-description ul { list-style: none; padding: 0; }
+    .product-description li { padding: 8px 0; color: var(--muted); }
+    .product-description li:before { content: "✓ "; color: var(--accent); font-weight: 700; }
+    
+    .add-to-cart-btn { width: 100%; padding: 16px; background: linear-gradient(90deg, var(--accent), #66f0ff); color: #001; border: none; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; margin-top: 20px; transition: transform 0.2s; }
+    .add-to-cart-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66fLED#); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">
+        DW
+      </div>
+      <a href="index.html" style="color: var(--text); text-decoration: none; font-weight: 700;">DealWise</a>
+    </div>
+    <div class="nav-right"></div>
+  </header>
+
+  <div class="product-container">
+    <div class="product-image">
+      <img id="productImage" src="" alt="Product Image">
+    </div>
+    
+    <div class="product-info">
+      <h1 id="productTitle">Loading...</h1>
+      <div class="price" id="productPrice">₹0</div>
+      <div class="discount" id="productDiscount"></div>
+      <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+      
+      <div class="product-description">
+        <h3>Product Description</h3>
+        <p id="productDescription">Loading product details...</p>
+        
+        <h3 style="margin-top: 24px;">Key Features</h3>
+        <ul id="productFeatures"></ul>
+        
+        <h3 style="margin-top: 24px;">Specifications</h3>
+        <ul id="productSpecs"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    const PRODUCTS = {
+      d1: {
+        title: 'Wireless Headphones',
+        price: '₹2,499',
+        discount: '30% off',
+        description: 'Premium wireless headphones with noise cancellation, long battery life, and superior sound quality.',
+        features: ['Active Noise Cancellation', '30-hour battery life', 'Bluetooth 5.2', 'Fast charging', 'Comfortable design'],
+        specs: ['Battery: 30 hours', 'Connectivity: Bluetooth 5.2', 'Weight: 250g', 'Color: Black', 'Warranty: 1 year'],
+        img: 'images/headphones.jpg'
+      },
+      d2: {
+        title: 'Smartwatch Series 6',
+        price: '₹8,999',
+        discount: '25% off',
+        description: 'Advanced smartwatch with health tracking, GPS, and smart notifications. Perfect for fitness enthusiasts.',
+        features: ['Heart rate monitor', 'GPS tracking', 'Water resistant', 'Sleep tracking', 'Long battery life'],
+        specs: ['Battery: 7 days', 'Display: 1.4 inch AMOLED', 'Weight: 45g', 'Color: Silver/Black', 'Warranty: 1 year'],
+        img: 'images/smartwatch.jpg'
+      },
+      d3: {
+        title: 'RGB Gaming Keyboard',
+        price: '₹1,799',
+        discount: '40% off',
+        description: 'Mechanical gaming keyboard with RGB backlighting and customizable keys for the ultimate gaming experience.',
+        features: ['RGB backlighting', 'Mechanical switches', 'Anti-ghosting', 'Macro keys', 'Ergonomic design'],
+        specs: ['Switches: Mechanical', 'Layout: Full size', 'RGB: 16.8M colors', 'Weight: 1.2kg', 'Warranty: 1 year'],
+        img: 'images/keyboard.jpg'
+      }
+    };
+    
+    const product = PRODUCTS[productId] || PRODUCTS['d1'];
+    
+    document.getElementById('productImage').src = product.img;
+    document.getElementById('productTitle').textContent = product.title;
+    document.getElementById('productPrice').textContent = product.price;
+    document.getElementById('productDiscount').textContent = product.discount;
+    document.getElementById('productDescription').textContent = product.description;
+    
+    const featuresList = document.getElementById('productFeatures');
+    product.features.forEach(feature => {
+      const li = document.createElement('li');
+      li.textContent = feature;
+      featuresList.appendChild(li);
+    });
+    
+    const specsList = document.getElementById('productSpecs');
+    product.specs.forEach(spec => {
+      const li = document.createElement('li');
+      li.textContent = spec;
+      specsList.appendChild(li);
+    });
+    
+    function addToCart() {
+      if (window.dealwiseCart) {
+        window.dealwiseCart.addToCart({
+          id: productId,
+          title: patent.title,
+          price: product.price,
+          img: product.img,
+          discount: product.discount
+        });
+        alert('Product added to cart!');
+      }
+    }
+  </script>
+</body>
+</html>
+
