@@ -144,9 +144,25 @@ document.addEventListener("DOMContentLoaded", () => {
     cart.forEach(item => {
       const priceMatch = item.price.match(/₹([\d,]+)/);
       const numericPrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
-      total += numericPrice * (item.quantity ||  الأم1);
+      total += numericPrice * (item.quantity || 1);
     });
     
+    // Persist order to localStorage for History page
+    try {
+      const ordersKey = 'dealwise_orders';
+      const existing = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      const nowISO = new Date().toISOString();
+      const newOrder = {
+        id: `ORD-${Date.now()}`,
+        date: nowISO.slice(0,10),
+        status: 'pending',
+        items: cart.map(ci => ({ name: ci.title, price: ci.price, quantity: ci.quantity || 1, image: 'assets/logo.svg' })),
+        total: `₹${total.toLocaleString('en-IN')}`
+      };
+      existing.unshift(newOrder);
+      localStorage.setItem(ordersKey, JSON.stringify(existing));
+    } catch(e) {}
+
     // Show order confirmation
     document.querySelectorAll('[style*="position: fixed"]').forEach(el => el.remove());
     
@@ -179,4 +195,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   renderCart();
+});
+
+// Safety: any visible "Continue Shopping" button will route home
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if(btn && /continue shopping/i.test(btn.textContent||'')){
+    try { window.dealwiseCart.setCart([]); } catch {}
+    window.location.href = 'index.html';
+  }
 });

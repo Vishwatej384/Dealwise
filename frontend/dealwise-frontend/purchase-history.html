@@ -347,7 +347,7 @@
 
   <script>
     // Sample purchase history data
-    const PURCHASE_HISTORY = [
+    const PURCHASE_HISTORY_SAMPLE = [
       {
         id: 'ORD-001',
         date: '2025-01-15',
@@ -389,6 +389,15 @@
     ];
 
     let currentFilter = 'all';
+    function loadOrders(){
+      try {
+        const fromLS = JSON.parse(localStorage.getItem('dealwise_orders') || '[]');
+        return fromLS.length ? fromLS : PURCHASE_HISTORY_SAMPLE;
+      } catch(e){
+        return PURCHASE_HISTORY_SAMPLE;
+      }
+    }
+    let PURCHASE_HISTORY = loadOrders();
 
     function filterOrders(status) {
       currentFilter = status;
@@ -471,6 +480,7 @@
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', () => {
+      PURCHASE_HISTORY = loadOrders();
       updateStats();
       renderPurchaseHistory();
     });

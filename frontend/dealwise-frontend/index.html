@@ -407,15 +407,37 @@
     // If your backend runs elsewhere, change API_BASE
     const API_BASE = 'http://localhost:8080/api';
 
-    // ---------- SAMPLE DATA (can be replaced by backend) ----------
-    const SAMPLE_DEALS = [
-      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'images/headphones.jpg' },
-      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'images/smartwatch.jpg' },
-      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'images/keyboard.jpg' },
-      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'images/headphones.jpg' },
-      { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'images/keyboard.jpg' },
-      { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'images/smartwatch.jpg' }
-    ];
+    // ---------- SAMPLE DATA built from catalog with realistic prices ----------
+    function getCatalog(){ try { return JSON.parse(localStorage.getItem('dealwise_catalog')||'{}'); } catch(e){ return {}; } }
+    function priceForTitle(name){
+      const t=(name||'').toLowerCase(); const n=(a,b)=>Math.round(Math.random()*(b-a)+a);
+      if(t.includes('iphone')||t.includes('galaxy')||t.includes('phone')) return `₹${n(45000,120000).toLocaleString('en-IN')}`;
+      if(t.includes('macbook')||t.includes('xps')||t.includes('laptop')) return `₹${n(60000,180000).toLocaleString('en-IN')}`;
+      if(t.includes('tv')) return `₹${n(25000,90000).toLocaleString('en-IN')}`;
+      if(t.includes('ipad')||t.includes('tablet')) return `₹${n(30000,90000).toLocaleString('en-IN')}`;
+      if(t.includes('buds')||t.includes('headphone')) return `₹${n(2000,35000).toLocaleString('en-IN')}`;
+      if(t.includes('camera')) return `₹${n(40000,120000).toLocaleString('en-IN')}`;
+      if(t.includes('watch')) return `₹${n(3000,30000).toLocaleString('en-IN')}`;
+      if(t.includes('keyboard')||t.includes('mouse')||t.includes('speaker')) return `₹${n(1499,14999).toLocaleString('en-IN')}`;
+      if(t.includes('jeans')||t.includes('shirt')||t.includes('polo')||t.includes('tee')) return `₹${n(799,3999).toLocaleString('en-IN')}`;
+      if(t.includes('sneaker')||t.includes('shoes')) return `₹${n(1999,9999).toLocaleString('en-IN')}`;
+      if(t.includes('air fryer')||t.includes('kettle')||t.includes('cook')) return `₹${n(999,6999).toLocaleString('en-IN')}`;
+      if(t.includes('treadmill')||t.includes('exercise')) return `₹${n(12000,65000).toLocaleString('en-IN')}`;
+      if(t.includes('serum')||t.includes('foundation')||t.includes('toner')||t.includes('lotion')) return `₹${n(199,2499).toLocaleString('en-IN')}`;
+      return `₹${n(999,9999).toLocaleString('en-IN')}`;
+    }
+    function mixedDeals(){
+      const catalog=getCatalog(); const order=['electronics','fashion','home','fitness','gaming','beauty'];
+      const set=new Set(); const out=[];
+      order.forEach(k=>{ (catalog[k]||[]).slice(0,6).forEach((name,i)=>{ if(set.has(name)) return; set.add(name); out.push({ id:`${k}-${i+1}`, title:name, price:priceForTitle(name), note:'Great deal', img:'assets/logo.svg' }); }); });
+      if(out.length) return out;
+      return [
+        { id:'d1', title:'Wireless Headphones', price:'₹2,499', note:'30% off', img:'assets/logo.svg' },
+        { id:'d2', title:'Smartwatch Series 6', price:'₹8,999', note:'25% off', img:'assets/logo.svg' },
+        { id:'d3', title:'RGB Gaming Keyboard', price:'₹1,799', note:'40% off', img:'assets/logo.svg' }
+      ];
+    }
+    const SAMPLE_DEALS = mixedDeals();
 
     // ---------- CART (localStorage) ----------
     const CART_KEY = 'dealwise_cart';
