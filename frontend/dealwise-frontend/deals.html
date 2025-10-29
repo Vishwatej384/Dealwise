@@ -75,6 +75,8 @@
 
   <div id="toast" role="status" aria-live="polite"></div>
 
+  <script src="js/global.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     // Shared small runtime (same logic as index but scoped)
     const API_BASE = 'http://localhost:8080/api';
@@ -95,22 +97,28 @@
     function showToast(msg, t=1300){ const tEl = document.getElementById('toast'); tEl.textContent=msg; tEl.classList.add('show'); clearTimeout(window._to); window._to=setTimeout(()=>tEl.classList.remove('show'),t); }
 
     function addToCartId(id, btn){
-      const deal = SAMPLE_DEALS.find(d=>d.id===id); if(!deal) return showToast('Not found');
-      const cart = readCart(); const idx = cart.findIndex(x=>x.id===id);
-      if(idx>=0) cart[idx].qty=(cart[idx].qty||1)+1; else cart.push({ id:deal.id, title:deal.title, price:deal.price, qty:1});
-      writeCart(cart);
-      // micro +1 animation
-      const plus=document.createElement('span'); plus.textContent='+1'; plus.style.position='absolute'; plus.style.right='10px'; plus.style.top='10px'; plus.style.color='#00ffd6'; plus.style.fontWeight='800'; btn.parentElement.appendChild(plus);
-      plus.animate([{transform:'translateY(0)', opacity:1},{transform:'translateY(-26px)', opacity:0}], {duration:700, easing:'cubic-bezier(.2,.9,.2,1)'});
-      setTimeout(()=>plus.remove(),750);
-      showToast('✅ Added to cart');
+      const deal = SAMPLE_DEALS.find(d=>d.id===id); 
+      if(!deal) {
+        alert('Item not found');
+        return;
+      }
+      
+      if (window.dealwiseCart) {
+        window.dealwiseCart.addToCart({
+          id: deal.id,
+          title: deal.title,
+          price: deal.price,
+          note: deal.note,
+          img: deal.img
+        });
+      }
     }
 
     function renderDeals(deals){
       const grid = document.getElementById('dealsGrid'); grid.innerHTML='';
       deals.forEach(d=>{
         const card = document.createElement('div'); card.className='deal-card pop-in';
-        card.innerHTML = `<img src="${d.img}" alt="${d.title}"><h3>${d.title}</h3><p class="muted">${d.note}</p>
+        card.innerHTML = `<img src="${d.img}" alt="${d.title}" onerror="this.src='assets/placeholder.svg'"><h3>${d.title}</h3><p class="muted">${d.note}</p>
           <div class="deal-actions"><div class="price">${d.price}</div>
           <div style="display:flex;gap:8px">
             <button class="btn-ghost" onclick="location.href='deals.html'">View</button>

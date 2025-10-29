@@ -27,38 +27,52 @@
 
     /* Light theme specific styles */
     [data-theme="light"] body {
-      background: var(--bg);
-      color: var(--text);
+      background: #f8f9fa !important;
+      color: #111 !important;
     }
 
     [data-theme="light"] .profile-container {
-      background: var(--card);
-      color: var(--text);
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      background: #ffffff !important;
+      color: #111 !important;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1) !important;
+      border: 1px solid #e9ecef;
     }
 
     [data-theme="light"] form input, 
     [data-theme="light"] form select, 
     [data-theme="light"] form textarea {
-      background: #f8f9fa;
-      color: var(--text);
-      border: 1px solid #e9ecef;
+      background: #f8f9fa !important;
+      color: #111 !important;
+      border: 1px solid #e9ecef !important;
     }
 
     [data-theme="light"] form input:focus, 
     [data-theme="light"] form select:focus, 
     [data-theme="light"] form textarea:focus {
-      background: #ffffff;
-      border-color: var(--accent);
+      background: #ffffff !important;
+      border-color: var(--accent) !important;
     }
 
     [data-theme="light"] .slider {
-      background-color: #ccc;
+      background-color: #ccc !important;
     }
 
     [data-theme="light"] input:checked + .slider {
-      background-color: var(--accent);
-      box-shadow: 0 0 12px rgba(0, 119, 255, 0.4);
+      background-color: var(--accent) !important;
+      box-shadow: 0 0 12px rgba(0, 119, 255, 0.4) !important;
+    }
+
+    [data-theme="light"] .profile-placeholder {
+      border-color: var(--accent) !important;
+      color: var(--accent) !important;
+    }
+
+    [data-theme="light"] .upload-btn {
+      color: var(--accent) !important;
+    }
+
+    [data-theme="light"] label {
+      color: #666 !important;
     }
 
     body {
@@ -240,6 +254,15 @@
 <body>
   <div class="profile-container">
     <h2>My Profile</h2>
+
+    <div class="theme-toggle" style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
+      <span style="color: var(--muted); font-size: 14px;">🌙</span>
+      <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 25px;">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; border-radius: 25px;"></span>
+      </label>
+      <span style="color: var(--muted); font-size: 14px;">☀️</span>
+    </div>
 
     <div class="profile-pic">
       <div class="profile-placeholder" id="profilePlaceholder">

@@ -1,104 +1,54 @@
 // Global theme and utility functions for DealWise
 class DealWiseTheme {
   constructor() {
+    this.currentTheme = 'dark';
     this.init();
   }
 
   init() {
     this.loadTheme();
+    this.applyTheme();
     this.setupThemeToggle();
-    this.updateThemeUI();
   }
 
   loadTheme() {
     const savedTheme = localStorage.getItem('dealwise_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
     this.currentTheme = savedTheme;
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+
+  applyTheme() {
+    // Apply theme to body
+    const body = document.body;
+    if (this.currentTheme === 'light') {
+      body.classList.add('light-theme');
+      body.classList.remove('dark-theme');
+    } else {
+      body.classList.add('dark-theme');
+      body.classList.remove('light-theme');
+    }
   }
 
   toggleTheme() {
     this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', this.currentTheme);
     localStorage.setItem('dealwise_theme', this.currentTheme);
+    this.applyTheme();
     this.updateThemeUI();
   }
 
   setupThemeToggle() {
-    // Create theme toggle if it doesn't exist
-    if (!document.getElementById('globalThemeToggle')) {
-      this.createThemeToggle();
-    }
-    
-    const toggle = document.getElementById('globalThemeToggle');
+    // Look for existing theme toggle
+    const toggle = document.getElementById('themeSwitch');
     if (toggle) {
       toggle.addEventListener('change', () => this.toggleTheme());
       toggle.checked = this.currentTheme === 'dark';
     }
   }
 
-  createThemeToggle() {
-    // Add theme toggle to navbar if it exists
-    const navRight = document.querySelector('.nav-right');
-    if (navRight && !document.getElementById('globalThemeToggle')) {
-      const themeContainer = document.createElement('div');
-      themeContainer.style.cssText = `
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-right: 10px;
-      `;
-      
-      themeContainer.innerHTML = `
-        <span style="color: var(--muted); font-size: 12px;">🌙</span>
-        <label class="switch" style="position: relative; display: inline-block; width: 40px; height: 20px;">
-          <input type="checkbox" id="globalThemeToggle" ${this.currentTheme === 'dark' ? 'checked' : ''}>
-          <span class="slider" style="
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #555;
-            transition: .4s;
-            border-radius: 20px;
-          "></span>
-        </label>
-        <span style="color: var(--muted); font-size: 12px;">☀️</span>
-      `;
-      
-      navRight.insertBefore(themeContainer, navRight.firstChild);
-      
-      // Add slider styles
-      const style = document.createElement('style');
-      style.textContent = `
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .switch .slider:before {
-          position: absolute;
-          content: "";
-          height: 16px;
-          width: 16px;
-          left: 2px;
-          bottom: 2px;
-          background-color: white;
-          transition: .4s;
-          border-radius: 50%;
-        }
-        .switch input:checked + .slider {
-          background-color: var(--accent);
-          box-shadow: 0 0 8px rgba(0,200,255,0.3);
-        }
-        .switch input:checked + .slider:before {
-          transform: translateX(20px);
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }
-
   updateThemeUI() {
     // Update any existing theme toggles
-    const toggles = document.querySelectorAll('#globalThemeToggle, #themeSwitch');
+    const toggles = document.querySelectorAll('#themeSwitch');
     toggles.forEach(toggle => {
       toggle.checked = this.currentTheme === 'dark';
     });
@@ -141,6 +91,7 @@ class DealWiseCart {
     
     this.setCart(cart);
     this.showAddToCartAnimation();
+    return cart;
   }
 
   updateCartCount() {

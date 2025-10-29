@@ -34,10 +34,11 @@
       <a class="nav-link" href="about.html">About</a>
       <a class="nav-link" href="contact.html">Contact</a>
     </nav>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div class="nav-right" style="display:flex;gap:8px;align-items:center">
       <div class="search-wrap"><input placeholder="Search categories..." style="padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.03);color:#e6eef6"/></div>
-      <button onclick="location.href='login.html'" class="icon-btn" style="background:transparent;border-radius:8px;padding:8px 10px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)">Login</button>
-      <button onclick="location.href='signup.html'" class="btn-accent" style="background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:8px 12px;border-radius:8px;border:none;font-weight:700">Sign Up</button>
+      <button id="cartButton" class="icon-btn" style="background:transparent;border-radius:8px;padding:8px 10px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)">🛍️ <span id="cartCount" style="margin-left:8px;background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:2px 8px;border-radius:999px;font-weight:700">0</span></button>
+      <button id="loginBtn" class="icon-btn" style="background:transparent;border-radius:8px;padding:8px 10px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)">Login</button>
+      <button id="signupBtn" class="btn-accent" style="background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:8px 12px;border-radius:8px;border:none;font-weight:700">Sign Up</button>
     </div>
   </header>
 
@@ -55,6 +56,8 @@
 
   <div id="toast" role="status" aria-live="polite"></div>
 
+  <script src="js/global.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     const CATS = [
       {key:'electronics', title:'Electronics', img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80'},
