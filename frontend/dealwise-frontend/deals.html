@@ -145,7 +145,7 @@
         const items = (catalog[lastCat] || []).map((name, idx) => ({
           id: `${lastCat}-${idx+1}`,
           title: name,
-          price: `₹${(1200 + (idx*37)).toLocaleString()}`,
+          price: priceForTitle(name),
           note: 'Special price',
           img: 'assets/logo.svg'
         }));
@@ -170,14 +170,54 @@
         const mixed = [];
         order.forEach(key => {
           const list = catalog[key] || [];
-          list.slice(0,4).forEach((name, i) => mixed.push({ id:`${key}-${i+1}`, title:name, price:`₹${(1500 + (i*41)).toLocaleString()}`, note:'Editor\'s pick', img:'assets/logo.svg' }));
+          list.slice(0,4).forEach((name, i) => mixed.push({ id:`${key}-${i+1}`, title:name, price:priceForTitle(name), note:'Editor\'s pick', img:'assets/logo.svg' }));
         });
         if (mixed.length) { renderDeals(mixed); return; }
       }catch(e){}
       renderDeals(SAMPLE_DEALS);
     }
 
-    // (Generator removed – using user-provided catalog instead)
+    // Price helper — choose realistic ranges by item type
+    function priceForTitle(name){
+      const t = (name||'').toLowerCase();
+      const n = (min,max) => Math.round(Math.random()*(max-min)+min);
+      // Electronics
+      if(t.includes('iphone') || t.includes('galaxy') || t.includes('phone')) return `₹${n(45000,120000).toLocaleString()}`;
+      if(t.includes('macbook') || t.includes('xps') || t.includes('laptop')) return `₹${n(60000,180000).toLocaleString()}`;
+      if(t.includes('tv')) return `₹${n(25000,90000).toLocaleString()}`;
+      if(t.includes('ipad') || t.includes('tablet')) return `₹${n(30000,90000).toLocaleString()}`;
+      if(t.includes('buds') || t.includes('headphone')) return `₹${n(2000,35000).toLocaleString()}`;
+      if(t.includes('camera')) return `₹${n(40000,120000).toLocaleString()}`;
+      if(t.includes('power') || t.includes('powerbank')) return `₹${n(1500,6000).toLocaleString()}`;
+      if(t.includes('watch')) return `₹${n(3000,30000).toLocaleString()}`;
+      // Fashion
+      if(t.includes('jeans') || t.includes('overshirt') || t.includes('polo') || t.includes('shirt') || t.includes('pants') || t.includes('shorts') || t.includes('t-shirt') || t.includes('tee')) return `₹${n(799,3999).toLocaleString()}`;
+      if(t.includes('sneaker') || t.includes('shoes') || t.includes('crocs')) return `₹${n(1999,9999).toLocaleString()}`;
+      if(t.includes('watch')) return `₹${n(3999,19999).toLocaleString()}`;
+      if(t.includes('sunglass')) return `₹${n(2999,14999).toLocaleString()}`;
+      if(t.includes('handbag') || t.includes('blazer')) return `₹${n(4999,49999).toLocaleString()}`;
+      // Home & Kitchen
+      if(t.includes('air fryer')) return `₹${n(4999,14999).toLocaleString()}`;
+      if(t.includes('mixer') || t.includes('grinder') || t.includes('cookware') || t.includes('kettle') || t.includes('pan') || t.includes('pressure cooker')) return `₹${n(999,6999).toLocaleString()}`;
+      if(t.includes('vacuum') || t.includes('heater') || t.includes('ceiling fan')) return `₹${n(2999,24999).toLocaleString()}`;
+      if(t.includes('pillow') || t.includes('bottle') || t.includes('storage') || t.includes('lamp') || t.includes('lunchbox')) return `₹${n(399,2999).toLocaleString()}`;
+      // Fitness
+      if(t.includes('yoga') || t.includes('rope') || t.includes('bands') || t.includes('gloves')) return `₹${n(299,1999).toLocaleString()}`;
+      if(t.includes('treadmill') || t.includes('exercise bike')) return `₹${n(12000,65000).toLocaleString()}`;
+      if(t.includes('protein') || t.includes('peanut butter')) return `₹${n(399,2999).toLocaleString()}`;
+      if(t.includes('fitbit') || t.includes('fitness tracker')) return `₹${n(3999,19999).toLocaleString()}`;
+      // Gaming
+      if(t.includes('playstation') || t.includes('xbox') || t.includes('switch') || t.includes('steam deck')) return `₹${n(25000,80000).toLocaleString()}`;
+      if(t.includes('gaming laptop')) return `₹${n(70000,200000).toLocaleString()}`;
+      if(t.includes('monitor')) return `₹${n(12000,45000).toLocaleString()}`;
+      if(t.includes('keyboard') || t.includes('mouse') || t.includes('headset') || t.includes('controller') || t.includes('capture')) return `₹${n(1499,14999).toLocaleString()}`;
+      if(t.includes('chair')) return `₹${n(6999,29999).toLocaleString()}`;
+      // Beauty
+      if(t.includes('serum') || t.includes('moisturizer') || t.includes('foundation') || t.includes('toner') || t.includes('lip') || t.includes('kajal') || t.includes('wash') || t.includes('lotion') || t.includes('oil')) return `₹${n(199,2499).toLocaleString()}`;
+      if(t.includes('hair straightener')) return `₹${n(1499,5999).toLocaleString()}`;
+      // default
+      return `₹${n(999,9999).toLocaleString()}`;
+    }
 
     // nav actions
     document.getElementById('loginBtn')?.addEventListener('click', ()=> location.href='login.html');

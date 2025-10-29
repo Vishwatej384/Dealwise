@@ -10,10 +10,18 @@
   <script src="js/shared.js"></script>
   <style>
     :root { --bg: #0d1117; --card: #0f1720; --text: #e6eef6; --accent: #00c8ff; --muted: #98a0aa; }
-    body { margin: 0; padding: 20px; background: linear-gradient(180deg, #06080b 0%, #0d1117 100%); color: var(--text); font-family: "Poppins", sans-serif; }
+    body { margin: 0; background: linear-gradient(180deg, #06080b 0%, #0d1117 100%); color: var(--text); font-family: "Poppins", sans-serif; }
     
-    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 22px; margin-bottom: 20px; }
-    .brand { display: flex; gap: 12px; align-items: center; }
+    /* Polished sticky navbar matching the site */
+    header.navbar{ position:sticky; top:0; z-index:60; display:flex; align-items:center; justify-content:space-between; padding:12px 22px; gap:12px; backdrop-filter: blur(6px); background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .nav-center{ display:flex; gap:12px; align-items:center; }
+    .nav-link{ color:var(--muted); padding:8px 12px; border-radius:8px; transition: all .22s ease; font-weight:600; font-size:14px; text-decoration:none }
+    .nav-link:hover{ color:#fff; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transform:translateY(-2px); }
+    .nav-right{ display:flex; align-items:center; gap:10px; }
+    .search-wrap input{ width:260px; padding:10px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.04); color:#e6eef6; outline:none; }
+
+    main{ padding:28px; max-width:1200px; margin:0 auto 80px; }
     
     .product-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
     
@@ -35,16 +43,28 @@
   </style>
 </head>
 <body>
-  <header>
+  <header class="navbar">
     <div class="brand">
-      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">
-        DW
+      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">DW</div>
+      <div>
+        <div style="font-weight:700">DealWise</div>
+        <div style="font-size:12px;color:var(--muted)">Smart Deals • Verified</div>
       </div>
-      <a href="index.html" style="color: var(--text); text-decoration: none; font-weight: 700;">DealWise</a>
     </div>
-    <div class="nav-right"></div>
+    <nav class="nav-center">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search-wrap"><input placeholder="Search deals..." /></div>
+      <button id="cartButton" class="icon-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.03); padding:8px 10px; border-radius:10px; cursor:pointer; color:var(--muted);">🛍️ <span id="cartCount" class="cart-count" style="margin-left:8px;background:linear-gradient(90deg,#00c8ff,#66f0ff);color:#001;padding:2px 8px;border-radius:999px;font-weight:700">0</span></button>
+      <a class="nav-link" href="profile.html" style="color:#e6eef6;font-weight:600">My Profile</a>
+    </div>
   </header>
 
+  <main>
   <div class="product-container">
     <div class="product-image">
       <img id="productImage" src="" alt="Product Image">
@@ -68,6 +88,7 @@
       </div>
     </div>
   </div>
+  </main>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);

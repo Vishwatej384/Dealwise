@@ -112,7 +112,7 @@
           localStorage.setItem('dealwise_catalog', JSON.stringify(getCatalog()));
           location.href='deals.html';
         };
-        card.innerHTML = `<img src="${c.img}" alt="${c.title}" onerror="this.src='assets/placeholder.svg'"><div style="margin-top:8px;font-weight:700">${c.title}</div><div class="muted" style="font-size:13px;margin-top:6px">Browse</div>`;
+        card.innerHTML = `<img src="assets/logo.svg" alt="${c.title}"><div style="margin-top:8px;font-weight:700">${c.title}</div><div class="muted" style="font-size:13px;margin-top:6px">Browse</div>`;
         grid.appendChild(card);
       });
     }

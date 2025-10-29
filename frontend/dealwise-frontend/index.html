@@ -513,25 +513,22 @@
         const card = document.createElement('div');
         card.className = `deal-card slide-up stagger-${Math.min(index + 1, 6)}`;
         card.innerHTML = `
-          <img src="${d.img}" alt="${d.title}" onerror="this.src='assets/placeholder.svg'">
+          <img src="assets/logo.svg" alt="${d.title}">
           <h3>${d.title}</h3>
           <p class="muted">${d.note}</p>
           <div class="deal-actions">
             <div class="price">${d.price}</div>
             <div style="display:flex;gap:8px;">
-              <button class="btn-ghost" data-id="${d.id}" aria-label="view-${d.id}" onclick="navigateTo(`product-detail.html?id=${d.id}`)">View</button>
-              <button class="btn-accent" data-id="${d.id}" aria-label="add-${d.id}">Add</button>
+              <button class="btn-ghost" data-id="${d.id}" onclick="navigateTo('product-detail.html?id=${d.id}')">View</button>
+              <button class="btn-accent" data-id="${d.id}">Add</button>
             </div>
           </div>
         `;
         grid.appendChild(card);
       });
-
-      // attach handlers for add buttons
+      // Always re-bind Add handlers:
       grid.querySelectorAll('.btn-accent[data-id]').forEach(b=>{
-        b.addEventListener('click', (ev)=> {
-          addToCartFromButton(b);
-        });
+        b.onclick = function(){ addToCartFromButton(b); };
       });
     }
 
@@ -574,7 +571,7 @@
               title: deal.title,
               price: deal.price,
               note: deal.discount || 'Great deal',
-              img: deal.imageUrl || 'images/headphones.jpg'
+              img: 'assets/logo.svg' // Always use assets/logo.svg for backend deals
             }));
             renderDealsList(transformedDeals);
             return;
