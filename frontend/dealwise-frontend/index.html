@@ -202,15 +202,9 @@
 
   <header class="navbar pop-in">
     <div class="brand">
-      <svg class="bag-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="24" height="24" rx="6" fill="url(#g)"/>
-        <defs>
-          <linearGradient id="g" x1="0" x2="1">
-            <stop offset="0" stop-color="#00c8ff" stop-opacity="0.16"/>
-            <stop offset="1" stop-color="#66f0ff" stop-opacity="0.12"/>
-          </linearGradient>
-        </defs>
-      </svg>
+      <div class="bag-icon" style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px; box-shadow:0 8px 25px rgba(0,200,255,0.3);">
+        DW
+      </div>
       <div>
         <div class="brand-name">DealWise</div>
         <div class="brand-tag">Smart Deals • Verified</div>
@@ -221,6 +215,7 @@
       <a class="nav-link active" href="index.html">Home</a>
       <a class="nav-link" href="categories.html">Categories</a>
       <a class="nav-link" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="purchase-history.html">History</a>
       <a class="nav-link" href="about.html">About</a>
       <a class="nav-link" href="contact.html">Contact</a>
     </nav>
@@ -246,8 +241,8 @@
         <h1 class="hero-title">Discover the best deals — <span class="gradient-text">save smarter</span></h1>
         <p class="hero-sub">DealWise collects verified offers, honest reviews and price-tracking tools — all in one neon-powered, dark-mode interface built for fast shopping.</p>
         <div class="hero-ctas">
-          <button class="btn-accent micro-bounce" onclick="navigateTo('deals.html')">Browse Deals</button>
-          <button class="btn-ghost micro-bounce" onclick="navigateTo('categories.html')">Shop by Category</button>
+          <button class="btn-accent micro-bounce liquid-btn btn-ripple" onclick="navigateTo('deals.html')">Browse Deals</button>
+          <button class="btn-ghost micro-bounce magnetic" onclick="navigateTo('categories.html')">Shop by Category</button>
         </div>
         <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
           <div style="display:flex; gap:8px; align-items:center;">
@@ -280,7 +275,7 @@
 
     <!-- WHY CHOOSE -->
     <section class="container why">
-      <h2 class="section-title gradient-text slide-up stagger-1">Why Choose DealWise</h2>
+      <h2 class="section-title holographic slide-up stagger-1">Why Choose DealWise</h2>
       <div style="display:flex; gap:12px;">
         <div class="why-card slide-up stagger-2" style="flex:1; background:var(--card); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);">
           <div style="font-size:22px">🔎</div>
@@ -302,7 +297,7 @@
 
     <!-- CATEGORIES -->
     <section id="categories" class="container">
-      <h2 class="section-title gradient-text slide-up stagger-1">Shop by Category</h2>
+      <h2 class="section-title holographic slide-up stagger-1">Shop by Category</h2>
       <div class="cat-grid">
         <div class="cat-card slide-up stagger-1" onclick="navigateTo('categories.html')">
           <img src="images/keyboard.jpg" alt="Electronics" onerror="this.src='assets/placeholder.svg'">
@@ -333,7 +328,7 @@
 
     <!-- TOP DEALS -->
     <section id="top-deals" class="container">
-      <h2 class="section-title gradient-text slide-up stagger-1">🔥 Top Deals</h2>
+      <h2 class="section-title holographic slide-up stagger-1">🔥 Top Deals</h2>
       <div id="dealsGrid" class="deals-grid" aria-live="polite"></div>
     </section>
 
@@ -370,25 +365,37 @@
     <div>
       <div style="display:flex; gap:10px; align-items:center">
         <div style="display:flex; gap:10px; align-items:center">
-          <svg width="30" height="30" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#00c8ff" opacity="0.12"/></svg>
+          <div style="width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:14px;">
+            DW
+          </div>
           <div style="font-weight:700">DealWise</div>
         </div>
         <div style="color:var(--muted); margin-left:12px">© 2025 DealWise</div>
       </div>
     </div>
 
-    <div style="display:flex; gap:12px; align-items:center">
-      <nav style="display:flex; gap:10px">
-        <a href="deals.html">Top Deals</a>
-        <a href="categories.html">Categories</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+    <div style="display:flex; gap:20px; align-items:center">
+      <nav style="display:flex; gap:15px">
+        <a href="deals.html" style="color:var(--muted); text-decoration:none; transition:color 0.3s ease;">Top Deals</a>
+        <a href="categories.html" style="color:var(--muted); text-decoration:none; transition:color 0.3s ease;">Categories</a>
+        <a href="about.html" style="color:var(--muted); text-decoration:none; transition:color 0.3s ease;">About</a>
+        <a href="contact.html" style="color:var(--muted); text-decoration:none; transition:color 0.3s ease;">Contact</a>
       </nav>
+      
+      <div style="display:flex; gap:15px; align-items:center; margin-left:20px;">
+        <span style="color:var(--muted); font-size:14px;">Follow us:</span>
+        <a href="https://instagram.com/dealwise" target="_blank" style="color:var(--accent); text-decoration:none; font-size:18px; transition:all 0.3s ease;" title="Instagram">📷</a>
+        <a href="https://twitter.com/dealwise" target="_blank" style="color:var(--accent); text-decoration:none; font-size:18px; transition:all 0.3s ease;" title="Twitter">🐦</a>
+        <a href="https://facebook.com/dealwise" target="_blank" style="color:var(--accent); text-decoration:none; font-size:18px; transition:all 0.3s ease;" title="Facebook">📘</a>
+        <a href="https://linkedin.com/company/dealwise" target="_blank" style="color:var(--accent); text-decoration:none; font-size:18px; transition:all 0.3s ease;" title="LinkedIn">💼</a>
+        <a href="https://youtube.com/dealwise" target="_blank" style="color:var(--accent); text-decoration:none; font-size:18px; transition:all 0.3s ease;" title="YouTube">📺</a>
+      </div>
     </div>
   </footer>
 
   <div id="toast" role="status" aria-live="polite"></div>
 
+  <script src="js/global.js"></script>
   <script>
     /**********************************************
      * DealWise index.js (inline) - Dark + lively
@@ -433,25 +440,40 @@
     // Called by hero card add button
     function addToCartByData(id){
       const deal = SAMPLE_DEALS.find(d=>d.id===id);
-      if(!deal) return showToast('Item not available');
-      const cart = readCart();
-      const idx = cart.findIndex(it => it.id === id);
-      if(idx >= 0) cart[idx].qty = (cart[idx].qty||1) + 1;
-      else cart.push({ id: deal.id, title: deal.title, price: deal.price, qty: 1, img: deal.img });
-      writeCart(cart);
-      showToast('✅ Added to cart');
+      if(!deal) {
+        DealWiseUtils.showToast('Item not available', 'error');
+        return;
+      }
+      
+      // Use global cart system
+      window.dealwiseCart.addToCart({
+        id: deal.id,
+        title: deal.title,
+        price: deal.price,
+        img: deal.img,
+        note: deal.note
+      });
+      
+      DealWiseUtils.showToast('✅ Added to cart!', 'success');
     }
 
     // will be used for dynamic "Add" buttons
     function addToCartFromButton(btn){
       const id = btn.getAttribute('data-id');
       const deal = SAMPLE_DEALS.find(d=>d.id===id);
-      if(!deal) return showToast('Item not available');
-      const cart = readCart();
-      const idx = cart.findIndex(it => it.id === id);
-      if(idx >= 0) cart[idx].qty = (cart[idx].qty||1) + 1;
-      else cart.push({ id: deal.id, title: deal.title, price: deal.price, qty: 1, img: deal.img });
-      writeCart(cart);
+      if(!deal) {
+        DealWiseUtils.showToast('Item not available', 'error');
+        return;
+      }
+      
+      // Use global cart system
+      window.dealwiseCart.addToCart({
+        id: deal.id,
+        title: deal.title,
+        price: deal.price,
+        img: deal.img,
+        note: deal.note
+      });
 
       // Enhanced animated +1 near the button
       const plus = document.createElement('span');
@@ -477,7 +499,7 @@
       });
       setTimeout(()=> plus.remove(), 1100);
 
-      showToast('✅ Added to cart');
+      DealWiseUtils.showToast('✅ Added to cart!', 'success');
     }
 
     // ---------- Render deals to grid ----------

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Profile — DealWise</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/global.js"></script>
   <script defer src="js/script.js"></script>
   <style>
     /* ---------- PROFILE PAGE STYLING ---------- */
@@ -238,14 +239,6 @@
 </head>
 <body>
   <div class="profile-container">
-    <div class="theme-toggle">
-      <span>Dark Mode</span>
-      <label class="switch">
-        <input type="checkbox" id="themeSwitch" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
     <h2>My Profile</h2>
 
     <div class="profile-pic">
@@ -357,8 +350,11 @@
           userData.email = formData.email;
           localStorage.setItem('dealwise_user', JSON.stringify(userData));
           
-          // Show success message
-          showSuccessMessage('Profile updated successfully!');
+          // Show success message and redirect
+          showSuccessMessage('Profile updated successfully! Redirecting to home...');
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 2000);
         } else {
           showErrorMessage(result.message || 'Failed to update profile');
         }
@@ -367,17 +363,7 @@
       }
     });
     
-    // Theme toggle functionality
-    document.getElementById('themeSwitch').addEventListener('change', (e) => {
-      const isDark = e.target.checked;
-      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    document.getElementById('themeSwitch').checked = savedTheme === 'dark';
+    // Theme is now handled by global.js
     
     // Profile picture upload
     document.getElementById('upload').addEventListener('change', (e) => {

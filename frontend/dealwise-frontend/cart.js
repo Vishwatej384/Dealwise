@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const CART_KEY = 'dealwise_cart';
-  const items = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  // Use global cart system
+  const cart = window.dealwiseCart.getCart();
   const cartDiv = document.getElementById("cartItems");
   const totalDiv = document.getElementById("cartTotal");
 
@@ -8,13 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     cartDiv.innerHTML = "";
     let total = 0;
     
-    if (items.length === 0) {
+    if (cart.length === 0) {
       cartDiv.innerHTML = `
         <div style="text-align: center; padding: 40px; color: var(--muted);">
           <div style="font-size: 48px; margin-bottom: 16px;">🛒</div>
           <h3>Your cart is empty</h3>
           <p>Add some items to get started!</p>
-          <button onclick="window.location.href='index.html'" style="margin-top: 16px; background: var(--accent); color: #001; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          <button onclick="DealWiseUtils.navigateTo('index.html')" style="margin-top: 16px; background: var(--accent); color: #001; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
             Continue Shopping
           </button>
         </div>
@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    items.forEach((item, i) => {
+    cart.forEach((item, i) => {
       // Extract numeric price for calculation
       const priceMatch = item.price.match(/₹([\d,]+)/);
       const numericPrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
-      const quantity = item.qty || 1;
+      const quantity = item.quantity || 1;
       const itemTotal = numericPrice * quantity;
       total += itemTotal;
       
@@ -59,33 +59,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.removeItem = (i) => {
-    items.splice(i, 1);
-    localStorage.setItem(CART_KEY, JSON.stringify(items));
+    cart.splice(i, 1);
+    window.dealwiseCart.setCart(cart);
     renderCart();
-    updateCartCount();
   };
 
   window.updateQuantity = (i, change) => {
-    if (items[i]) {
-      items[i].qty = Math.max(1, (items[i].qty || 1) + change);
-      localStorage.setItem(CART_KEY, JSON.stringify(items));
+    if (cart[i]) {
+      cart[i].quantity = Math.max(1, (cart[i].quantity || 1) + change);
+      window.dealwiseCart.setCart(cart);
       renderCart();
-      updateCartCount();
     }
   };
 
-  function updateCartCount() {
-    const count = items.reduce((sum, item) => sum + (item.qty || 1), 0);
-    // Update cart count in other pages if they exist
-    const cartCountEl = document.getElementById('cartCount');
-    if (cartCountEl) {
-      cartCountEl.textContent = count;
-    }
-  }
-
   document.getElementById("checkoutBtn").addEventListener("click", () => {
-    if (items.length === 0) {
-      alert("Your cart is empty!");
+    if (cart.length === 0) {
+      DealWiseUtils.showToast("Your cart is empty!", "error");
       return;
     }
     
@@ -109,8 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function clearCart() {
-    localStorage.removeItem(CART_KEY);
-    window.location.href = 'index.html';
+    window.dealwiseCart.setCart([]);
+    DealWiseUtils.navigateTo('index.html');
   }
 
   renderCart();

@@ -772,3 +772,272 @@ input:focus, textarea:focus, select:focus {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ===================================================
+   ULTRA MODERN ENHANCEMENTS & MICRO-INTERACTIONS
+=================================================== */
+
+/* Particle background effect */
+.particle-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: floatParticle 8s infinite linear;
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10px) translateX(50px); opacity: 0; }
+}
+
+/* Enhanced button ripple effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Glowing text effect */
+.glow-text {
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+  animation: glowPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent); }
+  to { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent), 0 0 40px var(--accent); }
+}
+
+/* Morphing shapes */
+.morph-shape {
+  animation: morphShape 4s ease-in-out infinite;
+}
+
+@keyframes morphShape {
+  0%, 100% { border-radius: 20px; }
+  25% { border-radius: 50px 20px 50px 20px; }
+  50% { border-radius: 20px 50px 20px 50px; }
+  75% { border-radius: 50px; }
+}
+
+/* 3D card flip effect */
+.card-flip {
+  perspective: 1000px;
+}
+
+.card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-flip:hover .card-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.card-flip-front, .card-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px;
+}
+
+.card-flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Liquid button effect */
+.liquid-btn {
+  position: relative;
+  background: linear-gradient(45deg, var(--accent), #66f0ff);
+  border: none;
+  color: #001;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.liquid-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.liquid-btn:hover::before {
+  left: 100%;
+}
+
+.liquid-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(0,200,255,0.4);
+}
+
+/* Neon border effect */
+.neon-border {
+  border: 2px solid var(--accent);
+  box-shadow: 
+    0 0 5px var(--accent),
+    inset 0 0 5px var(--accent),
+    0 0 10px var(--accent),
+    inset 0 0 10px var(--accent);
+  animation: neonFlicker 2s infinite alternate;
+}
+
+@keyframes neonFlicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    box-shadow: 
+      0 0 5px var(--accent),
+      inset 0 0 5px var(--accent),
+      0 0 10px var(--accent),
+      inset 0 0 10px var(--accent);
+  }
+  20%, 24%, 55% {
+    box-shadow: 
+      0 0 2px var(--accent),
+      inset 0 0 2px var(--accent),
+      0 0 5px var(--accent),
+      inset 0 0 5px var(--accent);
+  }
+}
+
+/* Holographic effect */
+.holographic {
+  background: linear-gradient(45deg, 
+    #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #fb5607);
+  background-size: 400% 400%;
+  animation: holographicShift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes holographicShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Magnetic hover effect */
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.magnetic:hover {
+  transform: scale(1.1) rotate(2deg);
+}
+
+/* Shimmer loading effect */
+.shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.2) 50%, 
+    rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Enhanced scrollbar with glow */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), #66f0ff);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,200,255,0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #66f0ff, var(--accent));
+  box-shadow: 0 0 15px rgba(0,200,255,0.8);
+}
+
+/* Enhanced focus states with glow */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 
+    0 0 0 3px rgba(0,200,255,0.1),
+    0 0 20px rgba(0,200,255,0.3);
+  transform: scale(1.02);
+}
+
+/* Ultra smooth transitions */
+* {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Performance optimizations */
+.deal-card, .cat-card, .hero-card {
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+  .particle {
+    display: none; /* Disable particles on mobile for performance */
+  }
+  
+  .card-flip:hover .card-flip-inner {
+    transform: none; /* Disable 3D effects on mobile */
+  }
+  
+  .magnetic:hover {
+    transform: scale(1.05); /* Reduce magnetic effect on mobile */
+  }
+}

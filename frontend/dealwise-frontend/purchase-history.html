@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase History — DealWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/global.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #0f1720;
+      --text: #e6eef6;
+      --accent: #00c8ff;
+      --muted: #98a0aa;
+    }
+
+    body {
+      background: linear-gradient(180deg, #06080b 0%, #0d1117 100%);
+      color: var(--text);
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .history-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--card);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateX(-3px);
+      box-shadow: 0 8px 25px rgba(0,200,255,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, var(--accent), #66f0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
+
+    .history-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,200,255,0.1);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .history-filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--accent);
+      color: #001;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,200,255,0.3);
+    }
+
+    .purchase-item {
+      background: rgba(255,255,255,0.03);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+      animation: slideInLeft 0.6s ease;
+    }
+
+    .purchase-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 10px 30px rgba(0,200,255,0.1);
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .purchase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .purchase-date {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .purchase-status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-delivered {
+      background: rgba(0,255,136,0.2);
+      color: #00ff88;
+    }
+
+    .status-shipped {
+      background: rgba(255,193,7,0.2);
+      color: #ffc107;
+    }
+
+    .status-pending {
+      background: rgba(255,71,87,0.2);
+      color: #ff4757;
+    }
+
+    .purchase-items {
+      display: grid;
+      gap: 15px;
+    }
+
+    .purchase-item-detail {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+    }
+
+    .item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .item-price {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .item-quantity {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .purchase-total {
+      text-align: right;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .total-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .total-amount {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .empty-description {
+      margin-bottom: 30px;
+    }
+
+    .shop-btn {
+      background: linear-gradient(90deg, var(--accent), #66f0ff);
+      color: #001;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .shop-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,200,255,0.4);
+    }
+
+    @media (max-width: 768px) {
+      .history-container {
+        margin: 10px;
+        padding: 20px;
+      }
+
+      .history-filters {
+        justify-content: center;
+      }
+
+      .purchase-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .purchase-item-detail {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="DealWiseUtils.navigateTo('index.html')">← Back to Home</button>
+  
+  <div class="history-container">
+    <h1>📦 Purchase History</h1>
+    <p class="subtitle">Track all your orders and purchases</p>
+
+    <div class="history-stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalOrders">0</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalSpent">₹0</div>
+        <div class="stat-label">Total Spent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="avgOrder">₹0</div>
+        <div class="stat-label">Average Order</div>
+      </div>
+    </div>
+
+    <div class="history-filters">
+      <button class="filter-btn active" onclick="filterOrders('all')">All Orders</button>
+      <button class="filter-btn" onclick="filterOrders('delivered')">Delivered</button>
+      <button class="filter-btn" onclick="filterOrders('shipped')">Shipped</button>
+      <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+    </div>
+
+    <div id="purchaseHistory"></div>
+  </div>
+
+  <script>
+    // Sample purchase history data
+    const PURCHASE_HISTORY = [
+      {
+        id: 'ORD-001',
+        date: '2025-01-15',
+        status: 'delivered',
+        items: [
+          { name: 'Wireless Headphones', price: '₹2,499', quantity: 1, image: 'images/headphones.jpg' },
+          { name: 'Bluetooth Speaker', price: '₹1,299', quantity: 1, image: 'images/headphones.jpg' }
+        ],
+        total: '₹3,798'
+      },
+      {
+        id: 'ORD-002',
+        date: '2025-01-10',
+        status: 'shipped',
+        items: [
+          { name: 'Smartwatch Series 6', price: '₹8,999', quantity: 1, image: 'images/smartwatch.jpg' }
+        ],
+        total: '₹8,999'
+      },
+      {
+        id: 'ORD-003',
+        date: '2025-01-05',
+        status: 'delivered',
+        items: [
+          { name: 'RGB Gaming Keyboard', price: '₹1,799', quantity: 2, image: 'images/keyboard.jpg' },
+          { name: 'Wireless Mouse', price: '₹899', quantity: 1, image: 'images/keyboard.jpg' }
+        ],
+        total: '₹4,497'
+      },
+      {
+        id: 'ORD-004',
+        date: '2024-12-28',
+        status: 'pending',
+        items: [
+          { name: '4K Smart TV', price: '₹49,999', quantity: 1, image: 'images/smartwatch.jpg' }
+        ],
+        total: '₹49,999'
+      }
+    ];
+
+    let currentFilter = 'all';
+
+    function filterOrders(status) {
+      currentFilter = status;
+      
+      // Update filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      renderPurchaseHistory();
+    }
+
+    function renderPurchaseHistory() {
+      const container = document.getElementById('purchaseHistory');
+      const filteredOrders = currentFilter === 'all' 
+        ? PURCHASE_HISTORY 
+        : PURCHASE_HISTORY.filter(order => order.status === currentFilter);
+
+      if (filteredOrders.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <div class="empty-title">No orders found</div>
+            <div class="empty-description">You haven't made any ${currentFilter === 'all' ? '' : currentFilter} orders yet.</div>
+            <button class="shop-btn" onclick="DealWiseUtils.navigateTo('index.html')">Start Shopping</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredOrders.map(order => `
+        <div class="purchase-item">
+          <div class="purchase-header">
+            <div>
+              <strong>Order #${order.id}</strong>
+              <div class="purchase-date">${new Date(order.date).toLocaleDateString('en-IN', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}</div>
+            </div>
+            <div class="purchase-status status-${order.status}">
+              ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+            </div>
+          </div>
+          
+          <div class="purchase-items">
+            ${order.items.map(item => `
+              <div class="purchase-item-detail">
+                <img src="${item.image}" alt="${item.name}" class="item-image" onerror="this.src='assets/placeholder.svg'">
+                <div class="item-details">
+                  <div class="item-name">${item.name}</div>
+                  <div class="item-price">${item.price}</div>
+                  <div class="item-quantity">Quantity: ${item.quantity}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="purchase-total">
+            <div class="total-label">Total Amount</div>
+            <div class="total-amount">${order.total}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStats() {
+      const totalOrders = PURCHASE_HISTORY.length;
+      const totalSpent = PURCHASE_HISTORY.reduce((sum, order) => {
+        return sum + parseInt(order.total.replace(/[₹,]/g, ''));
+      }, 0);
+      const avgOrder = totalSpent / totalOrders;
+
+      document.getElementById('totalOrders').textContent = totalOrders;
+      document.getElementById('totalSpent').textContent = `₹${totalSpent.toLocaleString('en-IN')}`;
+      document.getElementById('avgOrder').textContent = `₹${Math.round(avgOrder).toLocaleString('en-IN')}`;
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      updateStats();
+      renderPurchaseHistory();
+    });
+  </script>
+</body>
+</html>
