@@ -39,8 +39,13 @@
 <body>
   <header class="navbar pop-in">
     <div class="brand">
-      <svg width="36" height="36"><rect width="36" height="36" rx="8" fill="#00c8ff" opacity="0.12"/></svg>
-      <div><div style="font-weight:700">DealWise</div><div style="font-size:12px;color:var(--muted)">Smart Deals • Verified</div></div>
+      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px; box-shadow:0 8px 25px rgba(0,200,255,0.3);">
+        DW
+      </div>
+      <div>
+        <div style="font-weight:700">DealWise</div>
+        <div style="font-size:12px;color:var(--muted)">Smart Deals • Verified</div>
+      </div>
     </div>
 
     <nav class="nav-center">
@@ -77,14 +82,15 @@
 
   <script src="js/global.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/shared.js"></script>
   <script>
     // Shared small runtime (same logic as index but scoped)
     const API_BASE = 'http://localhost:8080/api';
     const SAMPLE_DEALS = [
-      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=1200&q=80' },
-      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'https://images.unsplash.com/photo-1518444024107-77f3c4b8b4b6?auto=format&fit=crop&w=1200&q=80' },
+      { id: 'd1', title: 'Wireless Headphones', price: '₹2,499', note: '30% off', img: 'images/headphones.jpg' },
+      { id: 'd2', title: 'Smartwatch Series 6', price: '₹8,999', note: '25% off', img: 'images/smartwatch.jpg' },
+      { id: 'd3', title: 'RGB Gaming Keyboard', price: '₹1,799', note: '40% off', img: 'images/keyboard.jpg' },
+      { id: 'd4', title: 'Bluetooth Speaker', price: '₹1,299', note: '35% off', img: 'images/headphones.jpg' },
       { id: 'd5', title: 'Wireless Mouse', price: '₹899', note: '20% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' },
       { id: 'd6', title: '4K Smart TV', price: '₹49,999', note: '15% off', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80' }
     ];
