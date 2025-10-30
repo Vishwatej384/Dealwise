@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 @RestController
@@ -78,7 +77,7 @@ public class AuthController {
                             .claim("email", rs.getString("email"))
                             .setIssuedAt(new Date())
                             .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)) // 7 days
-                            .signWith(key)
+                            .signWith(key, io.jsonwebtoken.SignatureAlgorithm.HS384)
                             .compact();
 
                     res.put("success", true);
