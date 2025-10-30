@@ -7,11 +7,11 @@ import java.sql.*;
 
 public class UserDao {
 
-    public boolean createUser(String name, String email, String passwordHash) throws SQLException {
-        String sql = "INSERT INTO users (name, email, password_hash) VALUES (?,?,?)";
+    public boolean createUser(String username, String email, String passwordHash) throws SQLException {
+        String sql = "INSERT INTO users (username, email, password_hash) VALUES (?,?,?)";
         try (Connection c = DBUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
+            ps.setString(1, username);
             ps.setString(2, email);
             ps.setString(3, passwordHash);
             return ps.executeUpdate() == 1;
@@ -33,11 +33,11 @@ public class UserDao {
         return ps.executeQuery();
     }
 
-    public boolean updateUser(int id, String name, String email) throws SQLException {
-        String sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+    public boolean updateUser(int id, String username, String email) throws SQLException {
+        String sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
         try (Connection c = DBUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, name);
+            ps.setString(1, username);
             ps.setString(2, email);
             ps.setInt(3, id);
             return ps.executeUpdate() == 1;
