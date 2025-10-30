@@ -5,6 +5,7 @@ class DealWiseAuth {
   constructor() {
     this.user = null;
     this.token = null;
+    this.apiBase = "http://localhost:8080/api/auth"; // ✅ Your backend base URL
   }
 
   init() {
@@ -97,10 +98,7 @@ class DealWiseAuth {
       <div class="search-wrap">
         <input id="searchInput" placeholder="Search deals..." style="width: 260px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.04); color: #e6eef6; outline: none;" />
       </div>
-      <button id="cartButton" class="icon-btn" style="background: transparent; border: 1=device-solid rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 10px; cursor: pointer; color: var(--muted, #98a0aa);">
-        🛍️ <span id="cartCount" class="cart-count" style="display: inline-block; min-width: 20px; padding: 0 7px; border-radius: 999px; background: linear-gradient(90deg, var(--accent, #00c8ff), #66f0ff); color: #001; font-weight: 700; margin-left: 8px; font-size: 13px;">0</span>
-      </button>
-      <button id="loginBtn" class="icon-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 10px; cursor: pointer; color: var(--muted, #98a0aa); font-weight: 600;">Login</button>
+      <button id="cartButton" class="icon-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 10px; cursor: pointer; color: var(--muted, #98a0aa); font-weight: 600;">Login</button>
       <button id="signupBtn" class="btn-accent" style="background: linear-gradient(90deg, var(--accent, #00c8ff), #66f0ff); color: #001; padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; box-shadow: 0 10px 30px rgba(0,200,255,0.08);">Sign Up</button>
     `;
 

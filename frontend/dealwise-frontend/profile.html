@@ -330,7 +330,7 @@
         if (response.ok) {
           const profile = await response.json();
           if (profile.success) {
-            document.getElementById('name').value = profile.name || '';
+            document.getElementById('name').value = profile.username || '';
             document.getElementById('email').value = profile.email || '';
           }
         }
@@ -350,7 +350,7 @@
       }
       
       const formData = {
-        name: document.getElementById('name').value,
+        username: document.getElementById('name').value,
         email: document.getElementById('email').value
       };
       
@@ -369,7 +369,7 @@
         if (result.success) {
           // Update localStorage with new user data
           const userData = JSON.parse(localStorage.getItem('dealwise_user') || '{}');
-          userData.name = formData.name;
+          userData.name = formData.username;
           userData.email = formData.email;
           localStorage.setItem('dealwise_user', JSON.stringify(userData));
           
@@ -388,21 +388,53 @@
     
     // Theme is now handled by global.js
     
-    // Profile picture upload
+    // Profile picture upload with localStorage persistence
     document.getElementById('upload').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
+        // Check file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          showSuccessMessage('Image too large! Please use an image under 2MB.');
+          return;
+        }
+        
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = document.getElementById('preview');
           const placeholder = document.getElementById('profilePlaceholder');
-          img.src = e.target.result;
+          const imageData = e.target.result;
+          
+          img.src = imageData;
           img.style.display = 'block';
           placeholder.style.display = 'none';
+          
+          // Save to localStorage
+          try {
+            localStorage.setItem('dealwise_profile_picture', imageData);
+            showSuccessMessage('Profile picture updated successfully!');
+          } catch (err) {
+            console.error('Failed to save profile picture:', err);
+            showSuccessMessage('Image saved for this session only (too large for permanent storage)');
+          }
         };
         reader.readAsDataURL(file);
       }
     });
+    
+    // Load saved profile picture on page load
+    function loadProfilePicture() {
+      const savedImage = localStorage.getItem('dealwise_profile_picture');
+      if (savedImage) {
+        const img = document.getElementById('preview');
+        const placeholder = document.getElementById('profilePlaceholder');
+        img.src = savedImage;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      }
+    }
+    
+    // Call on page load
+    loadProfilePicture();
     
     function showSuccessMessage(message) {
       const toast = document.createElement('div');

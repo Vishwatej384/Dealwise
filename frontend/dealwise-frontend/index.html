@@ -216,8 +216,8 @@
       <a class="nav-link" href="categories.html">Categories</a>
       <a class="nav-link" href="deals.html">Top Deals</a>
       <a class="nav-link" href="purchase-history.html">History</a>
-      <a class="nav-link" href="about.html">About</a>
-      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="nav-link" href="wishlist.html">❤️ Wishlist</a>
+      <a class="nav-link" href="compare.html">⚖️ Compare</a>
     </nav>
 
     <div class="nav-right">
@@ -229,8 +229,15 @@
         🛍️ <span id="cartCount" class="cart-count">0</span>
       </button>
 
-      <button id="loginBtn" class="icon-btn">Login</button>
-      <button id="signupBtn" class="btn-accent">Sign Up</button>
+     <button id="loginBtn" class="icon-btn" onclick="navigateTo('login.html')">Login</button>
+     <button id="signupBtn" class="btn-accent" onclick="navigateTo('signup.html')">Sign Up</button>
+
+    <script>
+       function navigateTo(page) {
+       window.location.href = page;
+  }
+   </script>
+
     </div>
   </header>
 
@@ -241,9 +248,17 @@
         <h1 class="hero-title">Discover the best deals — <span class="gradient-text">save smarter</span></h1>
         <p class="hero-sub">DealWise collects verified offers, honest reviews and price-tracking tools — all in one neon-powered, dark-mode interface built for fast shopping.</p>
         <div class="hero-ctas">
-          <button class="btn-accent micro-bounce liquid-btn btn-ripple" onclick="navigateTo('deals.html')">Browse Deals</button>
-          <button class="btn-ghost micro-bounce magnetic" onclick="navigateTo('categories.html')">Shop by Category</button>
+           <button class="btn-accent micro-bounce liquid-btn btn-ripple" onclick="navigateTo('deals.html')">Browse Deals</button>
+           <button class="btn-ghost micro-bounce magnetic" onclick="navigateTo('categories.html')">Shop by Category</button>
         </div>
+
+        <script> 
+           function navigateTo(page) {
+    // Simple navigation handler
+           window.location.href = page;
+  }
+        </script>
+
         <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
           <div style="display:flex; gap:8px; align-items:center;">
             <div style="width:10px; height:10px; border-radius:12px; background:var(--accent); box-shadow:0 8px 30px rgba(0,200,255,0.06)"></div>
@@ -258,14 +273,56 @@
 
       <aside class="hero-right slide-up stagger-2 glow-pulse floating">
         <div class="hero-card">
-          <img src="images/headphones.jpg" alt="Headphones" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1000&q=80" alt="Headphones" onerror="this.src='assets/placeholder.svg'">
           <div style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
             <div>
               <div style="font-weight:700">Wireless Headphones</div>
               <div style="color:var(--muted); font-size:13px;">Now ₹2,499 • 30% off</div>
             </div>
             <div>
-              <button class="btn-accent" onclick="addToCartByData('d1')">Add</button>
+             <button class="btn-accent" onclick="addToCartByData('d1')">Add</button>
+
+<!-- Toast Message -->
+<div id="toast" class="toast">✅ Added to Cart!</div>
+
+<style>
+  .toast {
+    visibility: hidden;
+    min-width: 180px;
+    background: linear-gradient(90deg, #00e0ff, #00ffa6);
+    color: #000;
+    text-align: center;
+    border-radius: 50px;
+    padding: 10px 20px;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .toast.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function addToCartByData(itemId) {
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2000); // disappears after 2s
+  }
+</script>
+
+
             </div>
           </div>
         </div>
@@ -300,27 +357,27 @@
       <h2 class="section-title holographic slide-up stagger-1">Shop by Category</h2>
       <div class="cat-grid">
         <div class="cat-card slide-up stagger-1" onclick="navigateTo('categories.html')">
-          <img src="images/keyboard.jpg" alt="Electronics" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1000&q=80" alt="Electronics" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Electronics</div>
         </div>
         <div class="cat-card slide-up stagger-2" onclick="navigateTo('categories.html')">
-          <img src="images/smartwatch.jpg" alt="Fashion" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1000&q=80" alt="Fashion" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Fashion</div>
         </div>
         <div class="cat-card slide-up stagger-3" onclick="navigateTo('categories.html')">
-          <img src="images/headphones.jpg" alt="Home" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1000&q=80" alt="Home" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Home & Kitchen</div>
         </div>
         <div class="cat-card slide-up stagger-4" onclick="navigateTo('categories.html')">
-          <img src="images/keyboard.jpg" alt="Fitness" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=80" alt="Fitness" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Fitness</div>
         </div>
         <div class="cat-card slide-up stagger-5" onclick="navigateTo('categories.html')">
-          <img src="images/smartwatch.jpg" alt="Gaming" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1000&q=80" alt="Gaming" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Gaming</div>
         </div>
         <div class="cat-card slide-up stagger-6" onclick="navigateTo('categories.html')">
-          <img src="images/headphones.jpg" alt="Beauty" onerror="this.src='assets/placeholder.svg'">
+          <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1000&q=80" alt="Beauty" onerror="this.src='assets/placeholder.svg'">
           <div style="margin-top:8px; font-weight:700">Beauty</div>
         </div>
       </div>
@@ -393,6 +450,9 @@
   <script src="js/global.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/shared.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/main.js"></script>
   <script>
     /**********************************************
      * DealWise index.js (inline) - Dark + lively
@@ -421,15 +481,27 @@
       if(t.includes('serum')||t.includes('foundation')||t.includes('toner')||t.includes('lotion')) return `₹${n(199,2499).toLocaleString('en-IN')}`;
       return `₹${n(999,9999).toLocaleString('en-IN')}`;
     }
+    function getCategoryImage(category) {
+      const images = {
+        electronics: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80',
+        fashion: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80',
+        home: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&q=80',
+        fitness: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80',
+        gaming: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80',
+        beauty: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80'
+      };
+      return images[category] || 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80';
+    }
+
     function mixedDeals(){
       const catalog=getCatalog(); const order=['electronics','fashion','home','fitness','gaming','beauty'];
       const set=new Set(); const out=[];
-      order.forEach(k=>{ (catalog[k]||[]).slice(0,6).forEach((name,i)=>{ if(set.has(name)) return; set.add(name); out.push({ id:`${k}-${i+1}`, title:name, price:priceForTitle(name), note:'Great deal', img:'assets/logo.svg' }); }); });
+      order.forEach(k=>{ (catalog[k]||[]).slice(0,6).forEach((name,i)=>{ if(set.has(name)) return; set.add(name); out.push({ id:`${k}-${i+1}`, title:name, price:priceForTitle(name), note:'Great deal', img:getCategoryImage(k) }); }); });
       if(out.length) return out;
       return [
-        { id:'d1', title:'Wireless Headphones', price:'₹2,499', note:'30% off', img:'assets/logo.svg' },
-        { id:'d2', title:'Smartwatch Series 6', price:'₹8,999', note:'25% off', img:'assets/logo.svg' },
-        { id:'d3', title:'RGB Gaming Keyboard', price:'₹1,799', note:'40% off', img:'assets/logo.svg' }
+        { id:'d1', title:'Wireless Headphones', price:'₹2,499', note:'30% off', img:'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=800&q=80' },
+        { id:'d2', title:'Smartwatch Series 6', price:'₹8,999', note:'25% off', img:'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=800&q=80' },
+        { id:'d3', title:'RGB Gaming Keyboard', price:'₹1,799', note:'40% off', img:'https://images.unsplash.com/photo-1606813902829-65e5484d7331?auto=format&fit=crop&w=800&q=80' }
       ];
     }
     const SAMPLE_DEALS = mixedDeals();
@@ -530,7 +602,7 @@
         const card = document.createElement('div');
         card.className = `deal-card slide-up stagger-${Math.min(index + 1, 6)}`;
         card.innerHTML = `
-          <img src="assets/logo.svg" alt="${d.title}">
+          <img src="${d.img || 'https://images.unsplash.com/photo-1585386959984-a4155223f8a2?auto=format&fit=crop&w=1000&q=80'}" alt="${d.title}">
           <h3>${d.title}</h3>
           <p class="muted">${d.note}</p>
           <div class="deal-actions">
@@ -588,7 +660,7 @@
               title: deal.title,
               price: deal.price,
               note: deal.discount || 'Great deal',
-              img: 'assets/logo.svg' // Always use assets/logo.svg for backend deals
+              img: deal.imageUrl || 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80'
             }));
             renderDealsList(transformedDeals);
             return;
@@ -604,15 +676,15 @@
     }
 
     // ---------- Modals / login signup → redirect to full pages ----------
-    document.getElementById('loginBtn')?.addEventListener('click', ()=> navigateTo('login.html'));
-    document.getElementById('signupBtn')?.addEventListener('click', ()=> navigateTo('signup.html'));
-    document.getElementById('cartButton')?.addEventListener('click', ()=> navigateTo('cart.html'));
-
-    // ---------- Page Init ----------
     document.addEventListener('DOMContentLoaded', ()=>{
       setTimeout(()=> { document.documentElement.style.opacity='1'; }, 80);
       updateCartUI();
       loadDeals();
+
+      // Attach event listeners after DOM is ready
+      document.getElementById('loginBtn')?.addEventListener('click', ()=> navigateTo('login.html'));
+      document.getElementById('signupBtn')?.addEventListener('click', ()=> navigateTo('signup.html'));
+      document.getElementById('cartButton')?.addEventListener('click', ()=> navigateTo('cart.html'));
 
       // small health check console
       fetch(API_BASE + '/hello').then(r=>r.text()).then(t=> console.log('backend:', t)).catch(()=>{ /* backend may be down — it's fine */});
@@ -646,236 +718,6 @@ document.addEventListener('click', (e) => {
 });
 
   </script>
-
-  <script>
-const token = localStorage.getItem('token');
-if (token) {
-  document.getElementById('authStatus').textContent = 'You are logged in ✅';
-} else {
-  document.getElementById('authStatus').textContent = 'Not logged in';
-}
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
-  const navRight = document.querySelector(".nav-right"); // adjust if class name differs
-
-  if (userData && userData.token) {
-    // ✅ Replace login/signup buttons with username + logout
-    navRight.innerHTML = `
-      <span style="color:#00c8ff;font-weight:600;margin-right:10px;">
-        Hi, ${userData.name || "User"}
-      </span>
-      <button id="logoutBtn" style="background:#ff4757;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">
-        Logout
-      </button>
-    `;
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("dealwise_user");
-      localStorage.removeItem("token");
-      location.reload(); // refresh to reset navbar
-    });
-  }
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
-  
-  // try multiple selectors in case of different class names
-  const navRight = document.querySelector(".nav-right") ||
-                   document.querySelector(".navbar-buttons") ||
-                   document.querySelector(".auth-buttons");
-
-  if (!navRight) return; // no navbar section found
-
-  if (userData && userData.token) {
-    navRight.innerHTML = `
-      <span style="color:#00c8ff;font-weight:600;margin-right:10px;">
-        Hi, ${userData.name || "User"}
-      </span>
-      <button id="logoutBtn" style="background:#ff4757;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">
-        Logout
-      </button>
-    `;
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("dealwise_user");
-      localStorage.removeItem("token");
-      location.reload();
-    });
-  }
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
-  
-  // Select your right-side navbar buttons container
-  const navRight = document.querySelector(".nav-right") ||
-                   document.querySelector(".navbar-buttons") ||
-                   document.querySelector(".auth-buttons");
-
-  if (!navRight) return;
-
-  if (userData && userData.name) {
-    // Get initials from name
-    const initials = userData.name.split(" ").map(n => n[0]).join("").toUpperCase();
-
-    // Replace login/signup with profile badge
-    navRight.innerHTML = `
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div id="profileCircle" 
-          style="
-            width:38px;height:38px;
-            border-radius:50%;
-            background:linear-gradient(135deg,#00c8ff,#007bff);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#fff;
-            font-weight:600;
-            font-size:15px;
-            cursor:pointer;
-            box-shadow:0 0 10px rgba(0,200,255,0.5);
-          ">
-          ${initials}
-        </div>
-        <button id="logoutBtn"
-          style="
-            background:#ff4757;
-            border:none;
-            color:white;
-            padding:6px 12px;
-            border-radius:6px;
-            font-weight:500;
-            cursor:pointer;
-          ">
-          Logout
-        </button>
-      </div>
-    `;
-
-    // Logout event
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("dealwise_user");
-      localStorage.removeItem("token");
-      location.reload();
-    });
-  }
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
-  const loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-  const navRight = document.querySelector(".nav-right");
-
-  if (userData && userData.token) {
-    // Remove only login/signup buttons
-    if (loginBtn) loginBtn.remove();
-    if (signupBtn) signupBtn.remove();
-
-    // Create user initials (like HP for Harsh Patel)
-    const initials = (userData.name || "User")
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .toUpperCase();
-
-    const userCircle = document.createElement("div");
-    userCircle.textContent = initials;
-    userCircle.style.background = "linear-gradient(90deg,#00c8ff,#66f0ff)";
-    userCircle.style.color = "#001";
-    userCircle.style.fontWeight = "700";
-    userCircle.style.fontSize = "14px";
-    userCircle.style.borderRadius = "50%";
-    userCircle.style.width = "36px";
-    userCircle.style.height = "36px";
-    userCircle.style.display = "flex";
-    userCircle.style.alignItems = "center";
-    userCircle.style.justifyContent = "center";
-    userCircle.style.marginRight = "8px";
-    userCircle.style.boxShadow = "0 0 10px rgba(0,200,255,0.3)";
-
-    // Logout button
-    const logoutBtn = document.createElement("button");
-    logoutBtn.textContent = "Logout";
-    logoutBtn.style.background = "#ff4757";
-    logoutBtn.style.color = "white";
-    logoutBtn.style.border = "none";
-    logoutBtn.style.padding = "6px 10px";
-    logoutBtn.style.borderRadius = "6px";
-    logoutBtn.style.cursor = "pointer";
-    logoutBtn.style.fontWeight = "600";
-
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("dealwise_user");
-      localStorage.removeItem("token");
-      location.reload();
-    });
-
-    // Container for initials + logout
-    const userBox = document.createElement("div");
-    userBox.style.display = "flex";
-    userBox.style.alignItems = "center";
-    userBox.style.gap = "10px";
-    userBox.appendChild(userCircle);
-    userBox.appendChild(logoutBtn);
-
-    // Append to nav-right (keeps cart/search intact)
-    navRight.appendChild(userBox);
-  }
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userData = JSON.parse(localStorage.getItem("dealwise_user"));
-  const navRight = document.querySelector(".nav-right");
-
-  if (!navRight) return;
-
-  if (userData && userData.name) {
-    const initials = userData.name
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .toUpperCase();
-
-    navRight.innerHTML = `
-      <div style="display:flex;align-items:center;gap:14px;">
-        <a href="cart.html" style="color:var(--accent);font-weight:600;text-decoration:none;">
-          <i class="fas fa-shopping-cart"></i> Cart
-        </a>
-        <a href="profile.html" style="color:#e6eef6;text-decoration:none;font-weight:600;">
-          My Profile
-        </a>
-        <div style="
-          width:38px;height:38px;border-radius:50%;
-          background:linear-gradient(135deg,var(--accent),#66f0ff);
-          color:#001;display:flex;align-items:center;justify-content:center;
-          font-weight:700;box-shadow:0 6px 18px rgba(0,200,255,0.1);
-        ">
-          ${initials}
-        </div>
-        <button id="logoutBtn" style="
-          background:none;border:none;color:var(--muted);
-          font-weight:600;cursor:pointer;
-        ">Logout</button>
-      </div>
-    `;
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("dealwise_user");
-      localStorage.removeItem("token");
-      location.reload();
-    });
-  }
-});
-</script>
 
 </body>
 </html>

@@ -9,9 +9,10 @@
   <meta name="theme-color" content="#0d1117">
   <style>
     :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
-    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-    .panel{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 420px; gap:18px; align-items:center; margin-top:40px; margin-bottom:40px; }
-    .left,.right{ padding:28px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    html,body{ margin:0; min-height:100vh; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:20px 0; }
+    .panel{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:stretch; margin:40px auto; }
+    .left,.right{ padding:32px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; justify-content:center; }
+    @media(max-width:768px){ .panel{ grid-template-columns:1fr; } .left{ display:none; } }
     h1{ margin:0 0 12px; }
     .muted{ color:var(--muted); }
     input{ width:100%; padding:12px; margin-top:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:#e6eef6; outline:none; }
@@ -89,7 +90,7 @@
         const data = await res.json();
         if (data.token) {
           localStorage.setItem('token', data.token);
-          localStorage.setItem('dealwise_user', JSON.stringify({ name: data.name, email }));
+          localStorage.setItem('dealwise_user', JSON.stringify({ name: data.username, email }));
           msg.style.color = "#00c8ff";
           msg.textContent = "Login successful! Redirecting...";
 

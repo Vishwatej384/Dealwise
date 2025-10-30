@@ -9,9 +9,10 @@
   <meta name="theme-color" content="#0d1117">
   <style>
     :root{ --bg:#0d1117; --card:#0f1720; --muted:#98a0aa; --accent:#00c8ff; }
-    html,body{ margin:0; height:100%; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-    .card{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 420px; gap:18px; align-items:center; margin-top:40px; margin-bottom:40px; }
-    .left,.right{ padding:28px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    html,body{ margin:0; min-height:100vh; background:linear-gradient(160deg,#021019,#0d1117); color:#e6eef6; font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:20px 0; }
+    .card{ width:960px; max-width:95%; display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:stretch; margin:40px auto; }
+    .left,.right{ padding:32px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; justify-content:center; }
+    @media(max-width:768px){ .card{ grid-template-columns:1fr; } .left{ display:none; } }
     .muted{ color:var(--muted) }
     input{ width:100%; padding:12px; margin-top:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:#e6eef6; outline:none; }
     .btn-accent{ background: linear-gradient(90deg,var(--accent), #66f0ff); color:#001; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; transition:0.3s; }
@@ -37,11 +38,11 @@
       <div class="logo-circle">DW</div>
       <h1>Create an account</h1>
       <p class="muted">Join DealWise to save deals, create alerts and access your wishlist.</p>
-      <ul class="muted">
+      <ul class="muted" style="margin:16px 0; padding-left:20px;">
         <li>Save deals across devices</li>
         <li>Get price alerts & notifications</li>
       </ul>
-      <footer>Already have an account? <a href="login.html" style="color:var(--accent); text-decoration:none;">Login</a></footer>
+      <p style="margin-top:20px;">Already have an account? <a href="login.html" style="color:var(--accent); text-decoration:none; font-weight:600;">Login</a></p>
     </div>
 
     <div class="right">

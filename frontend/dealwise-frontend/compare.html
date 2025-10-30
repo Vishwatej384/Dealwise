@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Products — DealWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #0f1720;
+      --text: #e6eef6;
+      --accent: #00c8ff;
+      --muted: #98a0aa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(180deg, #06080b 0%, #0d1117 100%);
+      color: var(--text);
+      font-family: "Poppins", sans-serif;
+      min-height: 100vh;
+    }
+
+    header.navbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 22px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .brand { display: flex; gap: 12px; align-items: center; }
+    .nav-center { display: flex; gap: 12px; align-items: center; }
+    .nav-link {
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .nav-link.active { color: var(--accent); }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #00c8ff, #66f0ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .comparison-table {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .product-column {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.03);
+      position: relative;
+    }
+
+    .product-column img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+
+    .product-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      background: rgba(255,71,87,0.9);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #00c8ff, #66f0ff);
+      color: #001;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .empty-icon { font-size: 80px; margin-bottom: 20px; }
+    .empty-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .empty-description { color: var(--muted); margin-bottom: 30px; }
+
+    .comparison-insights {
+      background: linear-gradient(135deg, rgba(0,200,255,0.1), rgba(102,240,255,0.05));
+      border: 1px solid rgba(0,200,255,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .insight-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--accent);
+    }
+
+    .insight-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .insight-icon {
+      font-size: 24px;
+    }
+
+    .best-deal-badge {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ffc107, #ff9800);
+      color: #001;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      box-shadow: 0 4px 15px rgba(255,193,7,0.4);
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 4px 15px rgba(255,193,7,0.4); }
+      50% { box-shadow: 0 4px 25px rgba(255,193,7,0.6); }
+    }
+
+    .price-comparison {
+      background: rgba(0,0,0,0.3);
+      padding: 12px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .price-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .savings-badge {
+      background: rgba(0,255,0,0.1);
+      color: #00ff00;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .feature-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .feature-label {
+      color: var(--muted);
+    }
+
+    .feature-value {
+      color: var(--text);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">
+      <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #00c8ff, #66f0ff); display:flex; align-items:center; justify-content:center; color:#001; font-weight:800; font-size:18px;">DW</div>
+      <div>
+        <div style="font-weight:700">DealWise</div>
+        <div style="font-size:12px;color:var(--muted)">Smart Deals • Verified</div>
+      </div>
+    </div>
+    <nav class="nav-center">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="deals.html">Top Deals</a>
+      <a class="nav-link" href="purchase-history.html">History</a>
+      <a class="nav-link" href="wishlist.html">❤️ Wishlist</a>
+      <a class="nav-link active" href="compare.html">⚖️ Compare</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>⚖️ Compare Products</h1>
+    <p style="color:var(--muted);margin-bottom:20px">Compare up to 4 products side by side</p>
+    
+    <div style="margin-bottom:20px">
+      <button onclick="clearAll()" style="background:rgba(255,71,87,0.2);color:#ff4757;border:1px solid rgba(255,71,87,0.3);padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600">
+        Clear All
+      </button>
+    </div>
+
+    <div id="compareContainer"></div>
+  </div>
+
+  <script src="js/global.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    function parsePrice(priceStr) {
+      return parseFloat(priceStr.replace(/[₹,]/g, ''));
+    }
+
+    function parseDiscount(noteStr) {
+      if (!noteStr) return 0;
+      const match = noteStr.match(/(\d+)%/);
+      return match ? parseInt(match[1]) : 0;
+    }
+
+    function analyzeComparison(compareList) {
+      const prices = compareList.map(p => ({
+        id: p.id,
+        title: p.title,
+        price: parsePrice(p.price),
+        discount: parseDiscount(p.note)
+      }));
+
+      const lowestPrice = Math.min(...prices.map(p => p.price));
+      const highestPrice = Math.max(...prices.map(p => p.price));
+      const avgPrice = prices.reduce((sum, p) => sum + p.price, 0) / prices.length;
+      const bestDeal = prices.find(p => p.price === lowestPrice);
+      const highestDiscount = Math.max(...prices.map(p => p.discount));
+
+      return {
+        lowestPrice,
+        highestPrice,
+        avgPrice,
+        bestDeal,
+        highestDiscount,
+        priceDifference: highestPrice - lowestPrice,
+        savings: highestPrice - lowestPrice
+      };
+    }
+
+    function renderInsights(analysis, compareList) {
+      return `
+        <div class="comparison-insights">
+          <div class="insight-title">🧠 AI-Powered Comparison Insights</div>
+          
+          <div class="insight-item">
+            <span class="insight-icon">💰</span>
+            <div>
+              <strong>Best Price:</strong> ${analysis.bestDeal.title} at ₹${analysis.lowestPrice.toLocaleString('en-IN')}
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">
+                Save up to ₹${analysis.savings.toLocaleString('en-IN')} compared to highest priced item
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span class="insight-icon">📊</span>
+            <div>
+              <strong>Price Range:</strong> ₹${analysis.lowestPrice.toLocaleString('en-IN')} - ₹${analysis.highestPrice.toLocaleString('en-IN')}
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">
+                Average price: ₹${Math.round(analysis.avgPrice).toLocaleString('en-IN')}
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span class="insight-icon">🎯</span>
+            <div>
+              <strong>Recommendation:</strong> ${analysis.bestDeal.title}
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">
+                ${analysis.bestDeal.discount > 0 ? `With ${analysis.bestDeal.discount}% discount, ` : ''}Best value for money in this comparison
+              </div>
+            </div>
+          </div>
+
+          ${analysis.highestDiscount > 0 ? `
+          <div class="insight-item">
+            <span class="insight-icon">🔥</span>
+            <div>
+              <strong>Highest Discount:</strong> ${analysis.highestDiscount}% off
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">
+                Limited time offer - grab it before it's gone!
+              </div>
+            </div>
+          </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function renderComparison() {
+      const compareList = DealWiseCompare.getAll();
+      const container = document.getElementById('compareContainer');
+
+      if (compareList.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚖️</div>
+            <div class="empty-title">No products to compare</div>
+            <div class="empty-description">Add products from the deals page to compare them side-by-side with AI-powered insights</div>
+            <button class="btn btn-primary" onclick="window.location.href='deals.html'" style="max-width:200px;margin:0 auto">
+              Browse Deals
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // Generate AI insights
+      const analysis = analyzeComparison(compareList);
+      const insightsHTML = renderInsights(analysis, compareList);
+
+      const table = document.createElement('div');
+      table.className = 'comparison-table';
+
+      compareList.forEach(product => {
+        const price = parsePrice(product.price);
+        const isBestDeal = price === analysis.lowestPrice;
+        const discount = parseDiscount(product.note);
+        const savingsVsHighest = analysis.highestPrice - price;
+
+        const column = document.createElement('div');
+        column.className = 'product-column';
+        column.innerHTML = `
+          ${isBestDeal ? '<div class="best-deal-badge">⭐ BEST DEAL</div>' : ''}
+          <button class="remove-btn" onclick="removeProduct('${product.id}')">×</button>
+          <img src="${product.img}" alt="${product.title}">
+          <div class="product-title">${product.title}</div>
+          <div class="product-price">₹${price.toLocaleString('en-IN')}</div>
+          <div class="product-note">${product.note || 'Great deal'}</div>
+          
+          <div class="price-comparison">
+            <div class="price-label">Price Analysis</div>
+            <ul class="feature-list">
+              <li>
+                <span class="feature-label">vs Average</span>
+                <span class="feature-value" style="color:${price < analysis.avgPrice ? '#00ff00' : '#ff4757'}">
+                  ${price < analysis.avgPrice ? '↓' : '↑'} ₹${Math.abs(price - analysis.avgPrice).toFixed(0)}
+                </span>
+              </li>
+              ${savingsVsHighest > 0 ? `
+              <li>
+                <span class="feature-label">You Save</span>
+                <span class="feature-value" style="color:#00ff00">
+                  ₹${savingsVsHighest.toLocaleString('en-IN')}
+                </span>
+              </li>
+              ` : ''}
+              ${discount > 0 ? `
+              <li>
+                <span class="feature-label">Discount</span>
+                <span class="feature-value" style="color:#ffc107">
+                  ${discount}% OFF
+                </span>
+              </li>
+              ` : ''}
+            </ul>
+            ${isBestDeal ? '<div class="savings-badge">✓ LOWEST PRICE</div>' : ''}
+          </div>
+
+          <button class="btn btn-primary" onclick="addToCart('${product.id}')">🛍️ Add to Cart</button>
+          <button class="btn" style="background:rgba(255,255,255,0.05);color:var(--text)" onclick="viewProduct('${product.id}')">View Details</button>
+        `;
+        table.appendChild(column);
+      });
+
+      container.innerHTML = insightsHTML;
+      container.appendChild(table);
+    }
+
+    function removeProduct(productId) {
+      DealWiseCompare.remove(productId);
+      renderComparison();
+    }
+
+    function clearAll() {
+      if (confirm('Remove all products from comparison?')) {
+        DealWiseCompare.clear();
+        renderComparison();
+      }
+    }
+
+    function addToCart(productId) {
+      const compareList = DealWiseCompare.getAll();
+      const product = compareList.find(p => p.id === productId);
+      
+      if (product && window.dealwiseCart) {
+        window.dealwiseCart.addToCart(product);
+        alert('Added to cart!');
+      }
+    }
+
+    function viewProduct(productId) {
+      window.location.href = `product-detail.html?id=${productId}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderComparison();
+    });
+  </script>
+</body>
+</html>
