@@ -44,7 +44,7 @@ public class ProfileController {
                 if (rs.next()) {
                     response.put("success", true);
                     response.put("id", rs.getInt("id"));
-                    response.put("name", rs.getString("name"));
+                    response.put("username", rs.getString("username"));
                     response.put("email", rs.getString("email"));
                     response.put("created_at", rs.getTimestamp("created_at"));
                 } else {
@@ -77,10 +77,10 @@ public class ProfileController {
                     .getBody();
             
             int userId = Integer.parseInt(claims.getSubject());
-            String name = body.get("name");
+            String username = body.get("username");
             String email = body.get("email");
             
-            boolean updated = userDao.updateUser(userId, name, email);
+            boolean updated = userDao.updateUser(userId, username, email);
             
             if (updated) {
                 response.put("success", true);

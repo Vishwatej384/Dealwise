@@ -30,14 +30,14 @@ public class AuthController {
 
     @PostMapping("/signup")
     public Map<String, Object> signup(@RequestBody Map<String, String> body) throws SQLException {
-        String name = body.get("name");
+        String username = body.get("username");
         String email = body.get("email");
         String password = body.get("password");
         Map<String, Object> res = new HashMap<>();
 
         // Validation check
-        if (name == null || email == null || password == null ||
-            name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (username == null || email == null || password == null ||
+            username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             res.put("success", false);
             res.put("message", "All fields are required.");
             return res;
@@ -45,7 +45,7 @@ public class AuthController {
 
         // Hash password
         String hashed = passwordEncoder.encode(password);
-        boolean ok = userDao.createUser(name, email, hashed);
+        boolean ok = userDao.createUser(username, email, hashed);
 
         if (ok) {
             res.put("success", true);
@@ -74,7 +74,7 @@ public class AuthController {
 
                     String token = Jwts.builder()
                             .setSubject(String.valueOf(rs.getInt("id")))
-                            .claim("name", rs.getString("name"))
+                            .claim("username", rs.getString("username"))
                             .claim("email", rs.getString("email"))
                             .setIssuedAt(new Date())
                             .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)) // 7 days
@@ -83,7 +83,7 @@ public class AuthController {
 
                     res.put("success", true);
                     res.put("token", token);
-                    res.put("name", rs.getString("name"));
+                    res.put("username", rs.getString("username"));
                     return res;
                 }
             }
