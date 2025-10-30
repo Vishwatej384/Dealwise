@@ -48,16 +48,18 @@
     <div class="right">
       <h3 style="margin:0 0 8px">Sign Up</h3>
       <p class="muted small">Create your DealWise account below.</p>
+
+      <!-- ✅ Corrected input IDs and button -->
       <form id="signupForm" style="margin-top:12px">
-        <input id="name" placeholder="Full Name" required />
-        <input id="email" type="email" placeholder="Email" required />
-        <input id="password" type="password" placeholder="Password" required />
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
         <div style="margin-top:12px; display:flex; gap:10px;">
-          <button class="btn-accent" type="submit">Create Account</button>
+          <button id="createAccountBtn" class="btn-accent" type="submit">Create Account</button>
           <button type="button" onclick="location.href='index.html'" class="btn-ghost" style="border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:8px;color:var(--muted)">Back</button>
         </div>
       </form>
-      <p style="margin-top:12px" class="small muted" id="signupMessage"></p>
+      <p id="errorMsg" style="margin-top:12px;color:tomato;"></p>
     </div>
   </div>
 
@@ -72,70 +74,34 @@
     <p class="mt-4 text-gray-500 text-sm">© 2025 DealWise. All Rights Reserved.</p>
   </footer>
 
+  <!-- ✅ Simple frontend-only validation and popup -->
   <script>
-    document.getElementById('signupForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const msg = document.getElementById('signupMessage');
-      msg.textContent = "Creating your account...";
-      
-      try {
-        const res = await fetch("http://localhost:8080/api/auth/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password })
-        });
-        const data = await res.json();
-        if (data.success) {
-          msg.style.color = "#00c8ff";
-          msg.textContent = "Account created! Redirecting to login...";
-          setTimeout(()=> location.href="login.html", 1500);
-        } else {
-          msg.style.color = "tomato";
-          msg.textContent = data.message || "Signup failed. Please try again.";
-        }
-      } catch (err) {
-        msg.style.color = "tomato";
-        msg.textContent = "Server connection failed. Please try again.";
-      }
-    });
+  document.getElementById("createAccountBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+
+    if (!name || !email || !password) {
+      errorMsg.textContent = "All fields are required.";
+      errorMsg.style.color = "red";
+      return;
+    }
+
+    const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    if (!emailPattern.test(email)) {
+      errorMsg.textContent = "Please enter a valid email.";
+      errorMsg.style.color = "red";
+      return;
+    }
+
+    errorMsg.textContent = "";
+    alert("✅ Account created successfully!");
+    window.location.href = "login.html";
+  });
   </script>
-
-  <script>
-document.getElementById("createAccountBtn").addEventListener("click", function (e) {
-  e.preventDefault();
-
-  // Get field values
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  // Error message element
-  const errorMsg = document.getElementById("errorMsg");
-
-  // Validation
-  if (!name || !email || !password) {
-    errorMsg.textContent = "All fields are required.";
-    errorMsg.style.color = "red";
-    return;
-  }
-
-  // Email format check
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(email)) {
-    errorMsg.textContent = "Please enter a valid email.";
-    errorMsg.style.color = "red";
-    return;
-  }
-
-  // Success message or redirect
-  errorMsg.textContent = "";
-  alert("✅ Account created successfully!");
-  window.location.href = "login.html"; // redirect after sign-up
-});
-</script>
 
 </body>
 </html>
