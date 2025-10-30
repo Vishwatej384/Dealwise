@@ -66,7 +66,7 @@ public class AuthController {
 
         try (ResultSet rs = userDao.findByEmail(email)) {
             if (rs.next()) {
-                String hash = rs.getString("password_hash");
+                String hash = rs.getString("password");
                 if (passwordEncoder.matches(password, hash)) {
                     // sign JWT
                     byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
