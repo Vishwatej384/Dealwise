@@ -7,13 +7,13 @@ import java.sql.*;
 
 public class UserDao {
 
-    public boolean createUser(String username, String email, String passwordHash) throws SQLException {
-        String sql = "INSERT INTO users (username, email, password_hash) VALUES (?,?,?)";
+    public boolean createUser(String username, String email, String password) throws SQLException {
+        String sql = "INSERT INTO users (username, email, password) VALUES (?,?,?)";
         try (Connection c = DBUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, email);
-            ps.setString(3, passwordHash);
+            ps.setString(3, password);
             return ps.executeUpdate() == 1;
         }
     }
