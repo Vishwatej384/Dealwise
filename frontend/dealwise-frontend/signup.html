@@ -48,18 +48,16 @@
     <div class="right">
       <h3 style="margin:0 0 8px">Sign Up</h3>
       <p class="muted small">Create your DealWise account below.</p>
-
-      <!-- ✅ Corrected input IDs and button -->
       <form id="signupForm" style="margin-top:12px">
-        <input type="text" id="name" placeholder="Full Name" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
+        <input id="name" placeholder="Full Name" required />
+        <input id="email" type="email" placeholder="Email" required />
+        <input id="password" type="password" placeholder="Password" required />
         <div style="margin-top:12px; display:flex; gap:10px;">
-          <button id="createAccountBtn" class="btn-accent" type="submit">Create Account</button>
+          <button id="createAccountBtn" class="btn-accent" type="button">Create Account</button>
           <button type="button" onclick="location.href='index.html'" class="btn-ghost" style="border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:8px;color:var(--muted)">Back</button>
         </div>
       </form>
-      <p id="errorMsg" style="margin-top:12px;color:tomato;"></p>
+      <p style="margin-top:12px" class="small muted" id="errorMsg"></p>
     </div>
   </div>
 
@@ -74,34 +72,50 @@
     <p class="mt-4 text-gray-500 text-sm">© 2025 DealWise. All Rights Reserved.</p>
   </footer>
 
-  <!-- ✅ Simple frontend-only validation and popup -->
   <script>
-  document.getElementById("createAccountBtn").addEventListener("click", function (e) {
-    e.preventDefault();
+document.getElementById("createAccountBtn").addEventListener("click", function (e) {
+  e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const errorMsg = document.getElementById("errorMsg");
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorMsg = document.getElementById("errorMsg");
 
-    if (!name || !email || !password) {
-      errorMsg.textContent = "All fields are required.";
-      errorMsg.style.color = "red";
-      return;
-    }
+  if (!name || !email || !password) {
+    errorMsg.textContent = "All fields are required.";
+    errorMsg.style.color = "red";
+    return;
+  }
 
-    const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-    if (!emailPattern.test(email)) {
-      errorMsg.textContent = "Please enter a valid email.";
-      errorMsg.style.color = "red";
-      return;
-    }
+  const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+  if (!emailPattern.test(email)) {
+    errorMsg.textContent = "Please enter a valid email.";
+    errorMsg.style.color = "red";
+    return;
+  }
 
-    errorMsg.textContent = "";
-    alert("✅ Account created successfully!");
-    window.location.href = "login.html";
-  });
-  </script>
+  errorMsg.textContent = "";
+
+  // ✅ success popup
+  const popup = document.createElement("div");
+  popup.textContent = "✅ Account created successfully!";
+  popup.style.position = "fixed";
+  popup.style.bottom = "20px";
+  popup.style.right = "20px";
+  popup.style.background = "#00d2ff";
+  popup.style.color = "#000";
+  popup.style.padding = "10px 20px";
+  popup.style.borderRadius = "25px";
+  popup.style.fontWeight = "600";
+  popup.style.zIndex = "1000";
+  document.body.appendChild(popup);
+
+  setTimeout(() => {
+    popup.remove();
+    window.location.href = "login.html"; // redirect to login
+  }, 2000);
+});
+</script>
 
 </body>
 </html>
