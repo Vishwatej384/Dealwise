@@ -102,5 +102,40 @@
       }
     });
   </script>
+
+  <script>
+document.getElementById("createAccountBtn").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  // Get field values
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  // Error message element
+  const errorMsg = document.getElementById("errorMsg");
+
+  // Validation
+  if (!name || !email || !password) {
+    errorMsg.textContent = "All fields are required.";
+    errorMsg.style.color = "red";
+    return;
+  }
+
+  // Email format check
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    errorMsg.textContent = "Please enter a valid email.";
+    errorMsg.style.color = "red";
+    return;
+  }
+
+  // Success message or redirect
+  errorMsg.textContent = "";
+  alert("✅ Account created successfully!");
+  window.location.href = "login.html"; // redirect after sign-up
+});
+</script>
+
 </body>
 </html>
