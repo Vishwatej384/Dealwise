@@ -32,9 +32,10 @@
         });
         localStorage.setItem(this.KEY, JSON.stringify(wishlist));
         if (window.DealWiseToast) {
-          window.DealWiseToast.show('Added to wishlist ❤️', 'success');
+          window.DealWiseToast.show('✅ Item added to Wishlist!', 'success');
         }
         this.updateCount();
+        if (window.updateFloatingButtons) window.updateFloatingButtons();
         return true;
       } else {
         if (window.DealWiseToast) {
@@ -52,6 +53,7 @@
         window.DealWiseToast.show('Removed from wishlist', 'info');
       }
       this.updateCount();
+      if (window.updateFloatingButtons) window.updateFloatingButtons();
     },
     
     isInWishlist: function(itemId) {
@@ -196,9 +198,10 @@
         });
         localStorage.setItem(this.KEY, JSON.stringify(compareList));
         if (window.DealWiseToast) {
-          window.DealWiseToast.show('Added to comparison', 'success');
+          window.DealWiseToast.show('✅ Item added to Compare!', 'success');
         }
         this.updateCount();
+        if (window.updateFloatingButtons) window.updateFloatingButtons();
         return true;
       }
       return false;
@@ -209,6 +212,7 @@
       compareList = compareList.filter(c => c.id !== itemId);
       localStorage.setItem(this.KEY, JSON.stringify(compareList));
       this.updateCount();
+      if (window.updateFloatingButtons) window.updateFloatingButtons();
     },
     
     getAll: function() {
@@ -603,5 +607,131 @@
       window.DealWiseNotifications.updateBadge();
     }
   });
+
+  // ============================================
+  // FLOATING WISHLIST & COMPARE BUTTONS
+  // ============================================
+  function createFloatingButtons() {
+    // Check if buttons already exist
+    if (document.getElementById('floating-wishlist-btn')) return;
+
+    const wishlistCount = window.DealWiseWishlist ? window.DealWiseWishlist.getAll().length : 0;
+    const compareCount = window.DealWiseCompare ? window.DealWiseCompare.getAll().length : 0;
+
+    const floatingContainer = document.createElement('div');
+    floatingContainer.innerHTML = `
+      <style>
+        .floating-action-buttons {
+          position: fixed;
+          bottom: 100px;
+          right: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          z-index: 999;
+        }
+        .floating-btn {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          transition: all 0.3s ease;
+          position: relative;
+        }
+        .floating-btn:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .floating-wishlist {
+          background: linear-gradient(135deg, #ff6b6b, #ff4757);
+        }
+        .floating-compare {
+          background: linear-gradient(135deg, #00c8ff, #0099cc);
+        }
+        .floating-btn-badge {
+          position: absolute;
+          top: -4px;
+          right: -4px;
+          background: #fff;
+          color: #000;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+      </style>
+      <div class="floating-action-buttons">
+        <button id="floating-wishlist-btn" class="floating-btn floating-wishlist" title="Wishlist">
+          ❤️
+          ${wishlistCount > 0 ? `<span class="floating-btn-badge">${wishlistCount}</span>` : ''}
+        </button>
+        <button id="floating-compare-btn" class="floating-btn floating-compare" title="Compare">
+          ⚖️
+          ${compareCount > 0 ? `<span class="floating-btn-badge">${compareCount}</span>` : ''}
+        </button>
+      </div>
+    `;
+    document.body.appendChild(floatingContainer);
+
+    // Add click handlers
+    document.getElementById('floating-wishlist-btn').addEventListener('click', () => {
+      window.location.href = 'wishlist.html';
+    });
+    document.getElementById('floating-compare-btn').addEventListener('click', () => {
+      window.location.href = 'compare.html';
+    });
+  }
+
+  // Update floating button badges
+  window.updateFloatingButtons = function() {
+    const wishlistBtn = document.getElementById('floating-wishlist-btn');
+    const compareBtn = document.getElementById('floating-compare-btn');
+    
+    if (wishlistBtn && window.DealWiseWishlist) {
+      const count = window.DealWiseWishlist.getAll().length;
+      const existingBadge = wishlistBtn.querySelector('.floating-btn-badge');
+      if (count > 0) {
+        if (existingBadge) {
+          existingBadge.textContent = count;
+        } else {
+          wishlistBtn.innerHTML = `❤️<span class="floating-btn-badge">${count}</span>`;
+        }
+      } else if (existingBadge) {
+        existingBadge.remove();
+      }
+    }
+    
+    if (compareBtn && window.DealWiseCompare) {
+      const count = window.DealWiseCompare.getAll().length;
+      const existingBadge = compareBtn.querySelector('.floating-btn-badge');
+      if (count > 0) {
+        if (existingBadge) {
+          existingBadge.textContent = count;
+        } else {
+          compareBtn.innerHTML = `⚖️<span class="floating-btn-badge">${count}</span>`;
+        }
+      } else if (existingBadge) {
+        existingBadge.remove();
+      }
+    }
+  };
+
+  // Create buttons when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createFloatingButtons);
+  } else {
+    createFloatingButtons();
+  }
 
 })();
