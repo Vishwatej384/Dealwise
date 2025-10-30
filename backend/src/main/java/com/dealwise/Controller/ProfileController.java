@@ -55,6 +55,7 @@ public class ProfileController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Invalid token");
+            e.printStackTrace(); // Log the actual error for debugging
         }
         
         return response;
@@ -92,6 +93,7 @@ public class ProfileController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Invalid token or update failed");
+            e.printStackTrace(); // Log the actual error for debugging
         }
         
         return response;
